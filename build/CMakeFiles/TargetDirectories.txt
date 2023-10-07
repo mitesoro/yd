@@ -1,0 +1,3 @@
+/Users/liuhaigang/work/yd/build/CMakeFiles/yd_demo.dir
+/Users/liuhaigang/work/yd/build/CMakeFiles/edit_cache.dir
+/Users/liuhaigang/work/yd/build/CMakeFiles/rebuild_cache.dir
