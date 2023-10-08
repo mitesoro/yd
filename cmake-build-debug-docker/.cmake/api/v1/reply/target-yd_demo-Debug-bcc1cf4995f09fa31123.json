@@ -106,11 +106,11 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-L/tmp/yd/lib",
+				"fragment" : "-L/tmp/yd/lib/linux",
 				"role" : "libraryPath"
 			},
 			{
-				"fragment" : "-Wl,-rpath,/tmp/yd/linux64:/tmp/yd/lib",
+				"fragment" : "-Wl,-rpath,/tmp/yd/linux64:/tmp/yd/lib/linux",
 				"role" : "libraries"
 			},
 			{

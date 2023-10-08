@@ -1,1 +1,1 @@
-/usr/bin/c++ -g -rdynamic CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.o CMakeFiles/yd_demo.dir/src/main.cpp.o CMakeFiles/yd_demo.dir/src/rem.cpp.o -o yd_demo   -L/tmp/yd/linux64  -L/tmp/yd/lib  -Wl,-rpath,/tmp/yd/linux64:/tmp/yd/lib -lyd 
+/usr/bin/c++ -g -rdynamic CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.o CMakeFiles/yd_demo.dir/src/main.cpp.o CMakeFiles/yd_demo.dir/src/rem.cpp.o -o yd_demo   -L/tmp/yd/linux64  -L/tmp/yd/lib/linux  -Wl,-rpath,/tmp/yd/linux64:/tmp/yd/lib/linux -lyd 

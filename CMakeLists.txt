@@ -17,7 +17,7 @@ set(CMAKE_BUILD_TYPE Debug)
 # 头文件目录
 include_directories(include)
 # 库文件目录
-link_directories(linux64 lib)
+link_directories(linux64 lib/linux)
 # 源文件列表存储进SRC变量
 aux_source_directory(src SRC)
 # 生成可执行文件
