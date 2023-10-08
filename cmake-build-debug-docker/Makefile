@@ -153,6 +153,30 @@ src/EESQuoteDemo.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.s
 .PHONY : src/EESQuoteDemo.cpp.s
 
+src/EESTraderDemo.o: src/EESTraderDemo.cpp.o
+.PHONY : src/EESTraderDemo.o
+
+# target to build an object file
+src/EESTraderDemo.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.o
+.PHONY : src/EESTraderDemo.cpp.o
+
+src/EESTraderDemo.i: src/EESTraderDemo.cpp.i
+.PHONY : src/EESTraderDemo.i
+
+# target to preprocess a source file
+src/EESTraderDemo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.i
+.PHONY : src/EESTraderDemo.cpp.i
+
+src/EESTraderDemo.s: src/EESTraderDemo.cpp.s
+.PHONY : src/EESTraderDemo.s
+
+# target to generate assembly for a file
+src/EESTraderDemo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.s
+.PHONY : src/EESTraderDemo.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -213,6 +237,9 @@ help:
 	@echo "... src/EESQuoteDemo.o"
 	@echo "... src/EESQuoteDemo.i"
 	@echo "... src/EESQuoteDemo.s"
+	@echo "... src/EESTraderDemo.o"
+	@echo "... src/EESTraderDemo.i"
+	@echo "... src/EESTraderDemo.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

@@ -41,6 +41,7 @@ void QuoteDemo::Run()
 #else
 		sleep(1);
 #endif
+
 		puts("wait logon service!");
 	}
 
@@ -49,6 +50,9 @@ void QuoteDemo::Run()
 #else
 	sleep(3);
 #endif
+
+    // 在这里添加调试输出语句，以查看是否成功调用了OnLoginResponse函数
+    printf("OnLoginResponse was called successfully.\n");
 
 	m_eesApi->RegisterSymbol(EQS_EXCHANGE_SH, "11008800");
 	m_eesApi->QuerySymbolQuote(EQS_EXCHANGE_SH, "11008800");
@@ -251,11 +255,11 @@ void QuoteDemo::Linux_UnloadEESQuote()
 void QuoteDemo::InputParam()
 {
 	
-	/********用于测试使用***********
-	m_quoteServerIp = "";
-	m_quotePort = ;
-	m_logonId = "";
-	m_logonPwd = "";
+
+	m_quoteServerIp = "119.188.3.12";
+	m_quotePort = 20006;
+	m_logonId = "27800310";
+	m_logonPwd = "123456";
 
 	string str_temp;
 	string str_no = "n";
@@ -272,182 +276,182 @@ void QuoteDemo::InputParam()
 	sprintf(tcp_info.m_eqsIp, "%s", m_quoteServerIp.c_str());
 	tcp_info.m_eqsPort = m_quotePort;
 	tcp_info.m_quote_source_type = 0x0F;
-	m_need_quote_type = 0x0F;
+//	m_need_quote_type = 0x0F;
 
 	m_vec_ServerInfo.push_back(tcp_info);
 	memset(&tcp_info, 0, sizeof(EqsTcpInfo));
 
-	sprintf(tcp_info.m_eqsId, "2");
-	sprintf(tcp_info.m_eqsIp, "10.1.59.22" );
-	tcp_info.m_eqsPort = 20006;
-	tcp_info.m_quote_source_type = 0x0F;
+//	sprintf(tcp_info.m_eqsId, "2");
+//	sprintf(tcp_info.m_eqsIp, "10.1.59.22" );
+//	tcp_info.m_eqsPort = 20006;
+//	tcp_info.m_quote_source_type = 0x0F;
+//
+//	m_vec_ServerInfo.push_back(tcp_info);
+//	memset(&tcp_info, 0, sizeof(EqsTcpInfo));
+//
+//	sprintf(tcp_info.m_eqsId, "3");
+//	sprintf(tcp_info.m_eqsIp, "10.1.51.29");
+//	tcp_info.m_eqsPort = 20006;
+//	tcp_info.m_quote_source_type = 0x0F;
+//
+//	m_vec_ServerInfo.push_back(tcp_info);
+//	memset(&tcp_info, 0, sizeof(EqsTcpInfo));
+//
+//	sprintf(tcp_info.m_eqsId, "4");
+//	sprintf(tcp_info.m_eqsIp, "10.1.59.70");
+//	tcp_info.m_eqsPort = 20006;
+//	tcp_info.m_quote_source_type = 0x0F;
+//
+//	m_vec_ServerInfo.push_back(tcp_info);
 
-	m_vec_ServerInfo.push_back(tcp_info);
-	memset(&tcp_info, 0, sizeof(EqsTcpInfo));
 
-	sprintf(tcp_info.m_eqsId, "3");
-	sprintf(tcp_info.m_eqsIp, "10.1.51.29");
-	tcp_info.m_eqsPort = 20006;
-	tcp_info.m_quote_source_type = 0x0F;
-
-	m_vec_ServerInfo.push_back(tcp_info);
-	memset(&tcp_info, 0, sizeof(EqsTcpInfo));
-
-	sprintf(tcp_info.m_eqsId, "4");
-	sprintf(tcp_info.m_eqsIp, "10.1.59.70");
-	tcp_info.m_eqsPort = 20006;
-	tcp_info.m_quote_source_type = 0x0F;
-
-	m_vec_ServerInfo.push_back(tcp_info);
-	*/
-
-	bool				b_key = true;
-	char				c_temp;
-	string				str_temp;
-	string				str_no = "n";
-
-	string				str_quoteServerIp = "10.1.59.11";
-	int					i_quotePort = 20010;
-	EqsTcpInfo			tcp_info;
-
-	m_logonId = "eqs";
-	m_logonPwd = "\001\002\00351070496004B4123BDF27A4A95AF";
-
-	do
-	{
-		//cout << "IP		: " << str_quoteServerIp << endl;
-		//cout << "PORT	: " << i_quotePort << endl;
-		cout << "USER	: " << m_logonId << endl;
-		cout << "PWD	: " << m_logonPwd << endl;
-		cout << "USING DEFAULT? (y/n) ";
-		cin >> str_temp;
-		if (str_no != str_temp)
-		{
-			break;
-		}
-
-		cout << "USING DEFAULT USER " << m_logonId << " (y/n) ";
-		cin >> str_temp;
-		if (str_no == str_temp)
-		{
-			cout << "ENTER NEW USER: ";
-			cin >> str_temp;
-			m_logonId = str_temp;
-		}
-
-		cout << "USING DEFAULT PWD " << m_logonPwd << " (y/n) ";
-		cin >> str_temp;
-		if (str_no == str_temp)
-		{
-			cout << "ENTER NEW PWD: ";
-			cin >> str_temp;
-			m_logonPwd = str_temp;
-		}
-
-	} while (0);
-
-	cout << "NEED SSE_OPT" << " (y/n) ";
-	cin >> str_temp;
-	if (str_no != str_temp)
-	{
-		m_c_need_quote_type |= SSE_OPT;
-	}
-
-	cout << "NEED SSE_CS" << " (y/n) ";
-	cin >> str_temp;
-	if (str_no != str_temp)
-	{
-		m_c_need_quote_type |= SSE_CS;
-	}
-
-	cout << "NEED SZE_OPT" << " (y/n) ";
-	cin >> str_temp;
-	if (str_no != str_temp)
-	{
-		m_c_need_quote_type |= SZE_OPT;
-	}
-
-	cout << "NEED SZE_CS" << " (y/n) ";
-	cin >> str_temp;
-	if (str_no != str_temp)
-	{
-		m_c_need_quote_type |= SZE_CS;
-	}
-
-	// 配置多个行情服务信息
-	while(b_key)
-	{
-		c_temp &= 0x0000;
-		memset(&tcp_info, 0, sizeof(EqsTcpInfo));
-
-		cout << "USING DEFAULT IP " << str_quoteServerIp << " (y/n) ";
-		cin >> str_temp;
-		if (str_no == str_temp)
-		{
-			cout << "ENTER NEW IP: ";
-			cin >> str_temp;
-			str_quoteServerIp = str_temp;
-		}
-
-		cout << "USING DEFAULT PORT " << i_quotePort << " (y/n) ";
-		cin >> str_temp;
-		if (str_no == str_temp)
-		{
-			cout << "ENTER NEW PORT: ";
-			cin >> str_temp;
-			i_quotePort = atoi(str_temp.c_str());
-		}
-		
-
-		/*
-		SSE_OPT = 0x0001, 上海期权
-		SSE_CS = 0x0002,  上海证券
-		SZE_OPT = 0x0004, 深圳期权
-		SZE_CS = 0x0008,  深圳证券
-		*/
-
-		
-		cout << "QUOTE_TYPE SSE_OPT" << " (y/n) ";
-		cin >> str_temp;
-		if (str_no != str_temp)
-		{
-			c_temp |= SSE_OPT;
-		}
-
-		cout << "QUOTE_TYPE SSE_CS" << " (y/n) ";
-		cin >> str_temp;
-		if (str_no != str_temp)
-		{
-			c_temp |= SSE_CS;
-		}
-
-		cout << "QUOTE_TYPE SZE_OPT" << " (y/n) ";
-		cin >> str_temp;
-		if (str_no != str_temp)
-		{
-			c_temp |= SZE_OPT;
-		}
-
-		cout << "QUOTE_TYPE SZE_CS" << " (y/n) ";
-		cin >> str_temp;
-		if (str_no != str_temp)
-		{
-			c_temp |= SZE_CS;
-		}
-
-		sprintf(tcp_info.m_eqsIp, "%s", str_quoteServerIp.c_str());
-		tcp_info.m_eqsPort = i_quotePort;
-		tcp_info.m_quote_source_type = c_temp;
-
-		m_vec_ServerInfo.push_back(tcp_info);
-
-		cout << "ADD AGAIN ?" << " (y/n) ";
-		cin >> str_temp;
-		if (str_no == str_temp)
-		{
-			b_key = false;
-		}
-	}
+//	bool				b_key = true;
+//	char				c_temp;
+//	string				str_temp;
+//	string				str_no = "n";
+//
+//	string				str_quoteServerIp = "119.188.3.12";
+//	int					i_quotePort = 20006;
+//	EqsTcpInfo			tcp_info;
+//
+//	m_logonId = "27800310";
+//	m_logonPwd = "123456";
+//
+//	do
+//	{
+//		cout << "IP		: " << str_quoteServerIp << endl;
+//		cout << "PORT	: " << i_quotePort << endl;
+//		cout << "USER	: " << m_logonId << endl;
+//		cout << "PWD	: " << m_logonPwd << endl;
+//		cout << "USING DEFAULT? (y/n) ";
+//		cin >> str_temp;
+//		if (str_no != str_temp)
+//		{
+//			break;
+//		}
+//
+//		cout << "USING DEFAULT USER " << m_logonId << " (y/n) ";
+//		cin >> str_temp;
+//		if (str_no == str_temp)
+//		{
+//			cout << "ENTER NEW USER: ";
+//			cin >> str_temp;
+//			m_logonId = str_temp;
+//		}
+//
+//		cout << "USING DEFAULT PWD " << m_logonPwd << " (y/n) ";
+//		cin >> str_temp;
+//		if (str_no == str_temp)
+//		{
+//			cout << "ENTER NEW PWD: ";
+//			cin >> str_temp;
+//			m_logonPwd = str_temp;
+//		}
+//
+//	} while (0);
+//
+//	cout << "NEED SSE_OPT" << " (y/n) ";
+//	cin >> str_temp;
+//	if (str_no != str_temp)
+//	{
+//		m_c_need_quote_type |= SSE_OPT;
+//	}
+//
+//	cout << "NEED SSE_CS" << " (y/n) ";
+//	cin >> str_temp;
+//	if (str_no != str_temp)
+//	{
+//		m_c_need_quote_type |= SSE_CS;
+//	}
+//
+//	cout << "NEED SZE_OPT" << " (y/n) ";
+//	cin >> str_temp;
+//	if (str_no != str_temp)
+//	{
+//		m_c_need_quote_type |= SZE_OPT;
+//	}
+//
+//	cout << "NEED SZE_CS" << " (y/n) ";
+//	cin >> str_temp;
+//	if (str_no != str_temp)
+//	{
+//		m_c_need_quote_type |= SZE_CS;
+//	}
+//
+//	// 配置多个行情服务信息
+//	while(b_key)
+//	{
+//		c_temp &= 0x0000;
+//		memset(&tcp_info, 0, sizeof(EqsTcpInfo));
+//
+//		cout << "USING DEFAULT IP " << str_quoteServerIp << " (y/n) ";
+//		cin >> str_temp;
+//		if (str_no == str_temp)
+//		{
+//			cout << "ENTER NEW IP: ";
+//			cin >> str_temp;
+//			str_quoteServerIp = str_temp;
+//		}
+//
+//		cout << "USING DEFAULT PORT " << i_quotePort << " (y/n) ";
+//		cin >> str_temp;
+//		if (str_no == str_temp)
+//		{
+//			cout << "ENTER NEW PORT: ";
+//			cin >> str_temp;
+//			i_quotePort = atoi(str_temp.c_str());
+//		}
+//
+//
+//		/*
+//		SSE_OPT = 0x0001, 上海期权
+//		SSE_CS = 0x0002,  上海证券
+//		SZE_OPT = 0x0004, 深圳期权
+//		SZE_CS = 0x0008,  深圳证券
+//		*/
+//
+//
+//		cout << "QUOTE_TYPE SSE_OPT" << " (y/n) ";
+//		cin >> str_temp;
+//		if (str_no != str_temp)
+//		{
+//			c_temp |= SSE_OPT;
+//		}
+//
+//		cout << "QUOTE_TYPE SSE_CS" << " (y/n) ";
+//		cin >> str_temp;
+//		if (str_no != str_temp)
+//		{
+//			c_temp |= SSE_CS;
+//		}
+//
+//		cout << "QUOTE_TYPE SZE_OPT" << " (y/n) ";
+//		cin >> str_temp;
+//		if (str_no != str_temp)
+//		{
+//			c_temp |= SZE_OPT;
+//		}
+//
+//		cout << "QUOTE_TYPE SZE_CS" << " (y/n) ";
+//		cin >> str_temp;
+//		if (str_no != str_temp)
+//		{
+//			c_temp |= SZE_CS;
+//		}
+//
+//		sprintf(tcp_info.m_eqsIp, "%s", str_quoteServerIp.c_str());
+//		tcp_info.m_eqsPort = i_quotePort;
+//		tcp_info.m_quote_source_type = c_temp;
+//
+//		m_vec_ServerInfo.push_back(tcp_info);
+//
+//		cout << "ADD AGAIN ?" << " (y/n) ";
+//		cin >> str_temp;
+//		if (str_no == str_temp)
+//		{
+//			b_key = false;
+//		}
+//	}
 	
 }
 
@@ -563,6 +567,9 @@ void QuoteDemo::OnLoginResponse(const char* eqsId, bool bSuccess, const char* pR
 	{
 		printf("login failed, reason:%s", pReason);
 	}
+
+    // 添加以下调试输出语句，以查看函数是否被调用
+    printf("OnLoginResponse called\n");
 	
 	printf("\n");
 }

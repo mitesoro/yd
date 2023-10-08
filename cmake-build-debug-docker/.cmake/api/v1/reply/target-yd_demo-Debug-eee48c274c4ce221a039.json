@@ -39,7 +39,7 @@
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 31,
+				"line" : 34,
 				"parent" : 0
 			},
 			{
@@ -67,6 +67,10 @@
 				{
 					"backtrace" : 4,
 					"path" : "/tmp/yd/include"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/tmp/yd/include/trade"
 				}
 			],
 			"language" : "CXX",
@@ -82,7 +86,8 @@
 			[
 				0,
 				1,
-				2
+				2,
+				3
 			]
 		}
 	],
@@ -136,14 +141,16 @@
 			[
 				0,
 				1,
-				2
+				2,
+				3
 			]
 		},
 		{
 			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
-				3
+				4,
+				5
 			]
 		}
 	],
@@ -153,6 +160,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "src/EESQuoteDemo.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/EESTraderDemo.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
@@ -170,6 +183,11 @@
 		{
 			"backtrace" : 1,
 			"path" : "include/EESQuoteDemo.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "include/EESTraderDemo.h",
 			"sourceGroupIndex" : 1
 		}
 	],

@@ -15,7 +15,7 @@ project(yd)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_BUILD_TYPE Debug)
 # 头文件目录
-include_directories(include)
+include_directories(include include/trade)
 # 库文件目录
 link_directories(linux64 lib/linux)
 # 源文件列表存储进SRC变量
@@ -24,8 +24,11 @@ aux_source_directory(src SRC)
 add_executable(yd_demo ${SRC}
         src/rem.cpp
         src/EESQuoteDemo.cpp  # 添加 QuoteDemo 类的实现文件
+        src/EESTraderDemo.cpp  # 添加 QuoteDemo 类的实现文件
         include/EESQuoteDemo.h
         src/EESQuoteDemo.cpp
+        include/EESTraderDemo.h
+        src/EESTraderDemo.cpp
 )
 # 链接动态库
 target_link_libraries(yd_demo yd)
