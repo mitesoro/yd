@@ -1,0 +1,3 @@
+/tmp/yd/cmake-build-debug-docker/CMakeFiles/yd_demo.dir
+/tmp/yd/cmake-build-debug-docker/CMakeFiles/edit_cache.dir
+/tmp/yd/cmake-build-debug-docker/CMakeFiles/rebuild_cache.dir
