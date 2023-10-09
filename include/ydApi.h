@@ -38,9 +38,6 @@ public:
 	virtual void notifyLogin(int errorNo,int maxOrderRef,bool isMonitor)
 	{
 	}
-	virtual void notifyGroupMaxOrderRef(const int groupMaxOrderRef[])
-	{
-	}
 	/// notifyFinishInit will be only called once in each instance of API.
 	/// It is safe to call all api functions then, but all orders and trades haven't been received
 	virtual void notifyFinishInit(void)
@@ -61,9 +58,6 @@ public:
 	virtual void notifyTradingSegment(const YDExchange *pExchange,int segmentTime)
 	{
 	}
-	virtual void notifyTradingSegmentDetail(const YDTradingSegmentDetail *pTradingSegmentDetail)
-	{
-	}
 	virtual void notifyCombPosition(const YDCombPosition *pCombPosition,const YDCombPositionDef *pCombPositionDef,const YDAccount *pAccount)
 	{
 	}
@@ -73,10 +67,16 @@ public:
 	virtual void notifyTrade(const YDTrade *pTrade,const YDInstrument *pInstrument,const YDAccount *pAccount)
 	{
 	}
+	virtual void notifyFailedOrder(const YDInputOrder *pFailedOrder,const YDInstrument *pInstrument,const YDAccount *pAccount)
+	{
+	}
 	virtual void notifyFailedCancelOrder(const YDFailedCancelOrder *pFailedCancelOrder,const YDExchange *pExchange,const YDAccount *pAccount)
 	{
 	}
 	virtual void notifyQuote(const YDQuote *pQuote,const YDInstrument *pInstrument,const YDAccount *pAccount)
+	{
+	}
+	virtual void notifyFailedQuote(const YDInputQuote *pFailedQuote,const YDInstrument *pInstrument,const YDAccount *pAccount)
 	{
 	}
 	virtual void notifyFailedCancelQuote(const YDFailedCancelQuote *pFailedCancelQuote,const YDExchange *pExchange,const YDAccount *pAccount)
@@ -88,7 +88,13 @@ public:
 	virtual void notifyCombPositionOrder(const YDOrder *pOrder,const YDCombPositionDef *pCombPositionDef,const YDAccount *pAccount)
 	{
 	}
+	virtual void notifyFailedCombPositionOrder(const YDInputOrder *pFailedOrder,const YDCombPositionDef *pCombPositionDef,const YDAccount *pAccount)
+	{
+	}
 	virtual void notifyOptionExecTogetherOrder(const YDOrder *pOrder,const YDInstrument *pInstrument,const YDInstrument *pInstrument2,const YDAccount *pAccount)
+	{
+	}
+	virtual void notifyFailedOptionExecTogetherOrder(const YDInputOrder *pFailedOrder,const YDInstrument *pInstrument,const YDInstrument *pInstrument2, const YDAccount *pAccount)
 	{
 	}
 	virtual void notifyMarketData(const YDMarketData *pMarketData)
@@ -177,9 +183,8 @@ public:
 	virtual bool cancelMultiQuotes(unsigned count,YDCancelQuote cancelQuotes[],const YDExchange *exchanges[],const YDAccount *pAccount=NULL)=0;
 	virtual bool subscribe(const YDInstrument *pInstrument)=0;
 	virtual bool unsubscribe(const YDInstrument *pInstrument)=0;
-	virtual bool setTradingRight(const YDAccount *pAccount,const YDInstrument *pInstrument,const YDProduct *pProduct,const YDExchange *pExchange,
-		int tradingRight,int requestID=0,int tradingRightSource=YD_TRS_AdminPermanent)=0;
-	/// alterMoney,updateMarginRate,updateSpotPosition and updateSpotAlive can only be used by administor, trader should not call them
+	/// setTradingRight, alterMoney,updateMarginRate,updateSpotPosition and updateSpotAlive can only be used by administor, trader should not call them
+	virtual bool setTradingRight(const YDAccount *pAccount,const YDInstrument *pInstrument,const YDProduct *pProduct,const YDExchange *pExchange,int tradingRight,int requestID=0)=0;
 	virtual bool alterMoney(const YDAccount *pAccount,int alterMoneyType,double alterValue,int requestID=0)=0;
 	virtual bool updateMarginRate(const YDUpdateMarginRate *pUpdateMarginRate,int requestID=0)=0;
 	virtual bool updateSpotPosition(const YDAccount *pAccount,const YDInstrument *pInstrument,int position,int requestID=0)=0;
@@ -246,9 +251,7 @@ public:
 	enum YDPacketType
 	{
 		YD_CLIENT_PACKET_INSERT_ORDER, 
-		YD_CLIENT_PACKET_CANCEL_ORDER,
-		YD_CLIENT_PACKET_INSERT_QUOTE, 
-		YD_CLIENT_PACKET_CANCEL_QUOTE
+		YD_CLIENT_PACKET_CANCEL_ORDER
 	};
 
 	virtual int getClientPacketHeader(YDPacketType type,unsigned char *pHeader,int len)=0;
@@ -262,6 +265,7 @@ public:
 	virtual YDQueryResult<char> *getConfigs(const char *name)=0;
 };
 
+/// If using YDExtendedApi, pUser pointers in all classes are reserved to be used by this API
 class YDExtendedListener
 {
 public:
@@ -307,7 +311,7 @@ public:
 	// By default, sessionBitCount=0, sessionID=0
 	virtual bool setSessionOrderRefRule(unsigned sessionBitCount,unsigned sessionID)=0;
 	virtual void getSessionOrderRefRule(unsigned *pSessionBitCount,unsigned *pSessionID)=0;
-	virtual int getNextOrderRef(unsigned orderGroupID=0,bool update=true)=0;
+	virtual int getNextOrderRef(void)=0;
 
 	/*
 		insertOrder will not do local validation before sending to server.
@@ -325,6 +329,10 @@ public:
 	///	checkOrder will only check whether pInputOrder is OK, and will not send to server
 	/// ErrorNo will be set if check failed
 	virtual bool checkOrder(YDInputOrder *pInputOrder,const YDInstrument *pInstrument,const YDAccount *pAccount=NULL)=0;
+	/// send multiple insert orders in same time. inputOrders and instruments must have size of count
+	/// orders will only be sent if validation of all orders are successful, return true if all are successful
+	/// maximum value of count is 16
+	virtual bool checkAndInsertMultiOrders(unsigned count,YDInputOrder inputOrders[],const YDInstrument *instruments[],const YDAccount *pAccount=NULL)=0;
 
 	/*
 		Relationship of insertCombPositonOrder and checkAndInsertCombPositionOrder is similar to insertOrder and checkAndInsertOrder
@@ -364,10 +372,9 @@ public:
 	virtual void recalcMarginAndPositionProfit(void)=0;
 
 	/// getOrder by orderRef can only be used for orders using checkAndInsertOrder
-	virtual const YDExtendedOrder *getOrder(int orderRef,unsigned orderGroupID=0,const YDAccount *pAccount=NULL)=0;
+	virtual const YDExtendedOrder *getOrder(int orderRef,const YDAccount *pAccount=NULL)=0;
 	/// getOrder by orderSysID can only be used for orders have been accepted by exchange
 	virtual const YDExtendedOrder *getOrder(int orderSysID,const YDExchange *pExchange,int YDOrderFlag=YD_YOF_Normal)=0;
-	virtual const YDExtendedOrder *getOrder(long long longOrderSysID,const YDExchange *pExchange,int YDOrderFlag=YD_YOF_Normal)=0;
 	/// orders must have spaces of count, return real number of orders(may be greater than count). Only partial will be set if no enough space
 	/// Only orders accepted by exchange can be found in this function
 	virtual unsigned findOrders(const YDOrderFilter *pFilter,unsigned count,const YDExtendedOrder *orders[])=0;
@@ -375,12 +382,11 @@ public:
 	virtual YDQueryResult<YDExtendedOrder> *findOrders(const YDOrderFilter *pFilter)=0;
 
 	/// getQuote by orderRef can only be used for quotes using checkAndInsertQuote
-	virtual const YDExtendedQuote *getQuote(int orderRef,unsigned orderGroupID=0,const YDAccount *pAccount=NULL)=0;
+	virtual const YDExtendedQuote *getQuote(int orderRef,const YDAccount *pAccount=NULL)=0;
 	/// getQuoteDerivedOrder can only be used for orders derived oder by using checkAndInsertQuote
-	virtual const YDExtendedOrder *getQuoteDerivedOrder(int orderRef,int direction,unsigned orderGroupID=0,const YDAccount *pAccount=NULL)=0;
+	virtual const YDExtendedOrder *getQuoteDerivedOrder(int orderRef,int direction,const YDAccount *pAccount=NULL)=0;
 	/// getQuote by quoteSysID can only be used for quotes have been accepted by exchange
 	virtual const YDExtendedQuote *getQuote(int quoteSysID,const YDExchange *pExchange)=0;
-	virtual const YDExtendedQuote *getQuote(long long longQuoteSysID,const YDExchange *pExchange)=0;
 	/// quotes must have spaces of count, return real number of quotes(may be greater than count). Only partial will be set if no enough space
 	/// Only quotes accepted by exchange can be found in this function
 	virtual unsigned findQuotes(const YDQuoteFilter *pFilter,unsigned count,const YDExtendedQuote *quotes[])=0;
@@ -401,7 +407,6 @@ public:
 
 	/// get original ID from exchange based on ID in yd system, return NULL if there is no real difference between these 2 IDs
 	virtual const char *getIDFromExchange(const YDExchange *pExchange,int idType,int idInSystem)=0;
-	virtual const char *getLongIDFromExchange(const YDExchange *pExchange,int idType,long long longIdInSystem)=0;
 
 	/// findExtendedPositions, findOrders, findQuotes and findTrades are slow
 

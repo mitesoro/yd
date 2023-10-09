@@ -1,1 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/c++ -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/yd_demo.dir/src/main.cpp.o -o yd_demo   -L/Users/liuhaigang/work/yd/linux64  -Wl,-rpath,/Users/liuhaigang/work/yd/linux64 -lyd 

@@ -1,12 +1,8 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.o"
-  "CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.o.d"
-  "CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.o"
-  "CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.o.d"
+  "CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.o"
+  "CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.o.d"
   "CMakeFiles/yd_demo.dir/src/main.cpp.o"
   "CMakeFiles/yd_demo.dir/src/main.cpp.o.d"
-  "CMakeFiles/yd_demo.dir/src/rem.cpp.o"
-  "CMakeFiles/yd_demo.dir/src/rem.cpp.o.d"
   "yd_demo"
   "yd_demo.pdb"
 )

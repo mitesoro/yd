@@ -129,53 +129,29 @@ yd_demo/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/build
 .PHONY : yd_demo/fast
 
-src/EESQuoteDemo.o: src/EESQuoteDemo.cpp.o
-.PHONY : src/EESQuoteDemo.o
+src/YdUserApiInfo.o: src/YdUserApiInfo.cpp.o
+.PHONY : src/YdUserApiInfo.o
 
 # target to build an object file
-src/EESQuoteDemo.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.o
-.PHONY : src/EESQuoteDemo.cpp.o
+src/YdUserApiInfo.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.o
+.PHONY : src/YdUserApiInfo.cpp.o
 
-src/EESQuoteDemo.i: src/EESQuoteDemo.cpp.i
-.PHONY : src/EESQuoteDemo.i
-
-# target to preprocess a source file
-src/EESQuoteDemo.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.i
-.PHONY : src/EESQuoteDemo.cpp.i
-
-src/EESQuoteDemo.s: src/EESQuoteDemo.cpp.s
-.PHONY : src/EESQuoteDemo.s
-
-# target to generate assembly for a file
-src/EESQuoteDemo.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.s
-.PHONY : src/EESQuoteDemo.cpp.s
-
-src/EESTraderDemo.o: src/EESTraderDemo.cpp.o
-.PHONY : src/EESTraderDemo.o
-
-# target to build an object file
-src/EESTraderDemo.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.o
-.PHONY : src/EESTraderDemo.cpp.o
-
-src/EESTraderDemo.i: src/EESTraderDemo.cpp.i
-.PHONY : src/EESTraderDemo.i
+src/YdUserApiInfo.i: src/YdUserApiInfo.cpp.i
+.PHONY : src/YdUserApiInfo.i
 
 # target to preprocess a source file
-src/EESTraderDemo.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.i
-.PHONY : src/EESTraderDemo.cpp.i
+src/YdUserApiInfo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.i
+.PHONY : src/YdUserApiInfo.cpp.i
 
-src/EESTraderDemo.s: src/EESTraderDemo.cpp.s
-.PHONY : src/EESTraderDemo.s
+src/YdUserApiInfo.s: src/YdUserApiInfo.cpp.s
+.PHONY : src/YdUserApiInfo.s
 
 # target to generate assembly for a file
-src/EESTraderDemo.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.s
-.PHONY : src/EESTraderDemo.cpp.s
+src/YdUserApiInfo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.s
+.PHONY : src/YdUserApiInfo.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -201,30 +177,6 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
-src/rem.o: src/rem.cpp.o
-.PHONY : src/rem.o
-
-# target to build an object file
-src/rem.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/rem.cpp.o
-.PHONY : src/rem.cpp.o
-
-src/rem.i: src/rem.cpp.i
-.PHONY : src/rem.i
-
-# target to preprocess a source file
-src/rem.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/rem.cpp.i
-.PHONY : src/rem.cpp.i
-
-src/rem.s: src/rem.cpp.s
-.PHONY : src/rem.s
-
-# target to generate assembly for a file
-src/rem.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/rem.cpp.s
-.PHONY : src/rem.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -234,18 +186,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... yd_demo"
-	@echo "... src/EESQuoteDemo.o"
-	@echo "... src/EESQuoteDemo.i"
-	@echo "... src/EESQuoteDemo.s"
-	@echo "... src/EESTraderDemo.o"
-	@echo "... src/EESTraderDemo.i"
-	@echo "... src/EESTraderDemo.s"
+	@echo "... src/YdUserApiInfo.o"
+	@echo "... src/YdUserApiInfo.i"
+	@echo "... src/YdUserApiInfo.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
-	@echo "... src/rem.o"
-	@echo "... src/rem.i"
-	@echo "... src/rem.s"
 .PHONY : help
 
 

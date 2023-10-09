@@ -69,38 +69,24 @@ include CMakeFiles/yd_demo.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/yd_demo.dir/flags.make
 
-CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.o: CMakeFiles/yd_demo.dir/flags.make
-CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.o: ../src/EESQuoteDemo.cpp
-CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.o: CMakeFiles/yd_demo.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/tmp/yd/cmake-build-debug-docker/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.o -MF CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.o.d -o CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.o -c /tmp/yd/src/EESQuoteDemo.cpp
+CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.o: CMakeFiles/yd_demo.dir/flags.make
+CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.o: ../src/YdUserApiInfo.cpp
+CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.o: CMakeFiles/yd_demo.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/tmp/yd/cmake-build-debug-docker/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.o -MF CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.o.d -o CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.o -c /tmp/yd/src/YdUserApiInfo.cpp
 
-CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /tmp/yd/src/EESQuoteDemo.cpp > CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.i
+CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /tmp/yd/src/YdUserApiInfo.cpp > CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.i
 
-CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /tmp/yd/src/EESQuoteDemo.cpp -o CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.s
-
-CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.o: CMakeFiles/yd_demo.dir/flags.make
-CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.o: ../src/EESTraderDemo.cpp
-CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.o: CMakeFiles/yd_demo.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/tmp/yd/cmake-build-debug-docker/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.o -MF CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.o.d -o CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.o -c /tmp/yd/src/EESTraderDemo.cpp
-
-CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /tmp/yd/src/EESTraderDemo.cpp > CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.i
-
-CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /tmp/yd/src/EESTraderDemo.cpp -o CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.s
+CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /tmp/yd/src/YdUserApiInfo.cpp -o CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.s
 
 CMakeFiles/yd_demo.dir/src/main.cpp.o: CMakeFiles/yd_demo.dir/flags.make
 CMakeFiles/yd_demo.dir/src/main.cpp.o: ../src/main.cpp
 CMakeFiles/yd_demo.dir/src/main.cpp.o: CMakeFiles/yd_demo.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/tmp/yd/cmake-build-debug-docker/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/yd_demo.dir/src/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/tmp/yd/cmake-build-debug-docker/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/yd_demo.dir/src/main.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/yd_demo.dir/src/main.cpp.o -MF CMakeFiles/yd_demo.dir/src/main.cpp.o.d -o CMakeFiles/yd_demo.dir/src/main.cpp.o -c /tmp/yd/src/main.cpp
 
 CMakeFiles/yd_demo.dir/src/main.cpp.i: cmake_force
@@ -111,37 +97,19 @@ CMakeFiles/yd_demo.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yd_demo.dir/src/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /tmp/yd/src/main.cpp -o CMakeFiles/yd_demo.dir/src/main.cpp.s
 
-CMakeFiles/yd_demo.dir/src/rem.cpp.o: CMakeFiles/yd_demo.dir/flags.make
-CMakeFiles/yd_demo.dir/src/rem.cpp.o: ../src/rem.cpp
-CMakeFiles/yd_demo.dir/src/rem.cpp.o: CMakeFiles/yd_demo.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/tmp/yd/cmake-build-debug-docker/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/yd_demo.dir/src/rem.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/yd_demo.dir/src/rem.cpp.o -MF CMakeFiles/yd_demo.dir/src/rem.cpp.o.d -o CMakeFiles/yd_demo.dir/src/rem.cpp.o -c /tmp/yd/src/rem.cpp
-
-CMakeFiles/yd_demo.dir/src/rem.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/yd_demo.dir/src/rem.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /tmp/yd/src/rem.cpp > CMakeFiles/yd_demo.dir/src/rem.cpp.i
-
-CMakeFiles/yd_demo.dir/src/rem.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yd_demo.dir/src/rem.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /tmp/yd/src/rem.cpp -o CMakeFiles/yd_demo.dir/src/rem.cpp.s
-
 # Object files for target yd_demo
 yd_demo_OBJECTS = \
-"CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.o" \
-"CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.o" \
-"CMakeFiles/yd_demo.dir/src/main.cpp.o" \
-"CMakeFiles/yd_demo.dir/src/rem.cpp.o"
+"CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.o" \
+"CMakeFiles/yd_demo.dir/src/main.cpp.o"
 
 # External object files for target yd_demo
 yd_demo_EXTERNAL_OBJECTS =
 
-yd_demo: CMakeFiles/yd_demo.dir/src/EESQuoteDemo.cpp.o
-yd_demo: CMakeFiles/yd_demo.dir/src/EESTraderDemo.cpp.o
+yd_demo: CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.o
 yd_demo: CMakeFiles/yd_demo.dir/src/main.cpp.o
-yd_demo: CMakeFiles/yd_demo.dir/src/rem.cpp.o
 yd_demo: CMakeFiles/yd_demo.dir/build.make
 yd_demo: CMakeFiles/yd_demo.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/tmp/yd/cmake-build-debug-docker/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable yd_demo"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/tmp/yd/cmake-build-debug-docker/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable yd_demo"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/yd_demo.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

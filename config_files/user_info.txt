@@ -1,7 +1,8 @@
 exchangeid cffex
-userid 015
-pwd 015
-appid yd_dev_1.0
-authcode ecbf8f06469eba63956b79705d95a603
+userid 20103791
+pwd 12345678
+appid client_zhongdao_1.0
+authcode UYUPC4SXQ9I5E5G8
 ydapifunc extended
 useprotocol no
+udptradeport 40002

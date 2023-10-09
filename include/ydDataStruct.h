@@ -23,7 +23,7 @@ public:
 class YDExchange
 {
 public:
-	YDExchangeID ExchangeID;		    // Short string identify the exchange, e.g. "CFFEX", "DCE", "SHFE", ...
+	YDExchangeID ExchangeID;            // Short string identify the exchange, e.g. "CFFEX", "DCE", "SHFE", ...
 	int ExchangeRef;                    // An integer uniquely identify the exchange
 	int ConnectionCount;                // Number of connections(seats) to the exchange
 	int ProductRefStart;
@@ -32,19 +32,18 @@ public:
 	bool UseArbitragePosition;          // Besides speculation and hedge, whether the exchange maintains separate position for arbitration. True for CFFEX 
 	bool CloseTodayFirst;               // When "UseTodayPosition" is false, whether today opened positions are closed first. The commission may be different. True for CFFEX
 	bool SingleSideMargin;              // Whether margin is calculated using larger side of the product or product group. True for SHFE, INE, and CFFEX
-	int OptionExecutionSupport;         // 0 for not support, 1 for support without risk control, 2 for support with risk constrol
-	int OptionAbandonExecutionSupport;  // 0 for not support, 1 for support without risk control, 2 for support with risk constrol
-	int QuoteVolumeRestriction;         // 0 for allow single side, 1 for allow different volume, 2 for require same volume
+	int OptionExecutionSupport;			// 0 for not support, 1 for support without risk control, 2 for support with risk constrol
+	int OptionAbandonExecutionSupport;	// 0 for not support, 1 for support without risk control, 2 for support with risk constrol
+	int QuoteVolumeRestriction;			// 0 for allow single side, 1 for allow different volume, 2 for require same volume
 	short SystemUse1;
 	bool SystemUse2;
 	bool TradeStockOptions;	            // whether this exchange is trading stock/etf options(SSE/SZSE)
 	YDExchangeTradeConstrain TradeConstrains[YD_MaxHedgeFlag];
-	bool IsPublicConnectionID[64];      // Whether this connectionID can be used by every user
+	bool IsPublicConnectionID[32];		// whether this connectionID can be used by every user
 	mutable void *pUser;
 	mutable double UserFloat;
 	mutable int UserInt1;
 	mutable int UserInt2;
-	void *pInternalUse;
 };
 
 class YDTradeConstraint
@@ -81,12 +80,10 @@ public:
 	mutable double UserFloat;
 	mutable int UserInt1;
 	mutable int UserInt2;
-	void *pInternalUse;
 };
 
 class YDMarketData;
 class YDMarginRate;
-class YDCombPositionDef;
 
 class YDInstrument
 {
@@ -111,26 +108,18 @@ public:
 	double UnderlyingMultiply;          // Volume of corresponding underlying instrument. Used for options, normally equals to 1
 	int SystemUse7[32];
 	bool SingleSideMargin;              // Whether margin is calculated using larger side of the product or product group. True for futures of SHFE, INE, and CFFEX
-	bool InstrumentSingleSideMargin;    // Whether margin is calculated using larger side of instrument. True for futures of CZCE
+	bool InstrumentSingleSideMargin;	// Whether margin is calculated using larger side of instrument. True for futures of CZCE
 	short ExpireTradingDayCount;
 	int MarginCalcMethod;               // Option margin calculation method, 1 for CFFEX, 2 for SSE & SZSE, 0 for others 
-	YDInstrumentID InstrumentHint;      // Hint of this instrument, useful for options of SSE/SZSE, e.g. "510050C2009M02350"
+	YDInstrumentID InstrumentHint;        // Hint of this instrument, useful for options of SSE/SZSE, e.g. "510050C2009M02350"
 	const YDInstrument *m_pUnderlyingInstrument;  // Points to underlying instrument, only valid for options
 	const YDExchange *m_pExchange;
 	const YDProduct *m_pProduct;
 	const YDMarketData *m_pMarketData;
-	const YDInstrument *m_pLegInstrument[2];
-	char LegDirction[2];
-	short m_SystemUse8;
-	const YDCombPositionDef *m_pCombPositionDef[2][YD_MaxHedgeFlag];
-
 	mutable void *pUser;
 	mutable double UserFloat;
 	mutable int UserInt1;
 	mutable int UserInt2;
-	void *pInternalUse;
-	int InternalUseInt1;
-	int InternalUseInt2;
 	bool AutoSubscribed;
 	bool UserSubscribed;
 	/// following fields are only valid when using ydExtendedApi
@@ -171,7 +160,6 @@ public:
 	mutable double UserFloat;
 	mutable int UserInt1;
 	mutable int UserInt2;
-	void *pInternalUse;
 };
 
 class YDCombPositionDef
@@ -214,13 +202,10 @@ public:
 	int LoginCount;                     // Number of active logins, read only
 	int AccountFlag;                    // Bit map, refer to "Account Flag" section of ydDataType.h
 	int SystemUse3;
-	char TradingRightFromSource[YD_TRS_Count];
-	int SystemUse4;
 	mutable void *pUser;
 	mutable double UserFloat;
 	mutable int UserInt1;
 	mutable int UserInt2;
-	void *pInternalUse;
 };
 
 class YDPrePosition
@@ -291,15 +276,8 @@ public:
 	char OrderType;                     // Refer to "Order Type" section of ydDataType.h
 	char YDOrderFlag;                   // Refer to "YD OrderFlag" section of ydDataType.h
 	char ConnectionID;                  // Target connection ID if ConnectionSelectionType is not YD_CS_Any
-	char SystemUse10;
+	char RealConnectionID;              // Meaningful only in order notifications
 	int ErrorNo;                        // Set by ydAPI, refer to "ydError.h"
-	unsigned char OrderGroupID;         // indicates OrderRef management group, 0 for normal, 1-63 for strict management
-	char GroupOrderRefControl;          // OrderRef control method for this order if OrderGroupID in in [1,63], refer to "Order group ref control" section of ydDataType.h
-	char OrderTriggerType;              // Refer to "Order trigger type" section of ydDataType.h
-	char SystemUse7;
-	int SystemUse8;
-	long long SystemUse9;
-	double TriggerPrice;                // Trigger price for trigger order
 };
 
 /*
@@ -312,6 +290,7 @@ Here are field requirements in YDInputOrder for different YDOrderFlag (please se
 		ConnectionSelectionType: specify how to select exchange connection
 		ConnectionID: if (ConnectionSelectionType==YD_CS_Fixed) || (ConnectionSelectionType==YD_CS_Prefered), specify connectionID,
 			must be in IsPublicConnectionID set of YDExchange or IsDedicatedConnectionID set of YDAccountExchange
+		RealConnectionID: will be set in return message, specify which exchange connection it actually used
 		ErrorNo: will be set in return message
 	YDOrderFlag==YD_YOF_Normal
 		Direction: direction, YD_D_Buy or YD_D_Sell
@@ -369,54 +348,15 @@ Here are field requirements in YDInputOrder for different YDOrderFlag (please se
 For covered order in SSE/SZSE, use YDOrderFlag=YD_YOF_Normal and HedgeFlag=YD_HF_Covered
 */
 
-class YDOrder
+class YDOrder: public YDInputOrder
 {
 public:
-	int SystemUse1;
-	int SystemUse2;
-	int SystemUse3;
-	int SystemUse4;
-	int SystemUse5;
-	char Direction;                     // Refer to "Direction" section of ydDataType.h
-	char OffsetFlag;                    // Refer to "Offset Flag" section of ydDataType.h
-	char HedgeFlag;                     // Refer to "Hedge Flag" section of ydDataType.h
-	char ConnectionSelectionType;       // Refer to "Connection Selection Type" section of ydDataType.h
-	union
-	{
-		double Price;                   // Price for limit orders
-		struct
-		{
-			int CombPositionDetailID;   // Set only when YDOrderFlag is YD_YOF_CombPosition, and Direction is YD_D_Split for SSE or SZSE
-			int SystemUse6;
-		};
-	};
-	int OrderVolume;
-	int OrderRef;                       // User defined reference of the order. Will be passed back in later order and trade notifications 
-	char OrderType;                     // Refer to "Order Type" section of ydDataType.h
-	char YDOrderFlag;                   // Refer to "YD OrderFlag" section of ydDataType.h
-	char ConnectionID;                  // Target connection ID if ConnectionSelectionType is not YD_CS_Any
-	char RealConnectionID;              // Real connection ID for this order, <0 if not from connections of other systems
-	int ErrorNo;                        // Set by ydAPI, refer to "ydError.h"
 	int ExchangeRef;
-	union
-	{
-		YDSysOrderID OrderSysID;
-		int MaxOrderRef;                // When ErrorNo==YD_ERROR_InvalidGroupOrderRef
-	};
+	YDSysOrderID OrderSysID;
 	int OrderStatus;                    // Refer to "Order Status" section of ydDataType.h
 	int TradeVolume;
 	int InsertTime;
 	YDLocalOrderID OrderLocalID;
-	unsigned char OrderGroupID;         // Indicates OrderRef management group, 0 for normal, 1-63 for strict management
-	char GroupOrderRefControl;          // OrderRef control method for this order if OrderGroupID in in [1,63], refer to "Order group ref control" section of ydDataType.h
-	char OrderTriggerType;              // Refer to "Order trigger type" section of ydDataType.h
-	char SystemUse7;
-	int SystemUse8;
-	long long SystemUse9;
-	double TriggerPrice;                // Trigger price for trigger order
-	int OrderTriggerStatus;             // Refer to "Order trigger status" section of ydDataType.h
-	int InsertTimeStamp;
-	YDLongOrderSysID LongOrderSysID;
 };
 
 typedef YDOrder YDMissingOrder;
@@ -429,20 +369,11 @@ public:
 	int SystemUse2;
 	int SystemUse3;
 	int SystemUse4;
-	union
-	{
-		YDSysOrderID OrderSysID;
-		int OrderRef;                   // When OrderGroupID!=0
-	};
+	YDSysOrderID OrderSysID;
 	char SystemUse5;
 	char ConnectionSelectionType;       // Refer to "Connection Selection Type" section of ydDataType.h
 	char ConnectionID;                  // Target connection ID if ConnectionSelectionType is not YD_CS_Any
 	char YDOrderFlag;                   // Refer to "YD OrderFlag" section of ydDataType.h
-	unsigned char OrderGroupID;         // If OrderGroupID!=0, use (OrderGroupID,OrderRef) indicate an order
-	char SystemUse6;
-	short SystemUse7;
-	int SystemUse8;
-	YDLongOrderSysID LongOrderSysID;
 };
 
 class YDFailedCancelOrder
@@ -454,14 +385,11 @@ public:
 	int AccountRef;
 	YDSysOrderID OrderSysID;
 	char ExchangeRef;
-	unsigned char OrderGroupID;
+	char SystemUse6;
 	char SystemUse7;
 	char YDOrderFlag;                   // Refer to "YD OrderFlag" section of ydDataType.h
 	int ErrorNo;                        // Set by ydAPI, refer to "ydError.h"
-	int IsQuote;
-	int OrderRef;
-	int SystemUse9;
-	YDLongOrderSysID LongOrderSysID;
+	int SystemUse8;
 };
 
 class YDTrade
@@ -484,12 +412,6 @@ public:
 	double Commission;
 	YDLocalOrderID OrderLocalID;
 	int OrderRef;                       // User defined reference of the order. Will be passed back in later order and trade notifications 
-	unsigned char OrderGroupID;         // User defined reference of the order. Will be passed back in later order and trade notifications
-	char RealConnectionID;
-	short SystemUse8;
-	int TradeTimeStamp;
-	YDLongOrderSysID LongOrderSysID;
-	YDLongTradeID LongTradeID;
 };
 
 class YDInputQuote
@@ -511,53 +433,21 @@ public:
 	int OrderRef;                       // User defined reference of the order. Will be passed back in later order and trade notifications 
 	char ConnectionSelectionType;       // Refer to "Connection Selection Type" section of ydDataType.h
 	char ConnectionID;                  // Target connection ID if ConnectionSelectionType is not YD_CS_Any
-	char SystemUse7;
-	char YDQuoteFlag;                   // Refer to "YD QuoteFlag" section of ydDataType.h, 
-	unsigned char OrderGroupID;         // indicates OrderRef management group, 0 for normal, 1-63 for strict management
-	char GroupOrderRefControl;          // OrderRef control method for this order if OrderGroupID in in [1,63], refer to "Order group ref control" section of ydDataType.h
-	short SystemUse6;
+	char RealConnectionID;              // Meaningful only in quote notifications
+	char YDQuoteFlag;					// Refer to "YD QuoteFlag" section of ydDataType.h, 
+	int Reserved;
 	int ErrorNo;                        // Set by ydAPI, refer to "ydError.h"
 };
 
-class YDQuote
+class YDQuote: public YDInputQuote
 {
 public:
-	int SystemUse1;
-	int SystemUse2;
-	int SystemUse3;
-	int SystemUse4;
-	int SystemUse5;
-	char BidOffsetFlag;                 // Refer to "Offset Flag" section of ydDataType.h
-	char BidHedgeFlag;                  // Refer to "Offset Flag" section of ydDataType.h
-	char AskOffsetFlag;                 // Refer to "Offset Flag" section of ydDataType.h
-	char AskHedgeFlag;                  // Refer to "Offset Flag" section of ydDataType.h
-	double BidPrice;
-	double AskPrice;
-	int BidVolume;
-	int AskVolume;
-	int OrderRef;                       // User defined reference of the order. Will be passed back in later order and trade notifications 
-	char ConnectionSelectionType;       // Refer to "Connection Selection Type" section of ydDataType.h
-	char ConnectionID;                  // Target connection ID if ConnectionSelectionType is not YD_CS_Any
-	char RealConnectionID;              // Real connection ID for this quote, <0 if not from connections of other systems
-	char YDQuoteFlag;                   // Refer to "YD QuoteFlag" section of ydDataType.h, 
-	unsigned char OrderGroupID;         // indicates OrderRef management group, 0 for normal, 1-63 for strict management
-	char GroupOrderRefControl;          // OrderRef control method for this order if OrderGroupID in in [1,63], refer to "Order group ref control" section of ydDataType.h
-	short SystemUse6;
-	int ErrorNo;                        // Set by ydAPI, refer to "ydError.h"
 	int ExchangeRef;
-	union
-	{
-		YDSysOrderID QuoteSysID;
-		int MaxOrderRef;                // When ErrorNo==YD_ERROR_InvalidGroupOrderRef
-	};
+	YDSysOrderID QuoteSysID;
 	YDSysOrderID BidOrderSysID;
 	YDSysOrderID AskOrderSysID;
 	YDRFQID RequestForQuoteID;
-	int SystemUse7;
-	YDLongOrderSysID LongQuoteSysID;
-	YDLongOrderSysID LongBidOrderSysID;
-	YDLongOrderSysID LongAskOrderSysID;
-	YDLongRFQID LongRequestForQuoteID;
+	int SystemUse1;
 };
 
 class YDCancelQuote
@@ -567,16 +457,11 @@ public:
 	int SystemUse2;
 	int SystemUse3;
 	int SystemUse4;
-	union
-	{
-		YDSysOrderID QuoteSysID;
-		int OrderRef;                   // When OrderGroupID!=0
-	};
+	YDSysOrderID QuoteSysID;
 	char SystemUse5;
 	char ConnectionSelectionType;       // Refer to "Connection Selection Type" section of ydDataType.h
 	char ConnectionID;                  // Target connection ID if ConnectionSelectionType is not YD_CS_Any
-	unsigned char OrderGroupID;         // If OrderGroupID!=0, use (OrderGroupID,OrderRef) indicate an order
-	YDLongOrderSysID LongQuoteSysID;
+	char SystemUse6;
 };
 
 class YDFailedCancelQuote
@@ -588,14 +473,11 @@ public:
 	int AccountRef;
 	YDSysOrderID QuoteSysID;
 	char ExchangeRef;
-	unsigned char OrderGroupID;
+	char SystemUse6;
 	char SystemUse7;
 	char SystemUse8;
 	int ErrorNo;                        // Set by ydAPI, refer to "ydError.h"
-	int IsQuote;
-	int OrderRef;
-	int SystemUse10;
-	YDLongOrderSysID LongQuoteSysID;
+	int SystemUse9;
 };
 
 class YDRequestForQuote
@@ -609,7 +491,6 @@ public:
 	int RequestTime;
 	YDRFQID RequestForQuoteID;
 	int SystemUse6;
-	YDLongRFQID LongRequestForQuoteID;
 };
 
 class YDMarginRate
@@ -680,11 +561,10 @@ public:
 	int SystemUse3;
 	int AccountRef;
 	int ExchangeRef;
-	int IDType;                         // Refer to "IDType in IDFromExchange" section of ydDataType.h
+	int IDType;							// Refer to "IDType in IDFromExchange" section of ydDataType.h
 	int IDInSystem;
 	int SystemUse6;
 	char IDFromExchange[24];
-	YDLongOrderSysID LongIDInSystem;
 };
 
 class YDUpdateMarginRate
@@ -734,16 +614,13 @@ public:
 	int AccountRef;
 	int ExchangeRef;
 	int TradingRight;                   // Refer to "Trade Right" section of ydDataType.h
-	char TradingRightFromSource[YD_TRS_Count];
-	int SystemUse2;
-	bool IsDedicatedConnectionID[64];   // Whether this connectionID is dedicated for this account
+	bool IsDedicatedConnectionID[32];	// whether this connectionID is dedicated for this account
 	const YDAccount *m_pAccount;
 	const YDExchange *m_pExchange;
 	mutable void *pUser;
 	mutable double UserFloat;
 	mutable int UserInt1;
 	mutable int UserInt2;
-	void *pInternalUse;
 };
 
 class YDAccountProductInfo
@@ -753,8 +630,6 @@ public:
 	int AccountRef;
 	int ProductRef;
 	int TradingRight;                   // Refer to "Trade Right" section of ydDataType.h
-	char TradingRightFromSource[YD_TRS_Count];
-	int SystemUse2;
 	YDTradeConstraint TradingConstraints[YD_MaxHedgeFlag];
 	const YDAccount *m_pAccount;
 	const YDProduct *m_pProduct;
@@ -762,7 +637,6 @@ public:
 	mutable double UserFloat;
 	mutable int UserInt1;
 	mutable int UserInt2;
-	void *pInternalUse;
 };
 
 class YDAccountInstrumentInfo
@@ -771,9 +645,7 @@ public:
 	int SystemUse1;
 	int AccountRef;
 	int InstrumentRef;
-	int TradingRight;					// Refer to "Trade Right" section of ydDataType.h
-	int RFQCount;						// only valid for SHFE/INE, 0 for all other exchanges
-	char TradingRightFromSource[YD_TRS_Count];
+	int TradingRight;
 	YDTradeConstraint TradingConstraints[YD_MaxHedgeFlag];
 	const YDAccount *m_pAccount;
 	const YDInstrument *m_pInstrument;
@@ -783,7 +655,6 @@ public:
 	mutable double UserFloat;
 	mutable int UserInt1;
 	mutable int UserInt2;
-	void *pInternalUse;
 };
 
 class YDGeneralRiskParam
@@ -798,23 +669,6 @@ public:
 	double FloatValue;
 	int IntValue1;
 	int IntValue2;
-};
-
-class YDTradingSegmentDetail
-{
-public:
-	int SystemUse1;
-	int SystemUse2;
-	int SystemUse3;
-	int SystemUse4;
-	short ExchangeRef;
-	short ProductRef;
-	int InstrumentRef;
-	int SegmentTime;
-	int TradingStatus;                  // Refer to "Trade Status" section of ydDataType.h
-	const YDExchange *m_pExchange;
-	const YDProduct *m_pProduct;
-	const YDInstrument *m_pInstrument;
 };
 
 /// Data structs for YDExtendedApi
@@ -936,11 +790,7 @@ public:
 		double Price;
 		int Volume;
 		// TradeID<0 indicates history position
-		union
-		{
-			YDTradeID TradeID;
-			YDLongTradeID LongTradeID;
-		};
+		YDTradeID TradeID;
 	};
 	
 	int PositionDate;
@@ -1008,7 +858,7 @@ public:
 	{
 		int position=0;
 		CPositionDetail *p=PositionDetailList;
-		while (p && (p->LongTradeID<0))
+		while (p && (p->TradeID<0))
 		{
 			position+=p->Volume;
 			p = p->m_pNext;

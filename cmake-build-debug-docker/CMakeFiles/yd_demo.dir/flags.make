@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/tmp/yd/include -I/tmp/yd/include/trade
+CXX_INCLUDES = -I/tmp/yd/include
 
 CXX_FLAGS = -g -std=gnu++11
 
