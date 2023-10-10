@@ -1,1 +1,1 @@
-/usr/bin/c++ -g -rdynamic CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.o CMakeFiles/yd_demo.dir/src/main.cpp.o -o yd_demo   -L/tmp/yd/linux64  -Wl,-rpath,/tmp/yd/linux64 -lyd 
+/usr/bin/c++ -g -rdynamic CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.o CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.o CMakeFiles/yd_demo.dir/src/greeter.pb.cc.o CMakeFiles/yd_demo.dir/src/greeter_client.cc.o CMakeFiles/yd_demo.dir/src/greeter_server.cc.o CMakeFiles/yd_demo.dir/src/main.cpp.o -o yd_demo   -L/tmp/yd/linux64  -Wl,-rpath,/tmp/yd/linux64 -lyd 

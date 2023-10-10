@@ -83,10 +83,66 @@ CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /tmp/yd/src/YdUserApiInfo.cpp -o CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.s
 
+CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.o: CMakeFiles/yd_demo.dir/flags.make
+CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.o: ../src/greeter.grpc.pb.cc
+CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.o: CMakeFiles/yd_demo.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/tmp/yd/cmake-build-debug-docker/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.o -MF CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.o.d -o CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.o -c /tmp/yd/src/greeter.grpc.pb.cc
+
+CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /tmp/yd/src/greeter.grpc.pb.cc > CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.i
+
+CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /tmp/yd/src/greeter.grpc.pb.cc -o CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.s
+
+CMakeFiles/yd_demo.dir/src/greeter.pb.cc.o: CMakeFiles/yd_demo.dir/flags.make
+CMakeFiles/yd_demo.dir/src/greeter.pb.cc.o: ../src/greeter.pb.cc
+CMakeFiles/yd_demo.dir/src/greeter.pb.cc.o: CMakeFiles/yd_demo.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/tmp/yd/cmake-build-debug-docker/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/yd_demo.dir/src/greeter.pb.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/yd_demo.dir/src/greeter.pb.cc.o -MF CMakeFiles/yd_demo.dir/src/greeter.pb.cc.o.d -o CMakeFiles/yd_demo.dir/src/greeter.pb.cc.o -c /tmp/yd/src/greeter.pb.cc
+
+CMakeFiles/yd_demo.dir/src/greeter.pb.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/yd_demo.dir/src/greeter.pb.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /tmp/yd/src/greeter.pb.cc > CMakeFiles/yd_demo.dir/src/greeter.pb.cc.i
+
+CMakeFiles/yd_demo.dir/src/greeter.pb.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yd_demo.dir/src/greeter.pb.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /tmp/yd/src/greeter.pb.cc -o CMakeFiles/yd_demo.dir/src/greeter.pb.cc.s
+
+CMakeFiles/yd_demo.dir/src/greeter_client.cc.o: CMakeFiles/yd_demo.dir/flags.make
+CMakeFiles/yd_demo.dir/src/greeter_client.cc.o: ../src/greeter_client.cc
+CMakeFiles/yd_demo.dir/src/greeter_client.cc.o: CMakeFiles/yd_demo.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/tmp/yd/cmake-build-debug-docker/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/yd_demo.dir/src/greeter_client.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/yd_demo.dir/src/greeter_client.cc.o -MF CMakeFiles/yd_demo.dir/src/greeter_client.cc.o.d -o CMakeFiles/yd_demo.dir/src/greeter_client.cc.o -c /tmp/yd/src/greeter_client.cc
+
+CMakeFiles/yd_demo.dir/src/greeter_client.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/yd_demo.dir/src/greeter_client.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /tmp/yd/src/greeter_client.cc > CMakeFiles/yd_demo.dir/src/greeter_client.cc.i
+
+CMakeFiles/yd_demo.dir/src/greeter_client.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yd_demo.dir/src/greeter_client.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /tmp/yd/src/greeter_client.cc -o CMakeFiles/yd_demo.dir/src/greeter_client.cc.s
+
+CMakeFiles/yd_demo.dir/src/greeter_server.cc.o: CMakeFiles/yd_demo.dir/flags.make
+CMakeFiles/yd_demo.dir/src/greeter_server.cc.o: ../src/greeter_server.cc
+CMakeFiles/yd_demo.dir/src/greeter_server.cc.o: CMakeFiles/yd_demo.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/tmp/yd/cmake-build-debug-docker/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/yd_demo.dir/src/greeter_server.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/yd_demo.dir/src/greeter_server.cc.o -MF CMakeFiles/yd_demo.dir/src/greeter_server.cc.o.d -o CMakeFiles/yd_demo.dir/src/greeter_server.cc.o -c /tmp/yd/src/greeter_server.cc
+
+CMakeFiles/yd_demo.dir/src/greeter_server.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/yd_demo.dir/src/greeter_server.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /tmp/yd/src/greeter_server.cc > CMakeFiles/yd_demo.dir/src/greeter_server.cc.i
+
+CMakeFiles/yd_demo.dir/src/greeter_server.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yd_demo.dir/src/greeter_server.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /tmp/yd/src/greeter_server.cc -o CMakeFiles/yd_demo.dir/src/greeter_server.cc.s
+
 CMakeFiles/yd_demo.dir/src/main.cpp.o: CMakeFiles/yd_demo.dir/flags.make
 CMakeFiles/yd_demo.dir/src/main.cpp.o: ../src/main.cpp
 CMakeFiles/yd_demo.dir/src/main.cpp.o: CMakeFiles/yd_demo.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/tmp/yd/cmake-build-debug-docker/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/yd_demo.dir/src/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/tmp/yd/cmake-build-debug-docker/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/yd_demo.dir/src/main.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/yd_demo.dir/src/main.cpp.o -MF CMakeFiles/yd_demo.dir/src/main.cpp.o.d -o CMakeFiles/yd_demo.dir/src/main.cpp.o -c /tmp/yd/src/main.cpp
 
 CMakeFiles/yd_demo.dir/src/main.cpp.i: cmake_force
@@ -100,16 +156,24 @@ CMakeFiles/yd_demo.dir/src/main.cpp.s: cmake_force
 # Object files for target yd_demo
 yd_demo_OBJECTS = \
 "CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.o" \
+"CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.o" \
+"CMakeFiles/yd_demo.dir/src/greeter.pb.cc.o" \
+"CMakeFiles/yd_demo.dir/src/greeter_client.cc.o" \
+"CMakeFiles/yd_demo.dir/src/greeter_server.cc.o" \
 "CMakeFiles/yd_demo.dir/src/main.cpp.o"
 
 # External object files for target yd_demo
 yd_demo_EXTERNAL_OBJECTS =
 
 yd_demo: CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.o
+yd_demo: CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.o
+yd_demo: CMakeFiles/yd_demo.dir/src/greeter.pb.cc.o
+yd_demo: CMakeFiles/yd_demo.dir/src/greeter_client.cc.o
+yd_demo: CMakeFiles/yd_demo.dir/src/greeter_server.cc.o
 yd_demo: CMakeFiles/yd_demo.dir/src/main.cpp.o
 yd_demo: CMakeFiles/yd_demo.dir/build.make
 yd_demo: CMakeFiles/yd_demo.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/tmp/yd/cmake-build-debug-docker/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable yd_demo"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/tmp/yd/cmake-build-debug-docker/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable yd_demo"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/yd_demo.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

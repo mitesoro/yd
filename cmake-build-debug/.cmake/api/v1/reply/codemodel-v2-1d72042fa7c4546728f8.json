@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "yd_demo::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-yd_demo-Debug-29890102dbcbb0905c15.json",
+					"jsonFile" : "target-yd_demo-Debug-5e7687796a3730a4bea7.json",
 					"name" : "yd_demo",
 					"projectIndex" : 0
 				}
@@ -49,12 +49,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/tmp/yd/cmake-build-debug-docker",
-		"source" : "/tmp/yd"
+		"build" : "/Users/liuhaigang/work/yd/cmake-build-debug",
+		"source" : "/Users/liuhaigang/work/yd"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 3
+		"minor" : 5
 	}
 }

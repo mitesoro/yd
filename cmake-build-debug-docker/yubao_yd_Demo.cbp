@@ -87,6 +87,18 @@
 		<Unit filename="/tmp/yd/src/YdUserApiInfo.cpp">
 			<Option target="yd_demo"/>
 		</Unit>
+		<Unit filename="/tmp/yd/src/greeter.grpc.pb.cc">
+			<Option target="yd_demo"/>
+		</Unit>
+		<Unit filename="/tmp/yd/src/greeter.pb.cc">
+			<Option target="yd_demo"/>
+		</Unit>
+		<Unit filename="/tmp/yd/src/greeter_client.cc">
+			<Option target="yd_demo"/>
+		</Unit>
+		<Unit filename="/tmp/yd/src/greeter_server.cc">
+			<Option target="yd_demo"/>
+		</Unit>
 		<Unit filename="/tmp/yd/src/main.cpp">
 			<Option target="yd_demo"/>
 		</Unit>

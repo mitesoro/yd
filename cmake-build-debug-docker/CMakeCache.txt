@@ -14,6 +14,18 @@
 # EXTERNAL cache entries
 ########################
 
+//The directory containing a CMake configuration file for Boost.
+Boost_DIR:PATH=Boost_DIR-NOTFOUND
+
+//Path to a file.
+Boost_INCLUDE_DIR:PATH=Boost_INCLUDE_DIR-NOTFOUND
+
+//Boost iostreams library (debug)
+Boost_IOSTREAMS_LIBRARY_DEBUG:FILEPATH=Boost_IOSTREAMS_LIBRARY_DEBUG-NOTFOUND
+
+//Boost iostreams library (release)
+Boost_IOSTREAMS_LIBRARY_RELEASE:FILEPATH=Boost_IOSTREAMS_LIBRARY_RELEASE-NOTFOUND
+
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=/usr/bin/addr2line
 
@@ -220,6 +232,15 @@ CMAKE_STRIP:FILEPATH=/usr/bin/strip
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
+//The directory containing a CMake configuration file for Ceres.
+Ceres_DIR:PATH=Ceres_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for Eigen3.
+Eigen3_DIR:PATH=Eigen3_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for LuaGoogle.
+LuaGoogle_DIR:PATH=LuaGoogle_DIR-NOTFOUND
+
 //Path to a program.
 ProcessorCount_cmd_nproc:FILEPATH=/usr/bin/nproc
 
@@ -240,6 +261,12 @@ yubao_yd_Demo_SOURCE_DIR:STATIC=/tmp/yd
 # INTERNAL cache entries
 ########################
 
+//ADVANCED property for variable: Boost_DIR
+Boost_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: Boost_IOSTREAMS_LIBRARY_DEBUG
+Boost_IOSTREAMS_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: Boost_IOSTREAMS_LIBRARY_RELEASE
+Boost_IOSTREAMS_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_ADDR2LINE
 CMAKE_ADDR2LINE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_AR

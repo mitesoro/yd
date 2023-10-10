@@ -153,6 +153,102 @@ src/YdUserApiInfo.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/YdUserApiInfo.cpp.s
 .PHONY : src/YdUserApiInfo.cpp.s
 
+src/greeter.grpc.pb.o: src/greeter.grpc.pb.cc.o
+.PHONY : src/greeter.grpc.pb.o
+
+# target to build an object file
+src/greeter.grpc.pb.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.o
+.PHONY : src/greeter.grpc.pb.cc.o
+
+src/greeter.grpc.pb.i: src/greeter.grpc.pb.cc.i
+.PHONY : src/greeter.grpc.pb.i
+
+# target to preprocess a source file
+src/greeter.grpc.pb.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.i
+.PHONY : src/greeter.grpc.pb.cc.i
+
+src/greeter.grpc.pb.s: src/greeter.grpc.pb.cc.s
+.PHONY : src/greeter.grpc.pb.s
+
+# target to generate assembly for a file
+src/greeter.grpc.pb.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/greeter.grpc.pb.cc.s
+.PHONY : src/greeter.grpc.pb.cc.s
+
+src/greeter.pb.o: src/greeter.pb.cc.o
+.PHONY : src/greeter.pb.o
+
+# target to build an object file
+src/greeter.pb.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/greeter.pb.cc.o
+.PHONY : src/greeter.pb.cc.o
+
+src/greeter.pb.i: src/greeter.pb.cc.i
+.PHONY : src/greeter.pb.i
+
+# target to preprocess a source file
+src/greeter.pb.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/greeter.pb.cc.i
+.PHONY : src/greeter.pb.cc.i
+
+src/greeter.pb.s: src/greeter.pb.cc.s
+.PHONY : src/greeter.pb.s
+
+# target to generate assembly for a file
+src/greeter.pb.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/greeter.pb.cc.s
+.PHONY : src/greeter.pb.cc.s
+
+src/greeter_client.o: src/greeter_client.cc.o
+.PHONY : src/greeter_client.o
+
+# target to build an object file
+src/greeter_client.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/greeter_client.cc.o
+.PHONY : src/greeter_client.cc.o
+
+src/greeter_client.i: src/greeter_client.cc.i
+.PHONY : src/greeter_client.i
+
+# target to preprocess a source file
+src/greeter_client.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/greeter_client.cc.i
+.PHONY : src/greeter_client.cc.i
+
+src/greeter_client.s: src/greeter_client.cc.s
+.PHONY : src/greeter_client.s
+
+# target to generate assembly for a file
+src/greeter_client.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/greeter_client.cc.s
+.PHONY : src/greeter_client.cc.s
+
+src/greeter_server.o: src/greeter_server.cc.o
+.PHONY : src/greeter_server.o
+
+# target to build an object file
+src/greeter_server.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/greeter_server.cc.o
+.PHONY : src/greeter_server.cc.o
+
+src/greeter_server.i: src/greeter_server.cc.i
+.PHONY : src/greeter_server.i
+
+# target to preprocess a source file
+src/greeter_server.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/greeter_server.cc.i
+.PHONY : src/greeter_server.cc.i
+
+src/greeter_server.s: src/greeter_server.cc.s
+.PHONY : src/greeter_server.s
+
+# target to generate assembly for a file
+src/greeter_server.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/yd_demo.dir/build.make CMakeFiles/yd_demo.dir/src/greeter_server.cc.s
+.PHONY : src/greeter_server.cc.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -189,6 +285,18 @@ help:
 	@echo "... src/YdUserApiInfo.o"
 	@echo "... src/YdUserApiInfo.i"
 	@echo "... src/YdUserApiInfo.s"
+	@echo "... src/greeter.grpc.pb.o"
+	@echo "... src/greeter.grpc.pb.i"
+	@echo "... src/greeter.grpc.pb.s"
+	@echo "... src/greeter.pb.o"
+	@echo "... src/greeter.pb.i"
+	@echo "... src/greeter.pb.s"
+	@echo "... src/greeter_client.o"
+	@echo "... src/greeter_client.i"
+	@echo "... src/greeter_client.s"
+	@echo "... src/greeter_server.o"
+	@echo "... src/greeter_server.i"
+	@echo "... src/greeter_server.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
