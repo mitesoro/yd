@@ -1,0 +1,5 @@
+/Users/liuhaigang/work/yd/cmake/build/CMakeFiles/hw_grpc_proto.dir
+/Users/liuhaigang/work/yd/cmake/build/CMakeFiles/greeter_client.dir
+/Users/liuhaigang/work/yd/cmake/build/CMakeFiles/greeter_server.dir
+/Users/liuhaigang/work/yd/cmake/build/CMakeFiles/edit_cache.dir
+/Users/liuhaigang/work/yd/cmake/build/CMakeFiles/rebuild_cache.dir
