@@ -47,19 +47,28 @@ ABSL_FLAG(uint16_t, port, 50051, "Server port for the service");
 // Logic and data behind the server's behavior.
 //定义了一个名为 GreeterServiceImpl 的类，该类继承自 Greeter::Service，并实现了 SayHello 方法：
 class GreeterServiceImpl final : public Greeter::Service {
+private:
+    myYDListener* listener; // 添加成员变量
+public:
+    // 构造函数，接收 myYDListener 对象作为参数
+    // 通过在构造函数声明前添加 explicit 关键字，你告诉编译器只能使用显式构造函数调用来创建 GreeterServiceImpl 对象，而不允许隐式转换。
+    explicit GreeterServiceImpl(myYDListener* listener) : listener(listener) {}
+
 //    SayHello 方法接收一个 HelloRequest 对象作为参数，将其中的名字与前缀 "Hello " 进行拼接，并将结果设置到 HelloReply 对象中，最后返回 Status::OK 表示成功。
     Status SayHello(ServerContext *context, const HelloRequest *request,
                     HelloReply *reply) override {
         std::string prefix("Hello ");
         reply->set_message(prefix + request->name());
+        listener->disconnect();
+
         return Status::OK;
     }
 };
 
 //定义了一个名为 RunServer 的函数，用于启动 gRPC 服务器：
-void RunServer(uint16_t port) {
+void RunServer(uint16_t port, myYDListener* listener) {
     std::string server_address = absl::StrFormat("0.0.0.0:%d", port);
-    GreeterServiceImpl service;
+    GreeterServiceImpl service(listener);
 
     grpc::EnableDefaultHealthCheckService(true);
     grpc::reflection::InitProtoReflectionServerBuilderPlugin();
@@ -87,13 +96,13 @@ int main(int argc, char **argv) {
     cout << "当前易达API版本号：" << getYDVersion() << endl;
     cout << "当前使用易达功能[basic(基础版) | extended(扩展版)]为：" << ydApiFunc << endl;
     print_yd_config("../config_files/yd_config.txt");
-    myYDListener * plistener = get_plistener(ydApiFunc, userID, pwd, appID, authCode, exchangeID, useProtocol, udpTradeIP, udpTradePort);
+    myYDListener * listener = get_plistener(ydApiFunc, userID, pwd, appID, authCode, exchangeID, useProtocol, udpTradeIP, udpTradePort);
     // 暂停执行 3 秒钟，等待listener 连接成功
     std::this_thread::sleep_for(std::chrono::seconds(3));
     // 登录
-    plistener->login();
+    listener->login();
 
     absl::ParseCommandLine(argc, argv);
-    RunServer(absl::GetFlag(FLAGS_port));
+    RunServer(absl::GetFlag(FLAGS_port), listener);
     return 0;
 }
