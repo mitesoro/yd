@@ -12,7 +12,7 @@
 #include<cstdlib>
 #include<set>
 #include<unordered_map>
-#include<YdUserApiInfo.h>
+#include<yd.h>
 
 using namespace std;
 

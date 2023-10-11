@@ -31,6 +31,13 @@ add_custom_command(
         "${hw_proto}"
         DEPENDS "${hw_proto}")
 
+# 头文件目录
+include_directories(include)
+# 库文件目录
+link_directories(linux64)
+
+
+
 # Include generated *.pb.h files
 #将生成的 .pb.h 文件所在的目录添加到包含目录中，以便在构建过程中能够找到这些文件。
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
@@ -51,14 +58,25 @@ target_link_libraries(hw_grpc_proto
 
 # Targets greeter_[async_](client|server)
 #创建多个可执行文件，每个文件对应一个示例的客户端或服务器。将生成的源文件和所需的库链接到每个可执行文件中。
-foreach(_target
-        greeter_client greeter_server)
-    add_executable(${_target} "${_target}.cc")
-    target_link_libraries(${_target}
-            hw_grpc_proto
-            absl::flags
-            absl::flags_parse
-            ${_REFLECTION}
-            ${_GRPC_GRPCPP}
-            ${_PROTOBUF_LIBPROTOBUF})
-endforeach()
+#foreach(_target
+#         greeter_server)
+#    add_executable(${_target} "${_target}.cc")
+#    target_link_libraries(${_target}
+#            hw_grpc_proto
+#            absl::flags
+#            absl::flags_parse
+#            ${_REFLECTION}
+#            ${_GRPC_GRPCPP}
+#            ${_PROTOBUF_LIBPROTOBUF})
+#endforeach()
+
+add_executable(greeter_server "src/greeter_server.cc" "src/yd.cpp")
+target_link_libraries(greeter_server
+        hw_grpc_proto
+        absl::flags
+        absl::flags_parse
+        ${_REFLECTION}
+        ${_GRPC_GRPCPP}
+        ${_PROTOBUF_LIBPROTOBUF})
+# 加载libyd.so
+target_link_libraries(greeter_server yd)

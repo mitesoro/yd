@@ -1,1 +1,0 @@
-Failed to launch CMake executable '/usr/bin/cmake': Cannot connect to the Docker daemon at unix:///Users/liuhaigang/.docker/run/docker.sock. Is the docker daemon running? (Details: [2] No such file or directory) Configure Disable profile
