@@ -11,7 +11,7 @@ const int CancelAllOptionAbandonExecute=5;
 const int RequestForQuote=6;
 const int InsertOrder=7;
 
-static const int s_orderGroupID=5;
+static const int s_orderGroupID=0;
 
 class MyYDListener: public YDListener{
 private:
@@ -171,14 +171,14 @@ public:
         YDInputOrder inputOrder;
         memset(&inputOrder,0,sizeof(inputOrder));
         inputOrder.OffsetFlag=YD_OF_Open;
-        inputOrder.Price=m_pInstrument->m_pMarketData->AskPrice;
+//        inputOrder.Price=m_pInstrument->m_pMarketData->AskPrice;
         inputOrder.Direction=0;
         inputOrder.HedgeFlag=YD_HF_Speculation;
         inputOrder.OrderVolume=1;
         inputOrder.OrderGroupID=s_orderGroupID;
         inputOrder.OrderRef=++m_maxOrderRef;
         inputOrder.GroupOrderRefControl=YD_GORF_Increase;
-        inputOrder.OrderType=YD_ODT_Limit;
+        inputOrder.OrderType=YD_ODT_Market; // 市场价格
         inputOrder.YDOrderFlag=YD_YOF_Normal;
         inputOrder.ConnectionSelectionType=YD_CS_Any;
         inputOrder.ConnectionID=0;
