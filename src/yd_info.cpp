@@ -252,6 +252,8 @@ void startExample5(const char *configFilename,const char *username,const char *p
         printf("can not create API\n");
         exit(1);
     }
+    pApi->getExchangeByID("SHFE");
+
     int action=InsertOrder;
 
     MyYDListener *pListener=new MyYDListener(pApi,username,password,instrumentID,action);

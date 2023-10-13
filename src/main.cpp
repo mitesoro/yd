@@ -23,7 +23,7 @@ using namespace std;
 
 
 int main(){
-    startExample5("../config_files/config.txt","23300021","12345678","IC2312");
+    startExample5("../config_files/config.txt","23300021","12345678","fu2401");
     // 暂停执行 3 秒钟，等待listener 连接成功
     std::this_thread::sleep_for(std::chrono::seconds(13));
     return 0;
