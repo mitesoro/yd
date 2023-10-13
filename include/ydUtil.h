@@ -31,6 +31,17 @@ inline unsigned string2TimeID(const char *timeBuffer)
 	return tmp;
 }
 
+inline unsigned string2TimeStamp(const char *timeBuffer)
+{
+	unsigned timeID=string2TimeID(timeBuffer);
+	unsigned millisec=0;
+	if ((strlen(timeBuffer)>9)&&(timeBuffer[8]=='.'))
+	{
+		millisec=atoi(timeBuffer+9);
+	}
+	return timeID*1000+millisec;
+}
+
 inline const char *timeID2String(unsigned timeID, char *buffer)
 {
 	if ((int)timeID<=0)
@@ -148,7 +159,7 @@ inline void dumpField(FILE *output,double value)
 
 inline void dumpField(FILE *output,const char *value)
 {
-	if (value!=NULL)
+	if (value!=nullptr)
 	{
 		fprintf(output,"%s ",value);
 	}

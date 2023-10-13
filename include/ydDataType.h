@@ -15,6 +15,10 @@ typedef int YDTradeID;
 typedef int YDLocalOrderID;
 typedef int YDRFQID;
 
+typedef long long YDLongOrderSysID;
+typedef long long YDLongTradeID;
+typedef long long YDLongRFQID;
+
 // Product Class
 const int YD_PC_Futures=1;
 const int YD_PC_Options=2;
@@ -73,6 +77,9 @@ const int YD_OF_ForceClose=2;
 const int YD_OF_CloseToday=3;
 const int YD_OF_CloseYesterday=4;
 /// For SHFE and INE, only YD_OF_CloseYesterday and YD_OF_CloseToday are valid for close. For all other exchanges, only YD_OF_Close is valid for close
+const int YD_OF_Open1Close2=5;
+const int YD_OF_Close1Open2=6;
+/// YD_OF_Open1Close2 and YD_OF_Close1Open2 can only be used for combination instrument trading
 
 // Order Type
 // following order types can be used when ydOrderFlag is YD_YOF_Normal
@@ -89,12 +96,25 @@ const int YD_ODT_PositionOffsetMark=0;
 const int YD_ODT_OptionAbandonExecuteMark=1;
 const int YD_ODT_CloseFuturesPositionMark=2;
 
+// Order trigger type
+const int YD_OTT_NoTrigger=0;
+const int YD_OTT_TakeProfit=1;
+const int YD_OTT_StopLoss=2;
+
+// Order group ref control
+const int YD_GORF_Increase=0;
+const int YD_GORF_IncreaseOne=1;
+
 // Order Status
 const int YD_OS_Accepted=0;
 const int YD_OS_Queuing=1;
 const int YD_OS_Canceled=2;
 const int YD_OS_AllTraded=3;
 const int YD_OS_Rejected=4;
+
+// Order trigger status
+const int YD_OTS_NotTriggered=0;
+const int YD_OTS_Triggered=1;
 
 // YD OrderFlag
 const int YD_YOF_Normal=0;
@@ -189,6 +209,8 @@ const int YD_AE_TCPMarketDataConnected=2;
 const int YD_AE_TCPMarketDataDisconnected=3;
 const int YD_AE_ServerRestarted=4;
 const int YD_AE_ServerSwitched=5;
+const int YD_AE_XTCPTradeConnected=6;
+const int YD_AE_XTCPTradeDisconnected=7;
 
 // Account Flag
 const int YD_AF_SelectConnection=1;
@@ -239,6 +261,19 @@ const int YD_GRPT_ExchangeMaxOrderVolume=12;
 const int YD_GRPT_ProductMaxOrderVolume=13;
 const int YD_GRPT_InstrumentMaxOrderVolume=14;
 const int YD_GRPT_ExchangeOptionLongPositionCost=15;
+
+// Trading Right Source
+const int YD_TRS_AdminPermanent=0;
+const int YD_TRS_UserPermanent=1;
+const int YD_TRS_AdminTemp=2;
+const int YD_TRS_UserTemp=3;
+// YD_TRS_Count is not a valid trading right source
+const int YD_TRS_Count=4;
+
+// Trading Status
+const int YD_TS_NoTrading=0;
+const int YD_TS_Continuous=1;
+const int YD_TS_Auction=2;
 
 // get the opposite position direction
 inline int oppositePositionDirection(int positiondir)
