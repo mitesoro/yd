@@ -170,16 +170,14 @@ public:
     void insertOrder(void){
         YDInputOrder inputOrder;
         memset(&inputOrder,0,sizeof(inputOrder));
-        inputOrder.OffsetFlag=YD_OF_Open;
-//        inputOrder.Price=m_pInstrument->m_pMarketData->AskPrice;
-        inputOrder.Direction=0;
+        inputOrder.Direction=YD_D_Buy;
         inputOrder.HedgeFlag=YD_HF_Speculation;
         inputOrder.OrderVolume=1;
-        inputOrder.OrderGroupID=s_orderGroupID;
-        inputOrder.OrderRef=++m_maxOrderRef;
-        inputOrder.GroupOrderRefControl=YD_GORF_Increase;
-        inputOrder.OrderType=YD_ODT_Market; // 市场价格
+        inputOrder.OrderRef=20;
+        inputOrder.OrderType=YD_ODT_Limit;
         inputOrder.YDOrderFlag=YD_YOF_Normal;
+//        inputOrder.Price=m_pInstrument->m_pMarketData->AskPrice;
+        inputOrder.Price=5000;
         inputOrder.ConnectionSelectionType=YD_CS_Any;
         inputOrder.ConnectionID=0;
         if (m_pApi->insertOrder(&inputOrder,m_pInstrument)){
