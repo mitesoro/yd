@@ -1,0 +1,10 @@
+cmake-build-debug/
+cmake-build-debug-docker/
+cmake-build-debug-remote-host/
+.gitignore
+.git
+.env
+.DS_store
+.idea
+Makefile
+makefile.excludes
