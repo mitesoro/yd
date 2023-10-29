@@ -7,6 +7,13 @@ project(HelloWorld C CXX)
 #包含一个名为 "common.cmake" 的 CMake 文件，该文件可能包含一些常用的配置和设置。
 include(./common/cmake/common.cmake)
 
+# 添加 hiredis 头文件路径
+include_directories(/usr/local/include/hiredis)  # 根据实际路径修改
+
+# 添加 hiredis 库路径
+link_directories(/usr/local/lib)  # 根据实际路径修改
+
+
 # Proto file
 #获取 helloworld.proto 文件的绝对路径，并将其所在的目录存储在变量 hw_proto_path 中。
 get_filename_component(hw_proto "./protos/helloworld.proto" ABSOLUTE)
@@ -78,6 +85,7 @@ target_link_libraries(greeter_server
         absl::flags_parse
         ${_REFLECTION}
         ${_GRPC_GRPCPP}
-        ${_PROTOBUF_LIBPROTOBUF})
+        ${_PROTOBUF_LIBPROTOBUF}
+        hiredis)
 # 加载libyd.so
 target_link_libraries(greeter_server yd)
