@@ -45,11 +45,27 @@ int main(){
         return 1;
     }
 
-    redisReply* reply = (redisReply*)redisCommand(context, "PUBLISH channel_name message");
+    const char* channel = "channel_name";
+    const char* json = "{\"key\": \"value\"}";
+
+    // 构建命令参数数组
+    const char* argv[3];
+    size_t argvlen[3];
+
+    argv[0] = "PUBLISH";
+    argvlen[0] = strlen(argv[0]);
+
+    argv[1] = channel;
+    argvlen[1] = strlen(channel);
+
+    argv[2] = json;
+    argvlen[2] = strlen(json);
+
+    redisReply* reply = (redisReply*)redisCommandArgv(context, 3, argv, argvlen);
     if (reply == NULL) {
-        printf("Failed to publish message\n");
+        std::cout << "Failed to publish message" << std::endl;
     } else {
-        printf("Message published: %lld\n", reply->integer);
+        std::cout << "Message published: " << reply->integer << std::endl;
         freeReplyObject(reply);
     }
 
