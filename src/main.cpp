@@ -45,33 +45,21 @@ int main(){
         return 1;
     }
 
-    const char *key = "test";
-    const char *value = "1lkjlknlk";
-    redisReply *reply = (redisReply *)redisCommand(context, "SET %s %s", key, value);
-
+    redisReply* reply = (redisReply*)redisCommand(context, "PUBLISH channel_name message");
     if (reply == NULL) {
-        printf("设置键值对失败\n");
+        printf("Failed to publish message\n");
     } else {
-        printf("键值对设置成功\n");
+        printf("Message published: %lld\n", reply->integer);
         freeReplyObject(reply);
     }
 
-    // 使用GET命令获取键的值
-    redisReply *reply1 = (redisReply *)redisCommand(context, "GET %s", key);
 
-    if (reply1 == NULL) {
-        printf("获取键值失败\n");
-    } else if (reply1->type == REDIS_REPLY_STRING) {
-        printf("键的值为: %s\n", reply1->str);
-    } else {
-        printf("键不存在或者不是字符串类型\n");
-    }
 
-    freeReplyObject(reply1);
 
 
 //    startExample5("../config_files/config.txt","23300021","12345678","fu2401");
     // 暂停执行 3 秒钟，等待listener 连接成功
     std::this_thread::sleep_for(std::chrono::seconds(13));
+    redisFree(context);
     return 0;
 }
