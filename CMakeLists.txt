@@ -77,8 +77,8 @@ target_link_libraries(hw_grpc_proto
 #            ${_PROTOBUF_LIBPROTOBUF})
 #endforeach()
 
-#add_executable(greeter_server "src/greeter_server.cc" "src/yd.cpp")
-add_executable(greeter_server "src/main.cpp" "src/yd_info.cpp")
+add_executable(greeter_server "src/greeter_server.cc" "src/yd.cpp")
+#add_executable(greeter_server "src/main.cpp" "src/yd_info.cpp")
 target_link_libraries(greeter_server
         hw_grpc_proto
         absl::flags

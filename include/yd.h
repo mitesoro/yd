@@ -92,8 +92,8 @@ public:
 	virtual void putOrder(vector<string>::iterator, vector<string>::iterator);
 	// 柜台报单成功回调
 	void notifyOrder(const YDOrder *pOrder, const YDInstrument *pInstrument, const YDAccount *pAccount) override;
-	// 柜台报单失败回调
-	void notifyFailedOrder(const YDInputOrder *pFailedOrder, const YDInstrument *pInstrument, const YDAccount *pAccount) override;
+//	 柜台报单失败回调
+//	void notifyFailedCancelOrder(const YDFailedCancelOrder *pFailedCancelOrder,const YDExchange *pExchange,const YDAccount *pAccount) override;
 	// 成交回调
 	void notifyTrade(const YDTrade *pTrade, const YDInstrument *pInstrument, const YDAccount *pAccount) override;
 	// 查询账户资金情况

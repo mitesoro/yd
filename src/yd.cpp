@@ -147,7 +147,7 @@ void read_and_print_user_info(const string &fname, string &userID, string &pwd, 
 
 myYDListener * get_plistener(string &ydApiFunc, string &userID, string &pwd, string &appID, string &authCode, string &exchangeID, string useProtocol, string udpTradeIP, string udpTradePort)
 {
-	const char *fname = "../config_files/yd_config.txt";
+	const char *fname = "../config_files/config.txt";
 	if (ydApiFunc == "extended" && useProtocol == "no")
 	{
 		YDExtendedApi *ydApi = makeYDExtendedApi(fname);
@@ -393,13 +393,13 @@ void myYDListener::notifyOrder(const YDOrder *pOrder, const YDInstrument *pInstr
 	}
 }
 
-void myYDListener::notifyFailedOrder(const YDInputOrder *pFailedOrder, const YDInstrument *pInstrument, const YDAccount *pAccount)
-{
-	cout << "\tnotifyFailedOrder::易达柜台拒绝报单" << endl;
-	cout << "\tOrderRef: " << pFailedOrder->OrderRef;
-	cout << "\t错误码：" << pFailedOrder->ErrorNo;
-	cout << endl;
-}
+//void myYDListener::notifyFailedOrder(const YDInputOrder *pFailedOrder, const YDInstrument *pInstrument, const YDAccount *pAccount)
+//{
+//	cout << "\tnotifyFailedOrder::易达柜台拒绝报单" << endl;
+//	cout << "\tOrderRef: " << pFailedOrder->OrderRef;
+//	cout << "\t错误码：" << pFailedOrder->ErrorNo;
+//	cout << endl;
+//}
 
 void myYDListener::notifyTrade(const YDTrade *pTrade, const YDInstrument *pInstrument, const YDAccount *pAccount)
 {
@@ -791,7 +791,7 @@ void myYDListener::qryOrderRef(int orderRef)
 	YDExtendedApi *ydExApi = static_cast<YDExtendedApi *>(m_ydApi);
 	if (ydExApi != nullptr)
 	{
-		const YDExtendedOrder *pOrder = ydExApi->getOrder(orderRef, pAccount);
+		const YDExtendedOrder *pOrder = ydExApi->getOrder(orderRef,0, pAccount);
 		if (pOrder == nullptr)
 			cerr << "\tOrderSysID错误，查无此单" << endl;
 		else

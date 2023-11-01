@@ -58,7 +58,7 @@ TimerCPUID=-1
 ###########################################
 
 # Whether need to connect to TCP market data server
-ConnectTCPMarketData=no
+ConnectTCPMarketData=yes
 
 # Timeout of select() when receiving TCP market data, in millisec. -1 indicates running without select()
 TCPMarketDataTimeout=10

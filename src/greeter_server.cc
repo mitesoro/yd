@@ -1,108 +1,126 @@
-//#include <iostream>
-//#include <memory>
-//#include <string>
-//
-//#include "absl/flags/flag.h"
-//#include "absl/flags/parse.h"
-//#include "absl/strings/str_format.h"
-//
-//#include <grpcpp/ext/proto_server_reflection_plugin.h>
-//#include <grpcpp/grpcpp.h>
-//#include <grpcpp/health_check_service_interface.h>
-//
-//#ifdef BAZEL_BUILD
-//#include "examples/protos/helloworld.grpc.pb.h"
-//#else
-//
-//#include "helloworld.grpc.pb.h"
-//
-//#endif
-//
-//#if defined(__linux__)
-//#include <sys/socket.h>
-//#include<unistd.h>
-//#include<netinet/in.h>
-//#include<arpa/inet.h>
-//#include<unistd.h>
-//#endif
-//
-//#include<ydApi.h>
-//#include<ydDataStruct.h>
-//#include<ydDataType.h>
-//#include<ydError.h>
-//#include<ydUtil.h>
-//#include<yd.h>
-//#include <thread>
-//
-//using grpc::Server;
-//using grpc::ServerBuilder;
-//using grpc::ServerContext;
-//using grpc::Status;
-//using helloworld::Greeter;
-//using helloworld::HelloReply;
-//using helloworld::HelloRequest;
-//
-//ABSL_FLAG(uint16_t, port, 50051, "Server port for the service");
-//
-//// Logic and data behind the server's behavior.
-////定义了一个名为 GreeterServiceImpl 的类，该类继承自 Greeter::Service，并实现了 SayHello 方法：
-//class GreeterServiceImpl final : public Greeter::Service {
-//private:
-//    myYDListener* listener; // 添加成员变量
-//public:
-//    // 构造函数，接收 myYDListener 对象作为参数
-//    // 通过在构造函数声明前添加 explicit 关键字，你告诉编译器只能使用显式构造函数调用来创建 GreeterServiceImpl 对象，而不允许隐式转换。
-//    explicit GreeterServiceImpl(myYDListener* listener) : listener(listener) {}
-//
-////    SayHello 方法接收一个 HelloRequest 对象作为参数，将其中的名字与前缀 "Hello " 进行拼接，并将结果设置到 HelloReply 对象中，最后返回 Status::OK 表示成功。
-//    Status SayHello(ServerContext *context, const HelloRequest *request,
-//                    HelloReply *reply) override {
-//        std::string prefix("Hello ");
-//        reply->set_message(prefix + request->name());
-//        listener->disconnect();
-//
-//        return Status::OK;
-//    }
-//};
-//
-////定义了一个名为 RunServer 的函数，用于启动 gRPC 服务器：
-//void RunServer(uint16_t port, myYDListener* listener) {
-//    std::string server_address = absl::StrFormat("0.0.0.0:%d", port);
-//    GreeterServiceImpl service(listener);
-//
-//    grpc::EnableDefaultHealthCheckService(true);
-//    grpc::reflection::InitProtoReflectionServerBuilderPlugin();
-//    ServerBuilder builder;
-//    // Listen on the given address without any authentication mechanism.
-//    builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
-//    // Register "service" as the instance through which we'll communicate with
-//    // clients. In this case it corresponds to an *synchronous* service.
-//    builder.RegisterService(&service);
-//    // Finally assemble the server.
-//    std::unique_ptr<Server> server(builder.BuildAndStart());
-//    std::cout << "Server listening on " << server_address << std::endl;
-//
-//    // Wait for the server to shutdown. Note that some other thread must be
-//    // responsible for shutting down the server for this call to ever return.
-//    server->Wait();
-//}
-//
-////absl::ParseCommandLine 用于解析命令行参数，absl::GetFlag(FLAGS_port) 获取 --port 参数的值，并将其作为参数传递给 RunServer 函数。
-//int main(int argc, char **argv) {
-//    // 加载yd 运行库
-//    string userID, pwd, appID, authCode, exchangeID, ydApiFunc, useProtocol, udpTradeIP, udpTradePort;
-//    read_and_print_user_info("../config_files/user_info.txt", userID, pwd, appID, authCode, exchangeID, ydApiFunc, useProtocol, udpTradePort);
-//    getServerIP("../config_files/yd_config.txt", udpTradeIP);
-//    cout << "当前易达API版本号：" << getYDVersion() << endl;
-//    cout << "当前使用易达功能[basic(基础版) | extended(扩展版)]为：" << ydApiFunc << endl;
-//    print_yd_config("../config_files/yd_config.txt");
-//    myYDListener * listener = get_plistener(ydApiFunc, userID, pwd, appID, authCode, exchangeID, useProtocol, udpTradeIP, udpTradePort);
-//    // 暂停执行 3 秒钟，等待listener 连接成功
-//    std::this_thread::sleep_for(std::chrono::seconds(3));
-//    // 登录
-//    listener->login();
-//
-//    absl::ParseCommandLine(argc, argv);
-//    RunServer(absl::GetFlag(FLAGS_port), listener);
-//    return 0;
-//}
+#include <iostream>
+#include <memory>
+#include <string>
+
+#include "absl/flags/flag.h"
+#include "absl/flags/parse.h"
+#include "absl/strings/str_format.h"
+
+#include <grpcpp/ext/proto_server_reflection_plugin.h>
+#include <grpcpp/grpcpp.h>
+#include <grpcpp/health_check_service_interface.h>
+
+#ifdef BAZEL_BUILD
+#include "examples/protos/helloworld.grpc.pb.h"
+#else
+
+#include "helloworld.grpc.pb.h"
+
+#endif
+
+#if defined(__linux__)
+#include <sys/socket.h>
+#include<unistd.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+#include<unistd.h>
+#endif
+
+#include<ydApi.h>
+#include<ydDataStruct.h>
+#include<ydDataType.h>
+#include<ydError.h>
+#include<ydUtil.h>
+#include<yd.h>
+#include <thread>
+
+using grpc::Server;
+using grpc::ServerBuilder;
+using grpc::ServerContext;
+using grpc::Status;
+using helloworld::Greeter;
+using helloworld::HelloReply;
+using helloworld::HelloRequest;
+
+ABSL_FLAG(uint16_t, port, 50051, "Server port for the service");
+
+// Logic and data behind the server's behavior.
+//定义了一个名为 GreeterServiceImpl 的类，该类继承自 Greeter::Service，并实现了 SayHello 方法：
+class GreeterServiceImpl final : public Greeter::Service {
+private:
+    myYDListener* listener; // 添加成员变量
+public:
+    // 构造函数，接收 myYDListener 对象作为参数
+    // 通过在构造函数声明前添加 explicit 关键字，你告诉编译器只能使用显式构造函数调用来创建 GreeterServiceImpl 对象，而不允许隐式转换。
+    explicit GreeterServiceImpl(myYDListener* listener) : listener(listener) {}
+
+//    SayHello 方法接收一个 HelloRequest 对象作为参数，将其中的名字与前缀 "Hello " 进行拼接，并将结果设置到 HelloReply 对象中，最后返回 Status::OK 表示成功。
+    Status SayHello(ServerContext *context, const HelloRequest *request,
+                    HelloReply *reply) override {
+        std::string prefix("Hello ");
+        reply->set_message(prefix + request->name());
+        listener->disconnect();
+
+        return Status::OK;
+    }
+};
+
+//定义了一个名为 RunServer 的函数，用于启动 gRPC 服务器：
+void RunServer(uint16_t port, myYDListener* listener) {
+    std::string server_address = absl::StrFormat("0.0.0.0:%d", port);
+    GreeterServiceImpl service(listener);
+
+    grpc::EnableDefaultHealthCheckService(true);
+    grpc::reflection::InitProtoReflectionServerBuilderPlugin();
+    ServerBuilder builder;
+    // Listen on the given address without any authentication mechanism.
+    builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
+    // Register "service" as the instance through which we'll communicate with
+    // clients. In this case it corresponds to an *synchronous* service.
+    builder.RegisterService(&service);
+    // Finally assemble the server.
+    std::unique_ptr<Server> server(builder.BuildAndStart());
+    std::cout << "Server listening on " << server_address << std::endl;
+
+    // Wait for the server to shutdown. Note that some other thread must be
+    // responsible for shutting down the server for this call to ever return.
+    server->Wait();
+}
+
+// 订阅行情
+void sub(myYDListener* listener)
+{
+    // 在后台执行的任务代码
+    std::cout << "Background task is running..." << std::endl;
+    // 这里可以添加更多的后台任务逻辑
+    string instrumentID = "fu2401";
+    listener->sub(instrumentID);
+//    listener->qryFund();
+}
+
+//absl::ParseCommandLine 用于解析命令行参数，absl::GetFlag(FLAGS_port) 获取 --port 参数的值，并将其作为参数传递给 RunServer 函数。
+int main(int argc, char **argv) {
+    // 加载yd 运行库
+    string userID, pwd, appID, authCode, exchangeID, ydApiFunc, useProtocol, udpTradeIP, udpTradePort;
+    read_and_print_user_info("../config_files/user_info.txt", userID, pwd, appID, authCode, exchangeID, ydApiFunc, useProtocol, udpTradePort);
+    getServerIP("../config_files/yd_config.txt", udpTradeIP);
+    cout << "当前易达API版本号：" << getYDVersion() << endl;
+    cout << "当前使用易达功能[basic(基础版) | extended(扩展版)]为：" << ydApiFunc << endl;
+    print_yd_config("../config_files/yd_config.txt");
+    myYDListener * listener = get_plistener(ydApiFunc, userID, pwd, appID, authCode, exchangeID, useProtocol, udpTradeIP, udpTradePort);
+    // 暂停执行 3 秒钟，等待listener 连接成功
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+    // 登录
+    listener->login();
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+//    std::thread taskThread(sub, listener);
+    listener->qryFund();
+    listener->qryPosition();
+    string instrumentID = "fu2401";
+    listener->sub(instrumentID);
+
+    absl::ParseCommandLine(argc, argv);
+    RunServer(absl::GetFlag(FLAGS_port), listener);
+    std::this_thread::sleep_for(std::chrono::seconds(300));
+    return 0;
+}
