@@ -33,6 +33,7 @@
 #include<ydUtil.h>
 #include<yd.h>
 #include <thread>
+#include <hiredis/hiredis.h>
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -95,11 +96,30 @@ void sub(myYDListener* listener)
     // 这里可以添加更多的后台任务逻辑
     string instrumentID = "fu2401";
     listener->sub(instrumentID);
-//    listener->qryFund();
 }
 
 //absl::ParseCommandLine 用于解析命令行参数，absl::GetFlag(FLAGS_port) 获取 --port 参数的值，并将其作为参数传递给 RunServer 函数。
 int main(int argc, char **argv) {
+    // 创建Redis连接
+    // Redis 服务器的主机和端口
+    const char* redis_host = "127.0.0.1"; // 根据实际情况修改主机地址
+    int redis_port = 6379; // 根据实际情况修改端口
+    // Redis 服务器的密码
+    const char* redis_password = "123456"; // 设置密码
+
+    // 创建 Redis 连接上下文
+    redisContext* context = redisConnect(redis_host, redis_port);
+
+    if (context == NULL || context->err) {
+        if (context) {
+            std::cerr << "Error: " << context->errstr << std::endl;
+            redisFree(context);
+        } else {
+            std::cerr << "Unable to allocate redis context" << std::endl;
+        }
+        return 1;
+    }
+
     // 加载yd 运行库
     string userID, pwd, appID, authCode, exchangeID, ydApiFunc, useProtocol, udpTradeIP, udpTradePort;
     read_and_print_user_info("../config_files/user_info.txt", userID, pwd, appID, authCode, exchangeID, ydApiFunc, useProtocol, udpTradePort);
@@ -107,20 +127,18 @@ int main(int argc, char **argv) {
     cout << "当前易达API版本号：" << getYDVersion() << endl;
     cout << "当前使用易达功能[basic(基础版) | extended(扩展版)]为：" << ydApiFunc << endl;
     print_yd_config("../config_files/yd_config.txt");
-    myYDListener * listener = get_plistener(ydApiFunc, userID, pwd, appID, authCode, exchangeID, useProtocol, udpTradeIP, udpTradePort);
+    myYDListener * listener = get_plistener(context,ydApiFunc, userID, pwd, appID, authCode, exchangeID, useProtocol, udpTradeIP, udpTradePort);
     // 暂停执行 3 秒钟，等待listener 连接成功
     std::this_thread::sleep_for(std::chrono::seconds(3));
     // 登录
     listener->login();
+    // 开启线程订阅行情
     std::this_thread::sleep_for(std::chrono::seconds(3));
-//    std::thread taskThread(sub, listener);
-    listener->qryFund();
-    listener->qryPosition();
-    string instrumentID = "fu2401";
-    listener->sub(instrumentID);
+    std::thread taskThread(sub, listener);
 
     absl::ParseCommandLine(argc, argv);
     RunServer(absl::GetFlag(FLAGS_port), listener);
     std::this_thread::sleep_for(std::chrono::seconds(300));
+    redisFree(context);
     return 0;
 }

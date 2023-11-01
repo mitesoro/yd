@@ -13,6 +13,8 @@
 #include<set>
 #include<unordered_map>
 #include<yd.h>
+#include <hiredis/hiredis.h>
+#include <json.hpp>
 
 using namespace std;
 
@@ -145,18 +147,18 @@ void read_and_print_user_info(const string &fname, string &userID, string &pwd, 
 	infile.close();
 }
 
-myYDListener * get_plistener(string &ydApiFunc, string &userID, string &pwd, string &appID, string &authCode, string &exchangeID, string useProtocol, string udpTradeIP, string udpTradePort)
+myYDListener * get_plistener(redisContext* context,string &ydApiFunc, string &userID, string &pwd, string &appID, string &authCode, string &exchangeID, string useProtocol, string udpTradeIP, string udpTradePort)
 {
 	const char *fname = "../config_files/config.txt";
 	if (ydApiFunc == "extended" && useProtocol == "no")
 	{
 		YDExtendedApi *ydApi = makeYDExtendedApi(fname);
-		return new myYDListener(ydApi, userID.c_str(), pwd.c_str(), appID.c_str(), authCode.c_str(), exchangeID);
+		return new myYDListener(ydApi, context,userID.c_str(), pwd.c_str(), appID.c_str(), authCode.c_str(), exchangeID);
 	}
 	else if (ydApiFunc == "extended" && useProtocol == "yes")
 	{
 		YDExtendedApi *ydApi = makeYDExtendedApi(fname);
-		return new myYDListenerUDP(ydApi, userID.c_str(), pwd.c_str(), appID.c_str(), authCode.c_str(), exchangeID, udpTradeIP, udpTradePort);
+		return new myYDListenerUDP(ydApi, context,userID.c_str(), pwd.c_str(), appID.c_str(), authCode.c_str(), exchangeID, udpTradeIP, udpTradePort);
 	}
 	else
 	{
@@ -167,7 +169,7 @@ myYDListener * get_plistener(string &ydApiFunc, string &userID, string &pwd, str
 
 // ==========================================   myYDListener 成员函数  ================================================
 // myYDListener的构造函数
-myYDListener::myYDListener(YDApi *ydApi, const char *userID, const char *pwd, const char *appID, const char *authCode, string exchangeID) : m_ydApi(ydApi), m_userID(userID), m_pwd(pwd), m_appID(appID), m_authCode(authCode)
+myYDListener::myYDListener(YDApi *ydApi, redisContext* context, const char *userID, const char *pwd, const char *appID, const char *authCode, string exchangeID) : m_ydApi(ydApi), m_context(context), m_userID(userID), m_pwd(pwd), m_appID(appID), m_authCode(authCode)
 {
 	m_exchangeID = stringToUpper(exchangeID);
 	if (!m_ydApi->start(this))
@@ -271,6 +273,54 @@ void myYDListener::notifyMarketData(const YDMarketData *pMarketData)
 	cout << "\t持仓量：" << pMarketData->OpenInterest;
 	cout << "\t成交量：" << pMarketData->Volume;
 	cout << endl;
+
+    // 将 YDMarketData 对象转换为 JSON
+    nlohmann::json json;
+    json["InstrumentRef"] = pMarketData->InstrumentRef; // 合约序号
+    json["TradingDay"] = pMarketData->TradingDay; // 交易日。
+    json["PreSettlementPrice"] = pMarketData->PreSettlementPrice; // 前结算价。
+    json["PreClosePrice"] = pMarketData->PreClosePrice; // 前收盘价。
+    json["PreOpenInterest"] = pMarketData->PreOpenInterest; // 前持仓量。
+    json["UpperLimitPrice"] = pMarketData->UpperLimitPrice; // 涨停板价。
+    json["LowerLimitPrice"] = pMarketData->LowerLimitPrice; // 跌停板价。
+    json["LastPrice"] = pMarketData->LastPrice; // 最新价。
+    json["BidPrice"] = pMarketData->BidPrice; // 买入价。为零代表无买入价。
+    json["AskPrice"] = pMarketData->AskPrice; // 卖出价。为零代表无卖出价。
+    json["BidVolume"] = pMarketData->BidVolume; // 买入量。为零代表无买入价。
+    json["AskVolume"] = pMarketData->AskVolume; // 卖出量。为零代表无卖出价。
+    json["Turnover"] = pMarketData->Turnover; // 成交金额。
+    json["OpenInterest"] = pMarketData->OpenInterest; // 持仓量。
+    json["Volume"] = pMarketData->Volume; // 成交量。
+    json["TimeStamp"] = pMarketData->TimeStamp; // 时间戳，是整数，表示从该交易日开始到此时间的毫秒数。每个交易日从17点开始，即17:00:00对应时间戳0。周一的时间和周六的不区分。
+    json["AveragePrice"] = pMarketData->AveragePrice; // 市场均价
+
+
+    // 打印 JSON 字符串
+    std::cout << json.dump() << std::endl;
+
+    const char* channel = "channel_name";
+    std::string json1 = json.dump();
+
+    // 构建命令参数数组
+    const char* argv[3];
+    size_t argvlen[3];
+
+    argv[0] = "PUBLISH";
+    argvlen[0] = strlen(argv[0]);
+
+    argv[1] = channel;
+    argvlen[1] = strlen(channel);
+
+    argv[2] = json1.c_str();
+    argvlen[2] = json1.length();
+
+    redisReply* reply = (redisReply*)redisCommandArgv(m_context, 3, argv, argvlen);
+    if (reply == NULL) {
+        std::cout << "Failed to publish message" << std::endl;
+    } else {
+        std::cout << "Message published: " << reply->integer << std::endl;
+        freeReplyObject(reply);
+    }
 }
 
 void myYDListener::unsub(string &instrumentID)
@@ -933,8 +983,8 @@ void myYDListener::notifyCaughtUp()
 	cout << "\tmyYDListener::notifyCaughtUp::可以开始API下单" << endl;
 }
 
-myYDListenerUDP::myYDListenerUDP(YDApi *ydApi, const char *userID, const char *pwd, const char *appID, const char *authCode, string exchangeID, string serverIP, string port):
-myYDListener::myYDListener(ydApi, userID, pwd, appID, authCode, exchangeID)
+myYDListenerUDP::myYDListenerUDP(YDApi *ydApi, redisContext* context,const char *userID, const char *pwd, const char *appID, const char *authCode, string exchangeID, string serverIP, string port):
+myYDListener::myYDListener(ydApi, context,userID, pwd, appID, authCode, exchangeID)
 {
 	// 构造服务器地址结构体
 	memset(&m_addr, 0, sizeof(m_addr));

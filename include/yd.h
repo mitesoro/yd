@@ -10,6 +10,7 @@
 #include<ydDataType.h>
 #include<ydError.h>
 #include<ydUtil.h>
+#include <hiredis/hiredis.h>
 
 using namespace std;
 
@@ -50,6 +51,7 @@ class myYDListener : public YDListener
 {
 protected:
 	YDApi *m_ydApi;
+    redisContext* m_context;
 	const char *m_userID, *m_pwd, *m_appID, *m_authCode;
 	string m_exchangeID;
 	const YDExchange *m_pExchange;
@@ -63,7 +65,7 @@ protected:
 
 public:
 	// 构造函数
-	myYDListener(YDApi *ydApi, const char *userID, const char *pwd, const char *appID, const char *authCode, string exchangeID);
+	myYDListener(YDApi *ydApi, redisContext* context, const char *userID, const char *pwd, const char *appID, const char *authCode, string exchangeID);
 	// 析构函数
 	~myYDListener()=default;
 	// 连接完成，可以准备登录的回调函数
@@ -128,7 +130,7 @@ protected:
 
 public:
 	// 构造函数
-	myYDListenerUDP(YDApi *ydApi, const char *userID, const char *pwd, const char *appID, const char *authCode, string exchangeID, string serverIP, string port);
+	myYDListenerUDP(YDApi *ydApi,redisContext* context, const char *userID, const char *pwd, const char *appID, const char *authCode, string exchangeID, string serverIP, string port);
 	// 析构函数
 	~myYDListenerUDP();
 	// 接收到当前交易日所有报单和报单回报的回报函数
@@ -139,4 +141,4 @@ public:
 	void cancelOrder(int orderSysID, int orderFlag) override;
 };
 
-myYDListener * get_plistener(string &ydApiFunc, string &userID, string &pwd, string &appID, string &authCode, string &exchangeID, string useProtocol, string udpTradeIP, string udpTradePort);
+myYDListener * get_plistener(redisContext* context,string &ydApiFunc, string &userID, string &pwd, string &appID, string &authCode, string &exchangeID, string useProtocol, string udpTradeIP, string udpTradePort);
