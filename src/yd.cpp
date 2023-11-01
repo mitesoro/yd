@@ -276,23 +276,23 @@ void myYDListener::notifyMarketData(const YDMarketData *pMarketData)
 
     // 将 YDMarketData 对象转换为 JSON
     nlohmann::json json;
-    json["InstrumentRef"] = pMarketData->InstrumentRef; // 合约序号
-    json["TradingDay"] = pMarketData->TradingDay; // 交易日。
-    json["PreSettlementPrice"] = pMarketData->PreSettlementPrice; // 前结算价。
-    json["PreClosePrice"] = pMarketData->PreClosePrice; // 前收盘价。
-    json["PreOpenInterest"] = pMarketData->PreOpenInterest; // 前持仓量。
-    json["UpperLimitPrice"] = pMarketData->UpperLimitPrice; // 涨停板价。
-    json["LowerLimitPrice"] = pMarketData->LowerLimitPrice; // 跌停板价。
-    json["LastPrice"] = pMarketData->LastPrice; // 最新价。
-    json["BidPrice"] = pMarketData->BidPrice; // 买入价。为零代表无买入价。
-    json["AskPrice"] = pMarketData->AskPrice; // 卖出价。为零代表无卖出价。
-    json["BidVolume"] = pMarketData->BidVolume; // 买入量。为零代表无买入价。
-    json["AskVolume"] = pMarketData->AskVolume; // 卖出量。为零代表无卖出价。
-    json["Turnover"] = pMarketData->Turnover; // 成交金额。
-    json["OpenInterest"] = pMarketData->OpenInterest; // 持仓量。
-    json["Volume"] = pMarketData->Volume; // 成交量。
-    json["TimeStamp"] = pMarketData->TimeStamp; // 时间戳，是整数，表示从该交易日开始到此时间的毫秒数。每个交易日从17点开始，即17:00:00对应时间戳0。周一的时间和周六的不区分。
-    json["AveragePrice"] = pMarketData->AveragePrice; // 市场均价
+    json["instrument_ref"] = pMarketData->InstrumentRef; // 合约序号
+    json["trading_day"] = pMarketData->TradingDay; // 交易日。
+    json["pre_settlement_price"] = pMarketData->PreSettlementPrice; // 前结算价。
+    json["pre_close_price"] = pMarketData->PreClosePrice; // 前收盘价。
+    json["pre_open_interest"] = pMarketData->PreOpenInterest; // 前持仓量。
+    json["upper_limit_price"] = pMarketData->UpperLimitPrice; // 涨停板价。
+    json["lower_limit_price"] = pMarketData->LowerLimitPrice; // 跌停板价。
+    json["last_price"] = pMarketData->LastPrice; // 最新价。
+    json["bid_price"] = pMarketData->BidPrice; // 买入价。为零代表无买入价。
+    json["ask_price"] = pMarketData->AskPrice; // 卖出价。为零代表无卖出价。
+    json["bid_volume"] = pMarketData->BidVolume; // 买入量。为零代表无买入价。
+    json["ask_volume"] = pMarketData->AskVolume; // 卖出量。为零代表无卖出价。
+    json["turnover"] = pMarketData->Turnover; // 成交金额。
+    json["open_interest"] = pMarketData->OpenInterest; // 持仓量。
+    json["volume"] = pMarketData->Volume; // 成交量。
+    json["time_stamp"] = pMarketData->TimeStamp; // 时间戳，是整数，表示从该交易日开始到此时间的毫秒数。每个交易日从17点开始，即17:00:00对应时间戳0。周一的时间和周六的不区分。
+    json["average_price"] = pMarketData->AveragePrice; // 市场均价
 
 
     // 打印 JSON 字符串
