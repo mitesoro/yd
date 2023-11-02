@@ -276,6 +276,7 @@ void myYDListener::notifyMarketData(const YDMarketData *pMarketData)
 
     // 将 YDMarketData 对象转换为 JSON
     nlohmann::json json;
+    json["symbol_id"] = pMarketData->m_pInstrument->InstrumentID; // 合约代码
     json["instrument_ref"] = pMarketData->InstrumentRef; // 合约序号
     json["trading_day"] = pMarketData->TradingDay; // 交易日。
     json["pre_settlement_price"] = pMarketData->PreSettlementPrice; // 前结算价。

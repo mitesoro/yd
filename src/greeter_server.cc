@@ -89,13 +89,32 @@ void RunServer(uint16_t port, myYDListener* listener) {
 }
 
 // 订阅行情
-void sub(myYDListener* listener)
+void sub(myYDListener* listener, redisContext* c)
 {
     // 在后台执行的任务代码
     std::cout << "Background task is running..." << std::endl;
     // 这里可以添加更多的后台任务逻辑
-    string instrumentID = "fu2401";
-    listener->sub(instrumentID);
+    while (true) {
+        std::cout << "Background task is running..." << std::endl;
+        // 获取hash的所有数据
+        redisReply* reply = (redisReply*)redisCommand(c, "HGETALL symbol");
+        if (reply == NULL) {
+            printf("Error: %s\n", c->errstr);
+        }
+        // 打印hash的所有数据
+        printf("reply->type: %d\n", reply->type);
+        if (reply->type == REDIS_REPLY_ARRAY) {
+            printf("reply->elements: %zu\n", reply->elements);
+            for (int i = 0; i < reply->elements; i += 2) {
+                printf("%s: %s\n", reply->element[i]->str, reply->element[i + 1]->str);
+                string instrumentID = reply->element[i]->str;
+                listener->sub(instrumentID);
+            }
+            // 释放回复对象
+            freeReplyObject(reply);
+        }
+        std::this_thread::sleep_for(std::chrono::minutes(10));
+    }
 }
 
 //absl::ParseCommandLine 用于解析命令行参数，absl::GetFlag(FLAGS_port) 获取 --port 参数的值，并将其作为参数传递给 RunServer 函数。
@@ -134,7 +153,7 @@ int main(int argc, char **argv) {
     listener->login();
     // 开启线程订阅行情
     std::this_thread::sleep_for(std::chrono::seconds(3));
-    std::thread taskThread(sub, listener);
+    std::thread taskThread(sub, listener, context);
 
     absl::ParseCommandLine(argc, argv);
     RunServer(absl::GetFlag(FLAGS_port), listener);
