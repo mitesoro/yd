@@ -113,7 +113,7 @@ void sub(myYDListener* listener, redisContext* c)
             // 释放回复对象
             freeReplyObject(reply);
         }
-        std::this_thread::sleep_for(std::chrono::minutes(1));
+        std::this_thread::sleep_for(std::chrono::minutes(720));
     }
 }
 

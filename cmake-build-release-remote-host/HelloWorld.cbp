@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="HelloWorld"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\common\;CMake Files\common\cmake\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\usr\;CMake Files\..\..\usr\lib\;CMake Files\..\..\usr\lib\cmake\;CMake Files\..\..\usr\lib\cmake\protobuf\;CMake Files\..\..\usr\lib\cmake\absl\;CMake Files\..\..\usr\lib\cmake\utf8_range\;CMake Files\..\..\usr\lib\cmake\grpc\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="hw_grpc_proto">
+				<Option output="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/libhw_grpc_proto.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DCARES_STATICLIB"/>
+					<Add directory="/usr/local/include/hiredis"/>
+					<Add directory="/tmp/tmp.4gw0p9Y8So/include"/>
+					<Add directory="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host"/>
+					<Add directory="/include"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 hw_grpc_proto"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="hw_grpc_proto/fast">
+				<Option output="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/libhw_grpc_proto.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DCARES_STATICLIB"/>
+					<Add directory="/usr/local/include/hiredis"/>
+					<Add directory="/tmp/tmp.4gw0p9Y8So/include"/>
+					<Add directory="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host"/>
+					<Add directory="/include"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 hw_grpc_proto/fast"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="greeter_server">
+				<Option output="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/greeter_server" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DCARES_STATICLIB"/>
+					<Add directory="/usr/local/include/hiredis"/>
+					<Add directory="/tmp/tmp.4gw0p9Y8So/include"/>
+					<Add directory="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host"/>
+					<Add directory="/include"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 greeter_server"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="greeter_server/fast">
+				<Option output="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/greeter_server" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DCARES_STATICLIB"/>
+					<Add directory="/usr/local/include/hiredis"/>
+					<Add directory="/tmp/tmp.4gw0p9Y8So/include"/>
+					<Add directory="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host"/>
+					<Add directory="/include"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 greeter_server/fast"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/helloworld.grpc.pb.cc">
+			<Option target="hw_grpc_proto"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/helloworld.grpc.pb.h">
+			<Option target="hw_grpc_proto"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/helloworld.pb.cc">
+			<Option target="hw_grpc_proto"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/helloworld.pb.cc.rule">
+			<Option target="hw_grpc_proto"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/cmake-build-release-remote-host/helloworld.pb.h">
+			<Option target="hw_grpc_proto"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/src/greeter_server.cc">
+			<Option target="greeter_server"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/src/yd.cpp">
+			<Option target="greeter_server"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/common/cmake/common.cmake">
+			<Option virtualFolder="CMake Files\common\cmake\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/protobuf/protobuf-config-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\protobuf\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/protobuf/protobuf-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\protobuf\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/protobuf/protobuf-generate.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\protobuf\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/protobuf/protobuf-options.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\protobuf\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/protobuf/protobuf-targets-noconfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\protobuf\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/protobuf/protobuf-targets.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\protobuf\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/absl/abslConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\absl\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/absl/abslConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\absl\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/absl/abslTargets-noconfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\absl\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/absl/abslTargets.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\absl\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/utf8_range/utf8_range-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\utf8_range\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/utf8_range/utf8_range-targets-noconfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\utf8_range\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/utf8_range/utf8_range-targets.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\utf8_range\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/grpc/gRPCConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\grpc\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/grpc/gRPCConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\grpc\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/grpc/gRPCPluginTargets-noconfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\grpc\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/grpc/gRPCPluginTargets.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\grpc\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/grpc/gRPCTargets-noconfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\grpc\"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.4gw0p9Y8So/../../usr/lib/cmake/grpc/gRPCTargets.cmake">
+			<Option virtualFolder="CMake Files\..\..\usr\lib\cmake\grpc\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
