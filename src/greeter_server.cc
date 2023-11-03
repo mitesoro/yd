@@ -43,6 +43,8 @@ using grpc::Status;
 using helloworld::Greeter;
 using helloworld::HelloReply;
 using helloworld::HelloRequest;
+using helloworld::OrderRequest;
+using helloworld::OrderReply;
 
 ABSL_FLAG(uint16_t, port, 50051, "Server port for the service");
 
@@ -61,8 +63,39 @@ public:
                     HelloReply *reply) override {
         std::string prefix("Hello ");
         reply->set_message(prefix + request->name());
-        listener->disconnect();
 
+        return Status::OK;
+    }
+
+    Status Order(ServerContext *context, const OrderRequest *request,
+                 OrderReply *reply) override {
+
+
+        Parameters params;
+        // 从 gRPC 请求中获取合约参数值
+
+        if (!request->c().empty()) { // 合约
+            params["/c"] = request->c();
+        }
+
+        if (request->p() > 0.0) { // 价格
+            params["/p"] = std::to_string(request->p());
+        }
+
+        if (request->v() > 0) { // 数量
+            params["/v"] = std::to_string(request->v());
+        }
+
+        if (request->buy()) {
+            params["buy"] = "buy";  // 设置 buy 参数
+        }
+
+        if (request->open()) {
+            params["open"] = "open";  // 设置 open 参数
+        }
+
+        listener->putOrder(params);
+        reply->set_name("name");
         return Status::OK;
     }
 };

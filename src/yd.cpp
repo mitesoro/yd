@@ -337,10 +337,12 @@ void myYDListener::unsub(string &instrumentID)
 			cerr << "\t网络断开，取消订阅失败" << endl;
 	}
 }
+// 定义参数类型
+using Parameters = std::unordered_map<std::string, std::string>;
 
-void myYDListener::putOrder(vector<string>::iterator beg, vector<string>::iterator end)
+void myYDListener::putOrder(const Parameters& params)
 {
-	YDInputOrder inputOrder;
+	YDInputOrder inputOrder{};
 	memset(&inputOrder, 0, sizeof(inputOrder));
 	// 默认市价(FAK)、投机
 	inputOrder.OrderType = YD_ODT_Market;
@@ -349,44 +351,46 @@ void myYDListener::putOrder(vector<string>::iterator beg, vector<string>::iterat
 	inputOrder.ConnectionSelectionType = YD_CS_Any;
 	inputOrder.OrderRef = ++m_maxOrderRef;
 	const YDInstrument *pInstrument = nullptr;
-	while (beg != end)
-	{
-		if (*beg == "/c")  //合约
-			pInstrument = m_ydApi->getInstrumentByID((++beg)->c_str());
-		else if (*beg == "/p")  //价格
-		{
-			inputOrder.Price = atof((++beg)->c_str());
-			if (inputOrder.Price > 0)
-				inputOrder.OrderType = YD_ODT_Limit;
-		}
-		else if (*beg == "/v")  //数量
-			inputOrder.OrderVolume = atoi((++beg)->c_str());
-		else if (*beg == "buy")  //买
-			inputOrder.Direction = YD_D_Buy;
-		else if (*beg == "sell")  //卖
-			inputOrder.Direction = YD_D_Sell;
-		else if (*beg == "open") //开仓
-			inputOrder.OffsetFlag = YD_OF_Open;
-		else if (*beg == "close")  //平仓
-			inputOrder.OffsetFlag = YD_OF_Close;
-		else if (*beg == "closetoday") //平今
-			inputOrder.OffsetFlag = YD_OF_CloseToday;
-		else if (*beg == "closeyes")  //平老
-			inputOrder.OffsetFlag = YD_OF_CloseYesterday;
-		else if (*beg == "forceclose")  // 强平
-			inputOrder.OffsetFlag = YD_OF_ForceClose;
-		else if (*beg == "hedge")  //套保
-			inputOrder.HedgeFlag = YD_HF_Hedge;
-		else if (*beg == "spec")  //投机
-			inputOrder.HedgeFlag = YD_HF_Speculation;
-		else if (*beg == "arbi")  //套利
-			inputOrder.HedgeFlag = YD_HF_Arbitrage;
-		else if (*beg == "fak")  // FAK
-			inputOrder.OrderType = YD_ODT_FAK;
-		else if (*beg == "fok")   // FOK
-			inputOrder.OrderType = YD_ODT_FOK;
-		++beg;
-	}
+    // 循环遍历参数字典
+    for (const auto& entry : params) {
+        const std::string& key = entry.first;
+        const std::string& value = entry.second;
+
+        if (key == "/c") {  // 合约
+            pInstrument = m_ydApi->getInstrumentByID(value.c_str());
+        } else if (key == "/p") {  // 价格
+            inputOrder.Price = atof(value.c_str());
+            if (inputOrder.Price > 0)
+                inputOrder.OrderType = YD_ODT_Limit;
+        } else if (key == "/v") {  // 数量
+            inputOrder.OrderVolume = atoi(value.c_str());
+        } else if (key == "buy") {  // 买
+            inputOrder.Direction = YD_D_Buy;
+        } else if (key == "sell") {  // 卖
+            inputOrder.Direction = YD_D_Sell;
+        } else if (key == "open") {  // 开仓
+            inputOrder.OffsetFlag = YD_OF_Open;
+        }else if (key == "close")  //平仓
+            inputOrder.OffsetFlag = YD_OF_Close;
+        else if (key == "closetoday") //平今
+            inputOrder.OffsetFlag = YD_OF_CloseToday;
+        else if (key == "closeyes")  //平老
+            inputOrder.OffsetFlag = YD_OF_CloseYesterday;
+        else if (key == "forceclose")  // 强平
+            inputOrder.OffsetFlag = YD_OF_ForceClose;
+        else if (key == "hedge")  //套保
+            inputOrder.HedgeFlag = YD_HF_Hedge;
+        else if (key == "spec")  //投机
+            inputOrder.HedgeFlag = YD_HF_Speculation;
+        else if (key == "arbi")  //套利
+            inputOrder.HedgeFlag = YD_HF_Arbitrage;
+        else if (key == "fak")  // FAK
+            inputOrder.OrderType = YD_ODT_FAK;
+        else if (key == "fok")   // FOK
+            inputOrder.OrderType = YD_ODT_FOK;
+        // 其他参数的处理
+    }
+
 	YDExtendedApi *ydExApi = static_cast<YDExtendedApi *>(m_ydApi);
 	if (ydExApi != nullptr)
 	{
@@ -444,13 +448,13 @@ void myYDListener::notifyOrder(const YDOrder *pOrder, const YDInstrument *pInstr
 	}
 }
 
-//void myYDListener::notifyFailedOrder(const YDInputOrder *pFailedOrder, const YDInstrument *pInstrument, const YDAccount *pAccount)
-//{
-//	cout << "\tnotifyFailedOrder::易达柜台拒绝报单" << endl;
-//	cout << "\tOrderRef: " << pFailedOrder->OrderRef;
-//	cout << "\t错误码：" << pFailedOrder->ErrorNo;
-//	cout << endl;
-//}
+void myYDListener::notifyFailedOrder(const YDInputOrder *pFailedOrder, const YDInstrument *pInstrument, const YDAccount *pAccount)
+{
+	cout << "\tnotifyFailedOrder::易达柜台拒绝报单" << endl;
+	cout << "\tOrderRef: " << pFailedOrder->OrderRef;
+	cout << "\t错误码：" << pFailedOrder->ErrorNo;
+	cout << endl;
+}
 
 void myYDListener::notifyTrade(const YDTrade *pTrade, const YDInstrument *pInstrument, const YDAccount *pAccount)
 {
@@ -1014,60 +1018,74 @@ void myYDListenerUDP::notifyCaughtUp()
 	cout << "\tmyYDListenerUDP::notifyCaughtUp::可以开始裸协议下单" << endl;
 }
 
-order_raw_protocol myYDListenerUDP::put_protocol_helper(vector<string>::iterator beg, vector<string>::iterator end)
-{
-	order_raw_protocol pro;
-	memset(&pro, 0, sizeof(order_raw_protocol));
-	int n = m_ydApi->getClientPacketHeader(m_ydApi->YD_CLIENT_PACKET_INSERT_ORDER, pro.header, 16);
-	if (n == 0)
-		cerr << "获取报单协议头失败" << endl;
-	// 默认市价、投机; 席位选定任意
-	pro.orderType = 2;
-	pro.hedgeFlag = 1;
-	pro.connectionSelection = 0; 
-	pro.orderRef = ++m_maxOrderRef;
-	while (beg != end)
-	{
-		if (*beg == "/c")  //合约
-			pro.instrumentRef = m_ydApi->getInstrumentByID((++beg)->c_str())->InstrumentRef;
-		else if (*beg == "/p")  //价格
-		{
-			pro.price = atof((++beg)->c_str());
-			if (pro.price > 0)
-				pro.orderType = 0;
-		}
-		else if (*beg == "/v")  //数量
-			pro.orderVolume = atoi((++beg)->c_str());
-		else if (*beg == "buy")  //买
-			pro.direction = 0;
-		else if (*beg == "sell")  //卖
-			pro.direction = 1;
-		else if (*beg == "open") //开仓
-			pro.offsetFlag = 0;
-		else if (*beg == "close")  //平仓
-			pro.offsetFlag = 1;
-		else if (*beg == "closetoday") //平今
-			pro.offsetFlag = 3;
-		else if (*beg == "closeyes")  //平老
-			pro.offsetFlag = 4;
-		else if (*beg == "hedge")  //套保
-			pro.hedgeFlag = 3;
-		else if (*beg == "spec")  //投机
-			pro.hedgeFlag = 1;
-		else if (*beg == "arbi")  //套利
-			pro.hedgeFlag = 2;
-		else if (*beg == "fak")  // FAK
-			pro.orderType = 1;
-		else if (*beg == "fok")   // FOK
-			pro.orderType = 3;
-		++beg;
-	}
-	return pro;
+
+order_raw_protocol myYDListenerUDP::put_protocol_helper(const Parameters& params) {
+    order_raw_protocol pro;
+    memset(&pro, 0, sizeof(order_raw_protocol));
+    int n = m_ydApi->getClientPacketHeader(m_ydApi->YD_CLIENT_PACKET_INSERT_ORDER, pro.header, 16);
+    if (n == 0) {
+        cerr << "获取报单协议头失败" << endl;
+    }
+
+    // 默认市价、投机; 席位选定任意
+    pro.orderType = 2;
+    pro.hedgeFlag = 1;
+    pro.connectionSelection = 0;
+    pro.orderRef = ++m_maxOrderRef;
+
+    if (params.find("/c") != params.end()) {  // 合约
+        const std::string& instrument = params.at("/c");
+        pro.instrumentRef = m_ydApi->getInstrumentByID(instrument.c_str())->InstrumentRef;
+    }
+
+    if (params.find("/p") != params.end()) {  // 价格
+        const std::string& priceStr = params.at("/p");
+        pro.price = atof(priceStr.c_str());
+        if (pro.price > 0) {
+            pro.orderType = 0;
+        }
+    }
+
+    if (params.find("/v") != params.end()) {  // 数量
+        const std::string& volumeStr = params.at("/v");
+        pro.orderVolume = atoi(volumeStr.c_str());
+    }
+
+    if (params.find("buy") != params.end()) {  // 买
+        pro.direction = 0;
+    } else if (params.find("sell") != params.end()) {  // 卖
+        pro.direction = 1;
+    }
+
+    if (params.find("open") != params.end()) {  // 开仓
+        pro.offsetFlag = 0;
+    } else if (params.find("close") != params.end()) {  // 平仓
+        pro.offsetFlag = 1;
+    } else if (params.find("closetoday") != params.end()) { // 平今
+        pro.offsetFlag = 3;
+    } else if (params.find("closeyes") != params.end()) {  // 平老
+        pro.offsetFlag = 4;
+    }
+
+    if (params.find("hedge") != params.end()) {  // 套保
+        pro.hedgeFlag = 3;
+    } else if (params.find("spec") != params.end()) {  // 投机
+        pro.hedgeFlag = 1;
+    } else if (params.find("arbi") != params.end()) {  // 套利
+        pro.hedgeFlag = 2;
+    } else if (params.find("fak") != params.end()) {  // FAK
+        pro.orderType = 1;
+    } else if (params.find("fok") != params.end()) {  // FOK
+        pro.orderType = 3;
+    }
+
+    return pro;
 }
 
-void myYDListenerUDP::putOrder(vector<string>::iterator beg, vector<string>::iterator end)
+
+void myYDListenerUDP::putOrder(const Parameters& params)
 {
-	order_raw_protocol pro = put_protocol_helper(beg, end);
+	order_raw_protocol pro = put_protocol_helper(params);
 	if (sendto(m_socket, (char *)&pro, sizeof(order_raw_protocol), 0, (sockaddr *)&m_addr, sizeof(m_addr)) == -1)
 		cerr << "裸协议报单(UDP)失败" << endl;
 	else

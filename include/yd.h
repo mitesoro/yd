@@ -11,6 +11,8 @@
 #include<ydError.h>
 #include<ydUtil.h>
 #include <hiredis/hiredis.h>
+#include <string>
+#include <unordered_map>
 
 using namespace std;
 
@@ -19,6 +21,8 @@ vector<string> splitCmdLine(string &cmdLine);  // 解析命令行
 void print_yd_config(const string &fname);
 void read_and_print_user_info(const string &fname, string &userID, string &pwd, string &appID, string &authCode, string &exchangeID, string &ydApiFunc, string &useProtocol, string &udpTradePort);
 void getServerIP(const string &fname, string &serverIP);
+
+using Parameters = std::unordered_map<std::string, std::string>;
 
 struct order_raw_protocol
 {
@@ -91,11 +95,11 @@ public:
 	// 取消订阅行情
 	void unsub(string &instrumentID);
 	// 下单
-	virtual void putOrder(vector<string>::iterator, vector<string>::iterator);
+	virtual void putOrder(const Parameters& params);
 	// 柜台报单成功回调
 	void notifyOrder(const YDOrder *pOrder, const YDInstrument *pInstrument, const YDAccount *pAccount) override;
 //	 柜台报单失败回调
-//	void notifyFailedCancelOrder(const YDFailedCancelOrder *pFailedCancelOrder,const YDExchange *pExchange,const YDAccount *pAccount) override;
+	void notifyFailedCancelOrder(const YDFailedCancelOrder *pFailedCancelOrder,const YDExchange *pExchange,const YDAccount *pAccount) override;
 	// 成交回调
 	void notifyTrade(const YDTrade *pTrade, const YDInstrument *pInstrument, const YDAccount *pAccount) override;
 	// 查询账户资金情况
@@ -113,7 +117,9 @@ public:
 	// 撤单
 	virtual void cancelOrder(int orderSysID, int orderFlag);
 	// 撤单失败的回调函数
-	void notifyFailedCancelOrder(const YDFailedCancelOrder *pFailedCancelOrder, const YDExchange *pExchange, const YDAccount *pAccount) override;
+//	void notifyFailedCancelOrder(const YDFailedCancelOrder *pFailedCancelOrder, const YDExchange *pExchange, const YDAccount *pAccount) override;
+    void
+    notifyFailedOrder(const YDInputOrder *pFailedOrder, const YDInstrument *pInstrument, const YDAccount *pAccount);
 };
 
 
@@ -124,7 +130,7 @@ protected:
 	int m_socket;
 	sockaddr_in m_addr;
 	//构造报单UDP包
-	order_raw_protocol put_protocol_helper(vector<string>::iterator beg, vector<string>::iterator end);
+	order_raw_protocol put_protocol_helper(const Parameters& params);
 	//构造撤单UDP包
 	cancel_raw_protocol cancel_protocol_helper(int orderSysID);
 
@@ -136,7 +142,7 @@ public:
 	// 接收到当前交易日所有报单和报单回报的回报函数
 	void notifyCaughtUp() override;
 	// 下单函数
-	void putOrder(vector<string>::iterator, vector<string>::iterator) override;
+	void putOrder(const Parameters& params) override;
 	// 撤单函数
 	void cancelOrder(int orderSysID, int orderFlag) override;
 };
