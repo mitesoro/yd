@@ -34,6 +34,7 @@
 #include<yd.h>
 #include <thread>
 #include <hiredis/hiredis.h>
+#include <unordered_set>
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -94,26 +95,27 @@ void sub(myYDListener* listener, redisContext* c)
     // 在后台执行的任务代码
     std::cout << "Background task is running..." << std::endl;
     // 这里可以添加更多的后台任务逻辑
+    std::unordered_set<std::string> subscribed;
     while (true) {
         std::cout << "Background task is running..." << std::endl;
-        // 获取hash的所有数据
         redisReply* reply = (redisReply*)redisCommand(c, "HGETALL symbol");
         if (reply == NULL) {
             printf("Error: %s\n", c->errstr);
         }
-        // 打印hash的所有数据
         printf("reply->type: %d\n", reply->type);
         if (reply->type == REDIS_REPLY_ARRAY) {
             printf("reply->elements: %zu\n", reply->elements);
             for (int i = 0; i < reply->elements; i += 2) {
                 printf("%s: %s\n", reply->element[i]->str, reply->element[i + 1]->str);
-                string instrumentID = reply->element[i]->str;
-                listener->sub(instrumentID);
+                std::string instrumentID = reply->element[i]->str;
+                if (subscribed.find(instrumentID) == subscribed.end()) {
+                    listener->sub(instrumentID);
+                    subscribed.insert(instrumentID);
+                }
             }
-            // 释放回复对象
             freeReplyObject(reply);
         }
-        std::this_thread::sleep_for(std::chrono::minutes(720));
+        std::this_thread::sleep_for(std::chrono::minutes(1));
     }
 }
 
