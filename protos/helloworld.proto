@@ -56,8 +56,11 @@ message OrderRequest {
   bool arbi = 13;  //套利
   bool fak = 14;  //fak
   bool fok = 15;  //fok
+  int32 order_id = 16;// 编号
 }
 
 message OrderReply {
-  string name = 1;
+  bool success = 1;
+  int32 orderRef = 2;
+  int32 errorNo = 3;
 }

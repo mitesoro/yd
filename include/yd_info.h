@@ -14,6 +14,6 @@
 #include "ydApi.h"
 #include "ydError.h"
 
-void startExample9(const char *configFilename,const char *username,const char *password,const char *instrumentID);
+void startExample5(const char *configFilename,const char *username,const char *password,const char *instrumentID);
 
 #endif

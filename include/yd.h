@@ -95,7 +95,7 @@ public:
 	// 取消订阅行情
 	void unsub(string &instrumentID);
 	// 下单
-	virtual void putOrder(const Parameters& params);
+	virtual std::tuple<bool, int, int>  putOrder(const Parameters& params);
 	// 柜台报单成功回调
 	void notifyOrder(const YDOrder *pOrder, const YDInstrument *pInstrument, const YDAccount *pAccount) override;
 //	 柜台报单失败回调
@@ -142,7 +142,7 @@ public:
 	// 接收到当前交易日所有报单和报单回报的回报函数
 	void notifyCaughtUp() override;
 	// 下单函数
-	void putOrder(const Parameters& params) override;
+    std::tuple<bool, int, int>  putOrder(const Parameters& params) override;
 	// 撤单函数
 	void cancelOrder(int orderSysID, int orderFlag) override;
 };

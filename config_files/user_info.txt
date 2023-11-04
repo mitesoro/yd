@@ -1,5 +1,5 @@
 exchangeid cffex
-userid 20103791
+userid 23300021
 pwd 12345678
 appid client_zhongdao_1.0
 authcode UYUPC4SXQ9I5E5G8

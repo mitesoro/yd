@@ -1,41 +1,56 @@
+#include <map>
 #include "ydExample.h"
 
-// ±¾Ê¾ÀýÕ¹ÏÖÁËÈçºÎÊ¹ÓÃ±¨µ¥×éµÄ¸ÅÄî
-// ±¨µ¥×éÓÐ¶àÖÖÓÃÍ¾
-// 1) ¶ÔÓÚÒ»¸ö±¨µ¥×éµÄ±¨µ¥µÄOrderRef½øÐÐÑÏ¸ñµÄ¹ÜÀí£¬È·±£OrderRefµÄµÝÔöÐÔºÍÎ¨Ò»ÐÔ£¬ÒÔ±ãÓ¦¶ÔÔÚUDP±¨µ¥Ê±¿ÉÄÜ³öÏÖµÄ¶ªµ¥»òÕßÖØ¸´·¢ËÍµÄÎÊÌâ
-// 2) ¶ÔÓÚ±¨µ¥×éÄÚµÄ±¨µ¥£¬¿ÉÒÔÊ¹ÓÃOrderRef³·µ¥£¬²»ÐèÒªOrderSysID£¬Ò²¾ÍÊÇ¿ÉÒÔÔÚÊÕµ½±¨µ¥»Ø±¨Ç°³·µ¥
-// 3) ¸÷¸ö±¨µ¥×éµÄOrderRef¶¼¶À×Ô¹ÜÀí£¬µ±Ò»¸öÕËºÅÐèÒª¶à¸ö³ÌÐòÍ¬Ê±µÇÂ¼ºÍ½»Ò×Ê±£¬¿ÉÒÔ»¥²»Ó°Ïì
+/*
+±¾Ê¾ÀýÍ¬Ê±Õ¹Ê¾ÏÂÁÐ¹¦ÄÜ
+ListOptionExecute:ÁÐ³öËùÓÐÓÐÐ§µÄÆÚÈ¨Ö´ÐÐµ¥
+InsertOptionExecute:²åÈëÒ»ÕÅÒ»ÊÖµÄÆÚÈ¨Ö´ÐÐµ¥
+CancelAllOptionExecute:É¾³ýËùÓÐÓÐÐ§µÄÆÚÈ¨Ö´ÐÐµ¥
+ListOptionAbandonExecute:ÁÐ³öËùÓÐÓÐÐ§µÄÆÚÈ¨·ÅÆúÖ´ÐÐµ¥
+InsertOptionAbandonExecute:²åÈëÒ»ÕÅÒ»ÊÖµÄÆÚÈ¨·ÅÆúÖ´ÐÐµ¥
+CancelAllOptionAbandonExecute:É¾³ýËùÓÐÓÐÐ§µÄÆÚÈ¨·ÅÆúÖ´ÐÐµ¥
+RequestForQuote:·¢³öÒ»ÕÅÑ¯¼Û£¨»ñÈ¡±ðÈËÑ¯¼ÛµÄÀý×Ó¼ûExample6£©
+*/
 
-// ÒªÊ¹ÓÃ±¨µ¥×é£¬ÐèÒªÓÐÒ»¸ö±¨µ¥×éºÅ¡£Ä¿Ç°Ò×´ïÖ§³ÖµÄ±¨µ¥×éºÅµÄ·¶Î§ÊÇ[1,63]¡£Èç¹û±¨µ¥×éºÅÎª0£¬±íÊ¾²»Ê¹ÓÃ±¨µ¥×é£¬OrderRef¾ÍÃ»ÓÐ±ØÒªµÝÔöºÍÎ¨Ò»ÁË£¬Ò²²»¿ÉÒÔÓÃOrderRef³·µ¥
-// Çë²»ÒªÊ¹ÓÃÆäËû±¨µ¥×éºÅ£¬Æä½á¹ûÊÇ²»È·¶¨µÄ
-static const int s_orderGroupID=5;
+const int ListOptionExecute=0;
+const int InsertOptionExecute=1;
+const int CancelAllOptionExecute=2;
+const int ListOptionAbandonExecute=3;
+const int InsertOptionAbandonExecute=4;
+const int CancelAllOptionAbandonExecute=5;
+const int RequestForQuote=6;
+const int PutOrder=7;
 
-class YDExample9Listener: public YDListener
+class YDExample5Listener: public YDListener
 {
 private:
     YDApi *m_pApi;
     const char *m_username,*m_password,*m_instrumentID;
-    int m_maxPosition;
     int m_maxOrderRef;
+    int m_action;
+    bool m_hasCaughtUp;
 
-    // Ö¸ÏòÏ£Íû½»Ò×µÄÆ·ÖÖ
+    // Ö¸ÏòÏ£Íû´¦ÀíµÄÆ·ÖÖ
     const YDInstrument *m_pInstrument;
 
-    // Ö¸ÏòÏ£Íû½»Ò×µÄÆ·ÖÖµÄÕË»§Æ·ÖÖÐÅÏ¢
-    const YDAccountInstrumentInfo *m_pAccountInstrumentInfo;
+    // ËùÓÐÓÐÐ§µÄÆÚÈ¨Ö´ÐÐµ¥£¬LongOrderSysID->YDOrder
+    std::map<long long,YDOrder> m_optionExecuteMap;
 
-    // ËµÃ÷µ±Ç°ÊÇ·ñÓÐ¹Òµ¥
-    bool m_hasOrder;
+    // ËùÓÐÓÐÐ§µÄÆÚÈ¨·ÅÆúÖ´ÐÐµ¥£¬LongOrderSysID->YDOrder
+    std::map<long long,YDOrder> m_optionAbandonExecuteMap;
+
+    // ×¢Òâ£¬ÉÏÊöÁ½¸ömap±ØÐë·Ö¿ª£¬ÒòÎª¸÷¸ö½»Ò×ËùÄÚµÄLongOrderSysID²¢²»ÊÇÖ÷Âë£¬(LongOrderSysID,YDOrderFlag)²ÅÄÜ¹¹³ÉÖ÷Âë
+
 public:
-    YDExample9Listener(YDApi *pApi,const char *username,const char *password,const char *instrumentID,int maxPosition)
+    YDExample5Listener(YDApi *pApi,const char *username,const char *password,const char *instrumentID,int action)
     {
         m_pApi=pApi;
         m_username=username;
         m_password=password;
         m_instrumentID=instrumentID;
-        m_maxPosition=maxPosition;
         m_maxOrderRef=0;
-        m_hasOrder=false;
+        m_action=action;
+        m_hasCaughtUp=false;
     }
     virtual void notifyReadyForLogin(bool hasLoginFailed)
     {
@@ -46,12 +61,15 @@ public:
             printf("can not login\n");
             exit(1);
         }
+        m_hasCaughtUp=false;
     }
-    virtual void notifyLogin(int errorNo,int maxOrderRef,bool isMonitor)
+    virtual void notifyLogin(int errorNo, int maxOrderRef, bool isMonitor)
     {
         // Ã¿´ÎµÇÂ¼ÏìÓ¦£¬¶¼»á»ñµÃ´ËÏûÏ¢£¬ÓÃ»§Ó¦µ±¸ù¾ÝerrorNoÀ´ÅÐ¶ÏÊÇ·ñµÇÂ¼³É¹¦
         if (errorNo==0)
         {
+            // µÇÂ¼³É¹¦ºó£¬Ó¦µ±¼ÇÂ¼µ±Ç°µÄ×î´ó±¨µ¥ÒýÓÃ£¬ÔÚ±¨µ¥Ê±ÓÃ¸ü´óµÄÊý×÷Îª±¨µ¥ÒýÓÃ£¬ÒÔ±ã³ÌÐòÍ¨¹ý±¨µ¥ÒýÓÃÀ´Ê¶±ð±¨µ¥
+            m_maxOrderRef=maxOrderRef;
             printf("login successfully\n");
         }
         else
@@ -61,11 +79,6 @@ public:
             printf("login failed, errorNo=%d\n",errorNo);
             exit(1);
         }
-    }
-    virtual void notifyGroupMaxOrderRef(const int groupMaxOrderRef[])
-    {
-        // Ã¿´ÎµÇÂ¼³É¹¦ºó£¬¶¼»á»Øµ÷´Ë·½·¨£¬Ó¦µ±¼ÇÂ¼µ±Ç°µÄÒªÊ¹ÓÃµÄ±¨µ¥×éµÄ×î´ó±¨µ¥ÒýÓÃ£¬ÔÚ±¨µ¥Ê±ÓÃ¸ü´óµÄÊý×÷Îª±¨µ¥ÒýÓÃ£¬ÒÔ±ã³ÌÐòÍ¨¹ý±¨µ¥ÒýÓÃÀ´Ê¶±ð±¨µ¥
-        m_maxOrderRef=groupMaxOrderRef[s_orderGroupID];
     }
     virtual void notifyFinishInit(void)
     {
@@ -84,162 +97,268 @@ public:
             printf("can not find instrument %s\n",m_instrumentID);
             exit(1);
         }
-        m_pAccountInstrumentInfo=m_pApi->getAccountInstrumentInfo(m_pInstrument);
-        // ÏÂÃæÕâ¸öÑ­»·Õ¹Ê¾ÁËÈçºÎ¸ù¾ÝÀúÊ·³Ö²ÖÐÅÏ¢£¬¼ÆËã¸ÃÆ·ÖÖµÄµ±Ç°³Ö²Ö¡£Èç¹ûÓÃ»§·ç¿ØºöÂÔÀúÊ·³Ö²Ö£¬¿ÉÒÔ²»Ê¹ÓÃ
-        for (int i=0;i<m_pApi->getPrePositionCount();i++)
-        {
-            const YDPrePosition *pPrePosition=m_pApi->getPrePosition(i);
-            if (pPrePosition->m_pInstrument==m_pInstrument)
-            {
-                if (pPrePosition->PositionDirection==YD_PD_Long)
-                {
-                    // ËùÓÐ¸÷¸ö½á¹¹ÖÐµÄUserInt1£¬UserInt2£¬UserFloat£¬pUser¶¼ÊÇ¹©ÓÃ»§×ÔÓÉÊ¹ÓÃµÄ£¬Æä³õÖµ¶¼ÊÇ0
-                    // ÔÚ±¾Àý×ÓÖÐ£¬ÎÒÃÇÊ¹ÓÃÕË»§ºÏÔ¼ÐÅÏ¢ÖÐµÄUserInt1±£´æµ±Ç°µÄ³Ö²ÖÐÅÏ¢
-                    m_pAccountInstrumentInfo->UserInt1+=pPrePosition->PrePosition;
-                }
-                else
-                {
-                    m_pAccountInstrumentInfo->UserInt1-=pPrePosition->PrePosition;
-                }
-            }
-        }
-        printf("Position=%d\n",m_pAccountInstrumentInfo->UserInt1);
-        m_pApi->subscribe(m_pInstrument);
     }
-    virtual void notifyMarketData(const YDMarketData *pMarketData)
+    virtual void notifyCaughtUp(void)
     {
-        if (m_pInstrument->m_pMarketData!=pMarketData)
+        m_hasCaughtUp=true;
+        switch (m_action)
         {
-            // ÓÉÓÚ¸÷¸öÆ·ÖÖµÄpMarketDataµÄµØÖ·ÊÇ¹Ì¶¨µÄ£¬ËùÒÔ¿ÉÒÔÓÃ´Ë·½·¨ºöÂÔ·Ç±¾Æ·ÖÖµÄÐÐÇé
-            return;
-        }
-        printf("notifyMarketData-------------------------\n");
-        printf("pMarketData->AskVolume=%d\n", pMarketData->AskVolume);
-        printf("pMarketData->BidVolume=%d\n", pMarketData->BidVolume);
-        if ((pMarketData->AskVolume==0)||(pMarketData->BidVolume==0))
-        {
-            // ºöÂÔÍ£°åÐÐÇé
-            return;
-        }
-        if (pMarketData->BidVolume-pMarketData->AskVolume>100)
-        {
-            // ¸ù¾Ý²ßÂÔÌõ¼þ£¬ÐèÒªÂòÈë
-            tryTrade(YD_D_Buy);
-        }
-        else if (pMarketData->AskVolume-pMarketData->BidVolume>100)
-        {
-            // ¸ù¾Ý²ßÂÔÌõ¼þ£¬ÐèÒªÂô³ö
-            tryTrade(YD_D_Sell);
+            case ListOptionExecute:
+                listOptionExecute();
+                break;
+            case InsertOptionExecute:
+                insertOptionExecute();
+                break;
+            case PutOrder:
+                putOrder();
+                break;
+            case CancelAllOptionExecute:
+                cancelAllOptionExecute();
+                break;
+            case ListOptionAbandonExecute:
+                listOptionAbandonExecute();
+                break;
+            case InsertOptionAbandonExecute:
+                insertOptionAbandonExecute();
+                break;
+            case CancelAllOptionAbandonExecute:
+                cancelAllOptionAbandonExecute();
+                break;
+            case RequestForQuote:
+                insertRequestForQuote();
+                break;
+            default:
+                break;
         }
     }
-    void tryTrade(int direction)
+    void showFailedOptionExecute(const YDOrder *pFailedOrder)
     {
-        if (m_hasOrder)
-        {
-            // Èç¹ûÓÐ¹Òµ¥£¬¾Í²»×öÁË
-            return;
-        }
-        YDInputOrder inputOrder;
-        // inputOrderÖÐµÄËùÓÐ²»ÓÃµÄ×Ö¶Î£¬Ó¦µ±Í³Ò»Çå0
-        memset(&inputOrder,0,sizeof(inputOrder));
-        if (direction==YD_D_Buy)
-        {
-            if (m_pAccountInstrumentInfo->UserInt1>=m_maxPosition)
-            {
-                // ¿ØÖÆÊÇ·ñ´ïµ½ÁËÏÞ²Ö
-                return;
-            }
-            if (m_pAccountInstrumentInfo->UserInt1>=0)
-            {
-                // ¿ØÖÆ¿ªÆ½²Ö£¬Õâ¸öÀý×ÓÖÐÃ»ÓÐ´¦ÀíSHFEºÍINEµÄÇø·Ö½ñ×ò²ÖµÄÇé¿ö
-                inputOrder.OffsetFlag=YD_OF_Open;
-            }
-            else
-            {
-                inputOrder.OffsetFlag=YD_OF_Close;
-            }
-            // ÓÉÓÚ±¾Àý×ÓÊ¹ÓÃµÄ²»ÊÇÊÐ¼Ûµ¥£¬ËùÒÔÐèÒªÖ¸¶¨¼Û¸ñ
-            inputOrder.Price=m_pInstrument->m_pMarketData->AskPrice;
-        }
-        else
-        {
-            if (m_pAccountInstrumentInfo->UserInt1<=-m_maxPosition)
-            {
-                return;
-            }
-            if (m_pAccountInstrumentInfo->UserInt1<=0)
-            {
-                inputOrder.OffsetFlag=YD_OF_Open;
-            }
-            else
-            {
-                inputOrder.OffsetFlag=YD_OF_Close;
-            }
-            inputOrder.Price=m_pInstrument->m_pMarketData->BidPrice;
-        }
-        inputOrder.Direction=direction;
-        inputOrder.HedgeFlag=YD_HF_Speculation;
-        inputOrder.OrderVolume=1;
-
-        // Ê¹ÓÃ±¾±¨µ¥×éµÄÏÂÒ»¸ö±¨µ¥ÒýÓÃ
-        inputOrder.OrderGroupID=s_orderGroupID;
-        inputOrder.OrderRef=++m_maxOrderRef;
-        // Èç¹ûGroupOrderRefControlÊÇYD_GORF_Increase£¬±íÊ¾Ï£ÍûydServer¼ì²éOrderRefµÄµÝÔöÐÔ
-        // Èç¹ûGroupOrderRefControlÊÇYD_GORF_IncreaseOne£¬±íÊ¾Ï£ÍûydServer¼ì²éOrderRef±ØÐèÊÇÇ°Ò»¸ö¼ÓÒ»
-        // ÕâÁ½ÖÖ·½Ê½¶¼¿ÉÒÔ·ÀÖ¹UDPÖØ¸´£¬Çø±ðÊÇÈçºÎÓ¦¶ÔUDP¶ªµ¥£º
-        //    YD_GORF_Increase±íÊ¾Ï£ÍûydServer¾¡Á¦´¦ÀíºóÃæµÄ±¨µ¥
-        //    YD_GORF_IncreaseOne±íÊ¾Ï£ÍûydServerÍ£Ö¹´¦Àí±¾±¨µ¥×éµÄ±¨µ¥£¬´ýÈË¹¤´¦ÀíºóÔÙ¼ÌÐø
-        inputOrder.GroupOrderRefControl=YD_GORF_Increase;
-
-        // Õâ¸öÀý×ÓÊ¹ÓÃÏÞ¼Ûµ¥
-        inputOrder.OrderType=YD_ODT_Limit;
-        // ËµÃ÷ÊÇÆÕÍ¨±¨µ¥
-        inputOrder.YDOrderFlag=YD_YOF_Normal;
-        // ËµÃ÷ÈçºÎÑ¡ÔñÁ¬½Ó
-        inputOrder.ConnectionSelectionType=YD_CS_Any;
-        // Èç¹ûConnectionSelectionType²»ÊÇYD_CS_Any£¬ÐèÒªÖ¸¶¨ConnectionID£¬·¶Î§ÊÇ0µ½¶ÔÓ¦µÄYDExchangeÖÐµÄConnectionCount-1
-        inputOrder.ConnectionID=0;
-        // inputOrderÖÐµÄRealConnectionIDºÍErrorNoÊÇÔÚ·µ»ØÊ±ÓÉ·þÎñÆ÷ÌîÐ´µÄ
-        if (m_pApi->insertOrder(&inputOrder,m_pInstrument))
-        {
-            m_hasOrder=true;
-
-            // ÔÚÊ¹ÓÃ±¨µ¥×éÊ±£¬¿ÉÒÔ²»µÈ±¨µ¥»Ø±¨£¬Ö±½Ó³·µ¥¡£²»¹ýÈç¹û´ËÊ±ydServer»¹Ã»ÓÐÊÕµ½½»Ò×ËùµÄ±¨µ¥»Ø±¨£¬ÄÜ¹»³·µ¥È¡¾öÓÚ½»Ò×ËùÊÇ·ñÖ§³ÖÊ¹ÓÃ±¾µØºÅ³·µ¥
-            YDCancelOrder cancelOrder;
-            memset(&cancelOrder,0,sizeof(cancelOrder));
-            cancelOrder.OrderGroupID=s_orderGroupID;
-            cancelOrder.OrderRef=inputOrder.OrderRef;
-            m_pApi->cancelOrder(&cancelOrder,m_pInstrument->m_pExchange);
-        }
+        printf("OptionExecuteFailed:Volume=%d ErrorNo=%d\n",pFailedOrder->OrderVolume,pFailedOrder->ErrorNo);
+    }
+    void showOptionExecute(const YDOrder *pOrder)
+    {
+        printf("OptionExecute:LongOrderSysID=%lld Volume=%d OrderStatus=%d\n",pOrder->LongOrderSysID,pOrder->OrderVolume,pOrder->OrderStatus);
+    }
+    void showFailedOptionAbandonExecute(const YDOrder *pFailedOrder)
+    {
+        printf("OptionAbandonExecuteFailed:Volume=%d ErrorNo=%d\n",pFailedOrder->OrderVolume,pFailedOrder->ErrorNo);
+    }
+    void showOptionAbandonExecute(const YDOrder *pOrder)
+    {
+        printf("OptionAbandonExecute:LongOrderSysID=%lld Volume=%d OrderStatus=%d\n",pOrder->LongOrderSysID,pOrder->OrderVolume,pOrder->OrderStatus);
     }
     virtual void notifyOrder(const YDOrder *pOrder,const YDInstrument *pInstrument,const YDAccount *pAccount)
     {
-        if ((pOrder->OrderGroupID==s_orderGroupID) && (pOrder->OrderStatus!=YD_OS_Queuing))
+        if (pOrder->ErrorNo == 0)
         {
-            m_hasOrder=false;
-        }
-    }
-    virtual void notifyTrade(const YDTrade *pTrade,const YDInstrument *pInstrument,const YDAccount *pAccount)
-    {
-        if (pTrade->OrderGroupID!=s_orderGroupID)
-        {
-            return;
-        }
-        if (pTrade->Direction==YD_D_Buy)
-        {
-            // ¸ù¾Ý³É½»£¬µ÷Õû³Ö²Ö
-            m_pAccountInstrumentInfo->UserInt1+=pTrade->Volume;
+            printf("\tnotifyOrder::交易所接受报单/撤单\n");
+            printf("\tOrderRef: %d OrderLocalID: %d\n",pOrder->OrderRef ,pOrder->OrderLocalID);
+            printf("\tOrderSysID %d\n",pOrder->OrderSysID);
+            printf("\t报单状态\n");
+
+            switch (pOrder->OrderStatus)
+            {
+                case YD_OS_Queuing:
+                    printf("交易所确认报单(部成或未成)");
+                    break;
+                case YD_OS_Canceled:
+                    printf( "报单已被撤销");
+                    break;
+                case YD_OS_AllTraded:
+                    printf("全部成交");
+                    break;
+                default:
+                    printf( "未知");
+            }
+            printf("\t报单已成交量：%d", pOrder->TradeVolume);
         }
         else
         {
-            m_pAccountInstrumentInfo->UserInt1-=pTrade->Volume;
+            printf( "\tnotifyOrder::交易所拒绝报单\n");
+            printf(  "\tOrderRef: %d\n" ,pOrder->OrderRef);
+            printf(   "\t错误码：%d\n", pOrder->ErrorNo);
         }
-        printf("%s %s %d at %g\n",(pTrade->Direction==YD_D_Buy?"buy":"sell"),(pTrade->OffsetFlag==YD_OF_Open?"open":"close"),pTrade->Volume,pTrade->Price);
-        printf("Position=%d\n",m_pAccountInstrumentInfo->UserInt1);
+
+        return;
+        if (pInstrument!=m_pInstrument)
+        {
+            return;
+        }
+        if (pOrder->YDOrderFlag==YD_YOF_OptionExecute)
+        {
+            // ÊÇÆÚÈ¨Ö´ÐÐ
+            if (m_hasCaughtUp)
+            {
+                // ÔÚÒÑ¾­×·ÉÏµÄÇé¿öÏÂ£¬Á¢¼´½«¸Ã±¨µ¥µÄÐÅÏ¢Êä³ö
+                if (pOrder->OrderStatus==YD_OS_Rejected)
+                {
+                    showFailedOptionExecute(pOrder);
+                }
+                else
+                {
+                    showOptionExecute(pOrder);
+                }
+            }
+            else
+            {
+                // Ã»ÓÐ×·ÉÏµÄÇé¿öÏÂ£¬½«ÐÅÏ¢±£´æ
+                if (pOrder->OrderStatus==YD_OS_Queuing)
+                {
+                    // ¸Ã±¨µ¥×´Ì¬ËµÃ÷¸Ã±¨µ¥±»½»Ò×Ëù½ÓÊÜ
+                    m_optionExecuteMap[pOrder->LongOrderSysID]=*pOrder;
+                }
+                else
+                {
+                    // ÆäËû×´Ì¬£¨Ö»¿ÉÄÜÊÇYD_OS_Canceled»òÕßYD_OS_Rejected£©ËµÃ÷¸Ã±¨µ¥Ò»¶¨ÎÞÐ§
+                    m_optionExecuteMap.erase(pOrder->LongOrderSysID);
+                }
+            }
+        }
+        else if (pOrder->YDOrderFlag==YD_YOF_OptionAbandonExecute)
+        {
+            // ÊÇÆÚÈ¨·ÅÆúÖ´ÐÐ
+            if (m_hasCaughtUp)
+            {
+                // ÔÚÒÑ¾­×·ÉÏµÄÇé¿öÏÂ£¬Á¢¼´½«¸Ã±¨µ¥µÄÐÅÏ¢Êä³ö
+                if (pOrder->OrderStatus==YD_OS_Rejected)
+                {
+                    showFailedOptionAbandonExecute(pOrder);
+                }
+                else
+                {
+                    showOptionAbandonExecute(pOrder);
+                }
+            }
+            else
+            {
+                // Ã»ÓÐ×·ÉÏµÄÇé¿öÏÂ£¬½«ÐÅÏ¢±£´æ
+                if (pOrder->OrderStatus==YD_OS_Queuing)
+                {
+                    // ¸Ã±¨µ¥×´Ì¬ËµÃ÷¸Ã±¨µ¥±»½»Ò×Ëù½ÓÊÜ
+                    m_optionAbandonExecuteMap[pOrder->LongOrderSysID]=*pOrder;
+                }
+                else
+                {
+                    // ÆäËû×´Ì¬£¨Ö»¿ÉÄÜÊÇYD_OS_Canceled»òÕßYD_OS_Rejected£©ËµÃ÷¸Ã±¨µ¥Ò»¶¨ÎÞÐ§
+                    m_optionAbandonExecuteMap.erase(pOrder->LongOrderSysID);
+                }
+            }
+        }
+    }
+    void listOptionExecute(void)
+    {
+        for (std::map<long long,YDOrder>::iterator it=m_optionExecuteMap.begin();it!=m_optionExecuteMap.end();it++)
+        {
+            showOptionExecute(&(it->second));
+        }
+    }
+    void insertOptionExecute(void)
+    {
+        YDInputOrder inputOrder;
+        // inputOrderÖÐµÄËùÓÐ²»ÓÃµÄ×Ö¶Î£¬Ó¦µ±Í³Ò»Çå0
+        memset(&inputOrder,0,sizeof(inputOrder));
+        inputOrder.YDOrderFlag=YD_YOF_OptionExecute;
+        inputOrder.OrderType=YD_ODT_Limit;
+        inputOrder.Direction=YD_D_Sell;
+        // ¿ªÆ½±êÖ¾Ò²¿ÉÄÜÊÇÆäËûÆ½²ÖÀàµÄ±êÖ¾
+        inputOrder.OffsetFlag=YD_OF_Close;
+        inputOrder.HedgeFlag=YD_HF_Speculation;
+        inputOrder.Price=0;
+        // ±¨µ¥ÊýÁ¿ÌîÐ´Êµ¼ÊÆÚÍûÖ´ÐÐµÄÆÚÈ¨ÊýÁ¿
+        inputOrder.OrderVolume=1;
+        inputOrder.OrderRef=++m_maxOrderRef;
+        m_pApi->insertOrder(&inputOrder,m_pInstrument);
+    }
+
+    void putOrder(void)
+    {
+        YDInputOrder inputOrder;
+        memset(&inputOrder, 0, sizeof(inputOrder));
+        // 默认市价(FAK)、投机
+        inputOrder.OrderType = YD_ODT_Market;
+        inputOrder.HedgeFlag = YD_HF_Speculation;
+        inputOrder.YDOrderFlag = YD_YOF_Normal;
+        inputOrder.ConnectionSelectionType = YD_CS_Any;
+        inputOrder.OrderRef = ++m_maxOrderRef;
+        const YDInstrument *pInstrument = nullptr;
+        m_pApi->insertOrder(&inputOrder,m_pInstrument);
+        pInstrument = m_pApi->getInstrumentByID("fu2401");
+        inputOrder.Direction = YD_D_Buy;
+        inputOrder.OffsetFlag = YD_OF_Open;
+        inputOrder.OrderVolume =1;
+        if (m_pApi->insertOrder(&inputOrder, pInstrument))
+        {
+            printf("\t【报单发送成功】\n");
+            printf("%d\n", inputOrder.OrderRef);
+        }
+        else
+            printf("报单发送失败，错误码： %d\n", inputOrder.ErrorNo);
+    }
+
+    void cancelAllOptionExecute(void)
+    {
+        for (std::map<long long,YDOrder>::iterator it=m_optionExecuteMap.begin();it!=m_optionExecuteMap.end();it++)
+        {
+            YDCancelOrder cancelOrder;
+            memset(&cancelOrder,0,sizeof(cancelOrder));
+            cancelOrder.YDOrderFlag=it->second.YDOrderFlag;
+            cancelOrder.LongOrderSysID=it->second.LongOrderSysID;
+            m_pApi->cancelOrder(&cancelOrder,m_pInstrument->m_pExchange);
+        }
+    }
+    void listOptionAbandonExecute(void)
+    {
+        for (std::map<long long,YDOrder>::iterator it=m_optionAbandonExecuteMap.begin();it!=m_optionAbandonExecuteMap.end();it++)
+        {
+            showOptionAbandonExecute(&(it->second));
+        }
+    }
+    void insertOptionAbandonExecute(void)
+    {
+        YDInputOrder inputOrder;
+        // inputOrderÖÐµÄËùÓÐ²»ÓÃµÄ×Ö¶Î£¬Ó¦µ±Í³Ò»Çå0
+        memset(&inputOrder,0,sizeof(inputOrder));
+        inputOrder.YDOrderFlag=YD_YOF_OptionAbandonExecute;
+        inputOrder.OrderType=YD_ODT_Limit;
+        inputOrder.Direction=YD_D_Sell;
+        // ¿ªÆ½±êÖ¾Ò²¿ÉÄÜÊÇÆäËûÆ½²ÖÀàµÄ±êÖ¾
+        inputOrder.OffsetFlag=YD_OF_Close;
+        inputOrder.HedgeFlag=YD_HF_Speculation;
+        inputOrder.Price=0;
+        // ±¨µ¥ÊýÁ¿ÌîÐ´Êµ¼ÊÆÚÍûÖ´ÐÐµÄÆÚÈ¨ÊýÁ¿
+        inputOrder.OrderVolume=1;
+        inputOrder.OrderRef=++m_maxOrderRef;
+        m_pApi->insertOrder(&inputOrder,m_pInstrument);
+    }
+    void cancelAllOptionAbandonExecute(void)
+    {
+        for (std::map<long long,YDOrder>::iterator it=m_optionAbandonExecuteMap.begin();it!=m_optionAbandonExecuteMap.end();it++)
+        {
+            YDCancelOrder cancelOrder;
+            memset(&cancelOrder,0,sizeof(cancelOrder));
+            cancelOrder.YDOrderFlag=it->second.YDOrderFlag;
+            cancelOrder.LongOrderSysID=it->second.LongOrderSysID;
+            m_pApi->cancelOrder(&cancelOrder,m_pInstrument->m_pExchange);
+        }
+    }
+    void insertRequestForQuote(void)
+    {
+        YDInputOrder inputOrder;
+        // inputOrderÖÐµÄËùÓÐ²»ÓÃµÄ×Ö¶Î£¬Ó¦µ±Í³Ò»Çå0
+        memset(&inputOrder,0,sizeof(inputOrder));
+        inputOrder.YDOrderFlag=YD_YOF_RequestForQuote;
+        inputOrder.OrderType=YD_ODT_Limit;
+        inputOrder.Direction=YD_D_Buy;
+        inputOrder.OffsetFlag=YD_OF_Open;
+        inputOrder.HedgeFlag=YD_HF_Speculation;
+        inputOrder.Price=0;
+        inputOrder.OrderVolume=0;
+        inputOrder.OrderRef=++m_maxOrderRef;
+        m_pApi->insertOrder(&inputOrder,m_pInstrument);
     }
 };
 
-void startExample9(const char *configFilename,const char *username,const char *password,const char *instrumentID)
+void startExample5(const char *configFilename,const char *username,const char *password,const char *instrumentID)
 {
     /// ËùÓÐYDApiµÄÆô¶¯¶¼ÓÉÏÂÁÐÈý²½¹¹³É
 
@@ -251,7 +370,8 @@ void startExample9(const char *configFilename,const char *username,const char *p
         exit(1);
     }
     // ´´½¨ApiµÄ¼àÌýÆ÷
-    YDExample9Listener *pListener=new YDExample9Listener(pApi,username,password,instrumentID,3);
+    int action=PutOrder;		// ¿ÉÒÔ¸ü»»ÎªÆäËûÏ£Íû½øÐÐµÄ²Ù×÷¡£×¢Òâ£¬²»ÊÇÃ¿¼Ò½»Ò×Ëù¶¼Ö§³ÖÕâÐ©ÒµÎñ
+    YDExample5Listener *pListener=new YDExample5Listener(pApi,username,password,instrumentID,action);
     /// Æô¶¯Api
     if (!pApi->start(pListener))
     {

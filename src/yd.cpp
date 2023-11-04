@@ -340,7 +340,7 @@ void myYDListener::unsub(string &instrumentID)
 // 定义参数类型
 using Parameters = std::unordered_map<std::string, std::string>;
 
-void myYDListener::putOrder(const Parameters& params)
+std::tuple<bool, int, int>  myYDListener::putOrder(const Parameters& params)
 {
 	YDInputOrder inputOrder{};
 	memset(&inputOrder, 0, sizeof(inputOrder));
@@ -349,7 +349,6 @@ void myYDListener::putOrder(const Parameters& params)
 	inputOrder.HedgeFlag = YD_HF_Speculation;
 	inputOrder.YDOrderFlag = YD_YOF_Normal;
 	inputOrder.ConnectionSelectionType = YD_CS_Any;
-	inputOrder.OrderRef = ++m_maxOrderRef;
 	const YDInstrument *pInstrument = nullptr;
     // 循环遍历参数字典
     for (const auto& entry : params) {
@@ -388,7 +387,9 @@ void myYDListener::putOrder(const Parameters& params)
             inputOrder.OrderType = YD_ODT_FAK;
         else if (key == "fok")   // FOK
             inputOrder.OrderType = YD_ODT_FOK;
-        // 其他参数的处理
+        else if (key == "order_id") {
+            inputOrder.OrderRef = atoi(value.c_str());
+        }
     }
 
 	YDExtendedApi *ydExApi = static_cast<YDExtendedApi *>(m_ydApi);
@@ -398,9 +399,12 @@ void myYDListener::putOrder(const Parameters& params)
 		{
 			cout << "\t【报单检查正确，发送成功】" << endl;
 			cout << "\tOrderRef: " << inputOrder.OrderRef << endl;
+            return std::make_tuple(true, inputOrder.OrderRef, 0);
 		}
-		else
-			cout << "\t报单失败，错误码：" << inputOrder.ErrorNo << endl;
+		else{
+            cout << "\t报单失败，错误码：" << inputOrder.ErrorNo << endl;
+            return std::make_tuple(false, inputOrder.OrderRef, inputOrder.ErrorNo);
+        }
 	}
 	else
 	{
@@ -408,19 +412,24 @@ void myYDListener::putOrder(const Parameters& params)
 		{
 			cout << "\t【报单发送成功】" << endl;
 			cout << "\tOrderRef: " << inputOrder.OrderRef << endl;
+            return std::make_tuple(true, inputOrder.OrderRef, 0);
 		}
-		else
-			cout << "\t报单发送失败，错误码：" << inputOrder.ErrorNo << endl;
+		else{
+            cout << "\t报单发送失败，错误码：" << inputOrder.ErrorNo << endl;
+            return std::make_tuple(false, inputOrder.OrderRef, inputOrder.ErrorNo);
+        }
 	}
 }
 
 void myYDListener::notifyOrder(const YDOrder *pOrder, const YDInstrument *pInstrument, const YDAccount *pAccount)
 {
+
 	if (pOrder->ErrorNo == 0)
 	{
 		cout << "\tnotifyOrder::交易所接受报单/撤单" << endl;
 		cout << "\tOrderRef: " << pOrder->OrderRef << "\tOrderLocalID: " << pOrder->OrderLocalID;
 		cout << "\tOrderSysID: " << pOrder->OrderSysID;
+		cout << "\tLongOrderSysID: " << pOrder->LongOrderSysID;
 		cout << "\t报单状态：";
 		switch (pOrder->OrderStatus)
 		{
@@ -446,6 +455,39 @@ void myYDListener::notifyOrder(const YDOrder *pOrder, const YDInstrument *pInstr
 		cout << "\t错误码：" << pOrder->ErrorNo;
 		cout << endl;
 	}
+
+    // 将 YDMarketData 对象转换为 JSON
+    nlohmann::json json;
+    json["order_ref"] = pOrder->OrderRef; // 订单序号
+    json["order_local_id"] = pOrder->OrderLocalID; // d
+    json["long_order_sys_id"] = pOrder->LongOrderSysID; // d
+    json["order_status"] = pOrder->OrderStatus; // 报单状态
+    json["trade_volume"] = pOrder->TradeVolume; // 报单已成交量
+    json["error_no"] = pOrder->ErrorNo; // 交易日。
+
+    const char* channel = "channel_notify_order";
+    std::string json1 = json.dump();
+
+    // 构建命令参数数组
+    const char* argv[3];
+    size_t argvlen[3];
+
+    argv[0] = "PUBLISH";
+    argvlen[0] = strlen(argv[0]);
+
+    argv[1] = channel;
+    argvlen[1] = strlen(channel);
+
+    argv[2] = json1.c_str();
+    argvlen[2] = json1.length();
+
+    redisReply* reply = (redisReply*)redisCommandArgv(m_context, 3, argv, argvlen);
+    if (reply == NULL) {
+        std::cout << "Failed to publish message" << std::endl;
+    } else {
+        std::cout << "Message published: " << reply->integer << std::endl;
+        freeReplyObject(reply);
+    }
 }
 
 void myYDListener::notifyFailedOrder(const YDInputOrder *pFailedOrder, const YDInstrument *pInstrument, const YDAccount *pAccount)
@@ -1083,15 +1125,20 @@ order_raw_protocol myYDListenerUDP::put_protocol_helper(const Parameters& params
 }
 
 
-void myYDListenerUDP::putOrder(const Parameters& params)
+std::tuple<bool, int, int>  myYDListenerUDP::putOrder(const Parameters& params)
 {
 	order_raw_protocol pro = put_protocol_helper(params);
-	if (sendto(m_socket, (char *)&pro, sizeof(order_raw_protocol), 0, (sockaddr *)&m_addr, sizeof(m_addr)) == -1)
-		cerr << "裸协议报单(UDP)失败" << endl;
+	if (sendto(m_socket, (char *)&pro, sizeof(order_raw_protocol), 0, (sockaddr *)&m_addr, sizeof(m_addr)) == -1){
+        cerr << "裸协议报单(UDP)失败" << endl;
+        return std::make_tuple(false, pro.orderRef, 0);
+    }
+
+
 	else
 	{
 		cout << "\t【裸协议报单(UDP)发送成功】" << endl;
 		cout << "\tOrderRef: " << pro.orderRef << endl;
+        return std::make_tuple(true, pro.orderRef, 0);
 	}
 }
 

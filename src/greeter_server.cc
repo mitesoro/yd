@@ -63,39 +63,69 @@ public:
                     HelloReply *reply) override {
         std::string prefix("Hello ");
         reply->set_message(prefix + request->name());
-
         return Status::OK;
     }
 
     Status Order(ServerContext *context, const OrderRequest *request,
                  OrderReply *reply) override {
-
-
         Parameters params;
         // 从 gRPC 请求中获取合约参数值
-
         if (!request->c().empty()) { // 合约
             params["/c"] = request->c();
         }
-
         if (request->p() > 0.0) { // 价格
             params["/p"] = std::to_string(request->p());
         }
-
         if (request->v() > 0) { // 数量
             params["/v"] = std::to_string(request->v());
         }
-
+        if (request->order_id() > 0) {
+            params["order_id"] = std::to_string(request->order_id());
+        }
         if (request->buy()) {
             params["buy"] = "buy";  // 设置 buy 参数
         }
-
         if (request->open()) {
             params["open"] = "open";  // 设置 open 参数
         }
+        if (request->sell()) {
+            params["sell"] = "sell";
+        }
+        if (request->close()) {
+            params["close"] = "close";
+        }
+        if (request->closetoday()) {
+            params["closetoday"] = "closetoday";
+        }
+        if (request->closeyes()) {
+            params["closeyes"] = "closeyes";
+        }
+        if (request->forceclose()) {
+            params["forceclose"] = "forceclose";
+        }
+        if (request->hedge()) {
+            params["hedge"] = "hedge";
+        }
+        if (request->spec()) {
+            params["spec"] = "spec";
+        }
+        if (request->arbi()) {
+            params["arbi"] = "arbi";
+        }
+        if (request->fak()) {
+            params["fak"] = "fak";
+        }
+        if (request->fok()) {
+            params["fok"] = "fok";
+        }
+        bool success;
+        int orderRef;
+        int errorNo;
 
-        listener->putOrder(params);
-        reply->set_name("name");
+        std::tie(success, orderRef, errorNo) = listener->putOrder(params);
+        reply->set_success(success);
+        reply->set_orderref(orderRef);
+        reply->set_errorno(errorNo);
         return Status::OK;
     }
 };
