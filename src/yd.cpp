@@ -171,6 +171,7 @@ myYDListener * get_plistener(redisContext* context,string &ydApiFunc, string &us
 // myYDListener的构造函数
 myYDListener::myYDListener(YDApi *ydApi, redisContext* context, const char *userID, const char *pwd, const char *appID, const char *authCode, string exchangeID) : m_ydApi(ydApi), m_context(context), m_userID(userID), m_pwd(pwd), m_appID(appID), m_authCode(authCode)
 {
+    cout << "-----------------"<< exchangeID << "\n"<< endl;
 	m_exchangeID = stringToUpper(exchangeID);
 	if (!m_ydApi->start(this))
 		cout << "无法启动ydApi" << endl;
@@ -387,11 +388,7 @@ std::tuple<bool, int, int>  myYDListener::putOrder(const Parameters& params)
             inputOrder.OrderType = YD_ODT_FAK;
         else if (key == "fok")   // FOK
             inputOrder.OrderType = YD_ODT_FOK;
-        else if (key == "order_id") {
-            inputOrder.OrderRef = atoi(value.c_str());
-        }
     }
-
 	YDExtendedApi *ydExApi = static_cast<YDExtendedApi *>(m_ydApi);
 	if (ydExApi != nullptr)
 	{
@@ -461,6 +458,7 @@ void myYDListener::notifyOrder(const YDOrder *pOrder, const YDInstrument *pInstr
     json["order_ref"] = pOrder->OrderRef; // 订单序号
     json["order_local_id"] = pOrder->OrderLocalID; // d
     json["long_order_sys_id"] = pOrder->LongOrderSysID; // d
+    json["order_sys_id"] = pOrder->OrderSysID; // d
     json["order_status"] = pOrder->OrderStatus; // 报单状态
     json["trade_volume"] = pOrder->TradeVolume; // 报单已成交量
     json["error_no"] = pOrder->ErrorNo; // 交易日。
@@ -810,6 +808,7 @@ void myYDListener::qryPosition()
 
 void showOrder(const YDExtendedOrder *pOrder)
 {
+	cout << "\tOrderRef: " << pOrder->OrderRef;
 	cout << "\tOrderSysID: " << pOrder->OrderSysID;
 	cout << "\t合约代码: " << pOrder->m_pInstrument->InstrumentID;
 	cout << "\t买卖方向：";
@@ -865,37 +864,52 @@ void showOrder(const YDExtendedOrder *pOrder)
 	cout << endl;
 }
 
-void myYDListener::qryOrderSys(int orderSysID)
+int myYDListener::qryOrderSys(int orderSysID)
 {
 	cout << "\t【orderSysID报单查询】" << endl;
 	YDExtendedApi *ydExApi = static_cast<YDExtendedApi *>(m_ydApi);
 	if (ydExApi != nullptr)
 	{
 		const YDExtendedOrder *pOrder = ydExApi->getOrder(orderSysID, m_pExchange);
-		if (pOrder == nullptr)
-			cerr << "\tOrderSysID错误，查无此单" << endl;
-		else
-			showOrder(pOrder);
+		if (pOrder == nullptr){
+            cerr << "\tOrderSysID错误，查无此单" << endl;
+            return -1;
+        }
+		else{
+            showOrder(pOrder);
+            return pOrder->OrderStatus;
+        }
 	}
-	else
-		cout << "\t易达基础版没有报单查询功能" << endl;
+	else{
+        cout << "\t易达基础版没有报单查询功能" << endl;
+        return -1;
+    }
+
 }
 
-void myYDListener::qryOrderRef(int orderRef)
+int myYDListener::qryOrderRef(int orderRef)
 {
 	cout << "\t【orderRef报单查询】" << endl;
-	const YDAccount * pAccount = m_ydApi->getAccount(0);
+	cout << "\t" << orderRef << endl;
+	const YDAccount *pAccount = m_ydApi->getAccount(0);
 	YDExtendedApi *ydExApi = static_cast<YDExtendedApi *>(m_ydApi);
 	if (ydExApi != nullptr)
 	{
 		const YDExtendedOrder *pOrder = ydExApi->getOrder(orderRef,0, pAccount);
-		if (pOrder == nullptr)
-			cerr << "\tOrderSysID错误，查无此单" << endl;
-		else
-			showOrder(pOrder);
+		if (pOrder == nullptr){
+            cerr << "\tOrderSysID错误，查无此单" << endl;
+            return -1;
+        }
+        else{
+            showOrder(pOrder);
+            return pOrder->OrderStatus;
+        }
+
 	}
-	else
-		cout << "\t易达基础版没有报单查询功能" << endl;
+	else{
+        cout << "\t易达基础版没有报单查询功能" << endl;
+        return -1;
+    }
 }
 
 void myYDListener::qryOrders()

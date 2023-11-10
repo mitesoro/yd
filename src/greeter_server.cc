@@ -45,6 +45,8 @@ using helloworld::HelloReply;
 using helloworld::HelloRequest;
 using helloworld::OrderRequest;
 using helloworld::OrderReply;
+using helloworld::QueryOrderReply;
+using helloworld::QueryOrderRequest;
 
 ABSL_FLAG(uint16_t, port, 50051, "Server port for the service");
 
@@ -63,6 +65,20 @@ public:
                     HelloReply *reply) override {
         std::string prefix("Hello ");
         reply->set_message(prefix + request->name());
+        return Status::OK;
+    }
+    // 参数要引用 QueryOrderRequest
+    Status QueryOrder(ServerContext *context, const QueryOrderRequest *request,
+                      QueryOrderReply *reply) override {
+        reply->set_os(listener->qryOrderSys(request->or_()));
+        listener->qryOrders();
+        return Status::OK;
+    }
+
+    Status CancelOrder(ServerContext *context, const QueryOrderRequest *request,
+                      QueryOrderReply *reply) override {
+        listener->cancelOrder(request->or_(), YD_YOF_Normal);
+
         return Status::OK;
     }
 
@@ -121,14 +137,22 @@ public:
         bool success;
         int orderRef;
         int errorNo;
-
+        printParams(params);
         std::tie(success, orderRef, errorNo) = listener->putOrder(params);
         reply->set_success(success);
         reply->set_orderref(orderRef);
         reply->set_errorno(errorNo);
         return Status::OK;
     }
+
+    static void printParams(const Parameters& params) {
+        for (const auto& pair : params) {
+            std::cout << pair.first << ": " << pair.second << std::endl;
+        }
+    }
 };
+
+
 
 //定义了一个名为 RunServer 的函数，用于启动 gRPC 服务器：
 void RunServer(uint16_t port, myYDListener* listener) {

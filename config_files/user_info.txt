@@ -1,4 +1,4 @@
-exchangeid cffex
+exchangeid SHFE
 userid 23300021
 pwd 12345678
 appid client_zhongdao_1.0

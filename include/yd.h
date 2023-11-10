@@ -107,9 +107,9 @@ public:
 	// 查询持仓
 	void qryPosition();
 	// 通过orderSysID查询报单
-	void qryOrderSys(int orderSysID);
+	int qryOrderSys(int orderSysID);
 	// 通过orderRef查询报单
-	void qryOrderRef(int orderRef);
+	int qryOrderRef(int orderRef);
 	// 查询全部报单信息
 	void qryOrders();
 	// 查询成交信息
