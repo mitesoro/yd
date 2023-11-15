@@ -231,10 +231,12 @@ int main(int argc, char **argv) {
     // 加载yd 运行库
     string userID, pwd, appID, authCode, exchangeID, ydApiFunc, useProtocol, udpTradeIP, udpTradePort;
     read_and_print_user_info("../config_files/user_info.txt", userID, pwd, appID, authCode, exchangeID, ydApiFunc, useProtocol, udpTradePort);
-    getServerIP("../config_files/yd_config.txt", udpTradeIP);
+//    getServerIP("../config_files/yd_config.txt", udpTradeIP);
+    getServerIP("../config_files/config.txt", udpTradeIP);
     cout << "当前易达API版本号：" << getYDVersion() << endl;
     cout << "当前使用易达功能[basic(基础版) | extended(扩展版)]为：" << ydApiFunc << endl;
-    print_yd_config("../config_files/yd_config.txt");
+    print_yd_config("../config_files/config.txt");
+//    print_yd_config("../config_files/yd_config.txt");
     myYDListener * listener = get_plistener(context,ydApiFunc, userID, pwd, appID, authCode, exchangeID, useProtocol, udpTradeIP, udpTradePort);
     // 暂停执行 3 秒钟，等待listener 连接成功
     std::this_thread::sleep_for(std::chrono::seconds(3));

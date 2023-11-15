@@ -3,7 +3,7 @@
 RecoverySiteCount=0
 
 # IP address of yd trading server
-TradingServerIP=119.188.3.11
+TradingServerIP=140.207.169.179
 
 # Port of yd Trading server, other ports will be delivered after logged in
 
@@ -11,7 +11,7 @@ TradingServerIP=119.188.3.11
 # TradingServerPort=40500
 
 # 上期所 shfe / 能源所 ine
-TradingServerPort=40000
+TradingServerPort=5010
 
 # 大商所 dce
 # TradingServerPort=42500

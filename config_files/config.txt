@@ -7,10 +7,10 @@
 RecoverySiteCount=0
 
 # IP address of primary trading server
-TradingServerIP=119.188.3.11
+TradingServerIP=140.207.169.179
 
 # TCP port of primary trading server, other ports will be delivered after logged in
-TradingServerPort=40000
+TradingServerPort=5010
 
 # IP address of secondary trading server. 
 # Valid only when RecoverySiteCount equals to 2.
