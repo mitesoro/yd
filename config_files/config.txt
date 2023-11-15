@@ -25,7 +25,7 @@ TradingServerPort2=51000
 ###########################################
 
 # Choose trading protocol, optional values are TCP, UDP, XTCP
-TradingProtocol=UDP
+TradingProtocol=TCP
 
 # Affinity CPU ID for thread to receive order/trade notifications, -1 indicate no need to set CPU affinity
 TCPTradingCPUID=-1

@@ -245,35 +245,35 @@ void myYDListener::sub(string &instrumentID)
 
 void myYDListener::notifyMarketData(const YDMarketData *pMarketData)
 {
-	cout << "\tnotifyMarketData::当前行情" << endl;
-	cout << "\t合约代码：" << pMarketData->m_pInstrument->InstrumentID;
-	cout << "\t交易日：" << pMarketData->TradingDay;
-	cout << "\t前结算价：" << pMarketData->PreSettlementPrice;
-	cout << "\t前收盘价：" << pMarketData->PreClosePrice;
-	cout << "\t前持仓量：" << pMarketData->PreOpenInterest;
-	cout << "\t涨停价：" << pMarketData->UpperLimitPrice;
-	cout << "\t跌停价：" << pMarketData->LowerLimitPrice;
-	cout << "\t最新价：" << pMarketData->LastPrice;
-	if (pMarketData->BidPrice)
-		cout << "\t买入价：" << pMarketData->BidPrice;
-	else
-		cout << "\t无买入价";
-	if (pMarketData->AskPrice)
-		cout << "\t卖出价：" << pMarketData->AskPrice;
-	else
-		cout << "\t无卖出价";
-	if (pMarketData->BidVolume)
-		cout << "\t买入量：" << pMarketData->BidVolume;
-	else
-		cout << "\t无买入量";
-	if (pMarketData->AskVolume)
-		cout << "\t卖出量：" << pMarketData->AskVolume;
-	else
-		cout << "\t无卖出量";
-	cout << "\t成交金额：" << pMarketData->Turnover;
-	cout << "\t持仓量：" << pMarketData->OpenInterest;
-	cout << "\t成交量：" << pMarketData->Volume;
-	cout << endl;
+//	cout << "\tnotifyMarketData::当前行情" << endl;
+//	cout << "\t合约代码：" << pMarketData->m_pInstrument->InstrumentID;
+//	cout << "\t交易日：" << pMarketData->TradingDay;
+//	cout << "\t前结算价：" << pMarketData->PreSettlementPrice;
+//	cout << "\t前收盘价：" << pMarketData->PreClosePrice;
+//	cout << "\t前持仓量：" << pMarketData->PreOpenInterest;
+//	cout << "\t涨停价：" << pMarketData->UpperLimitPrice;
+//	cout << "\t跌停价：" << pMarketData->LowerLimitPrice;
+//	cout << "\t最新价：" << pMarketData->LastPrice;
+//	if (pMarketData->BidPrice)
+//		cout << "\t买入价：" << pMarketData->BidPrice;
+//	else
+//		cout << "\t无买入价";
+//	if (pMarketData->AskPrice)
+//		cout << "\t卖出价：" << pMarketData->AskPrice;
+//	else
+//		cout << "\t无卖出价";
+//	if (pMarketData->BidVolume)
+//		cout << "\t买入量：" << pMarketData->BidVolume;
+//	else
+//		cout << "\t无买入量";
+//	if (pMarketData->AskVolume)
+//		cout << "\t卖出量：" << pMarketData->AskVolume;
+//	else
+//		cout << "\t无卖出量";
+//	cout << "\t成交金额：" << pMarketData->Turnover;
+//	cout << "\t持仓量：" << pMarketData->OpenInterest;
+//	cout << "\t成交量：" << pMarketData->Volume;
+//	cout << endl;
 
     // 将 YDMarketData 对象转换为 JSON
     nlohmann::json json;
@@ -298,7 +298,7 @@ void myYDListener::notifyMarketData(const YDMarketData *pMarketData)
 
 
     // 打印 JSON 字符串
-    std::cout << json.dump() << std::endl;
+//    std::cout << json.dump() << std::endl;
 
     const char* channel = "channel_name";
     std::string json1 = json.dump();
@@ -320,7 +320,7 @@ void myYDListener::notifyMarketData(const YDMarketData *pMarketData)
     if (reply == NULL) {
         std::cout << "Failed to publish message" << std::endl;
     } else {
-        std::cout << "Message published: " << reply->integer << std::endl;
+//        std::cout << "Message published: " << reply->integer << std::endl;
         freeReplyObject(reply);
     }
 }
@@ -483,7 +483,7 @@ void myYDListener::notifyOrder(const YDOrder *pOrder, const YDInstrument *pInstr
     if (reply == NULL) {
         std::cout << "Failed to publish message" << std::endl;
     } else {
-        std::cout << "Message published: " << reply->integer << std::endl;
+//        std::cout << "Message published: " << reply->integer << std::endl;
         freeReplyObject(reply);
     }
 }
