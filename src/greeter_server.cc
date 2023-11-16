@@ -183,7 +183,11 @@ void sub(myYDListener* listener, redisContext* c)
     std::cout << "Background task is running..." << std::endl;
     // 这里可以添加更多的后台任务逻辑
     std::unordered_set<std::string> subscribed;
+    int taskState = 0;  // 任务状态标记，0表示未执行，1表示8点已执行，2表示20点已执行
     while (true) {
+        auto now = std::chrono::system_clock::now();
+        time_t tt = std::chrono::system_clock::to_time_t(now);
+        tm local_tm = *localtime(&tt);
         std::cout << "Background task is running..." << std::endl;
         redisReply* reply = (redisReply*)redisCommand(c, "HGETALL symbol");
         if (reply == NULL) {
@@ -203,6 +207,19 @@ void sub(myYDListener* listener, redisContext* c)
             freeReplyObject(reply);
         }
         std::this_thread::sleep_for(std::chrono::minutes(1));
+        if (local_tm.tm_hour == 8 && taskState == 0) {
+            taskState = 1;
+            listener->login();
+            subscribed.clear();
+        }
+        if (local_tm.tm_hour == 20 && taskState == 1) {
+            taskState = 2;
+            listener->login();
+            subscribed.clear();
+        }
+        if (local_tm.tm_hour == 21&& taskState == 2) {
+            taskState = 0;
+        }
     }
 }
 
