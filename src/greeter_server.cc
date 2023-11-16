@@ -225,6 +225,13 @@ void sub(myYDListener* listener, redisContext* c)
 
 //absl::ParseCommandLine 用于解析命令行参数，absl::GetFlag(FLAGS_port) 获取 --port 参数的值，并将其作为参数传递给 RunServer 函数。
 int main(int argc, char **argv) {
+    // 获取当前时间
+    auto now = std::chrono::system_clock::now();
+    // 转换为 time_t 类型
+    auto now_c = std::chrono::system_clock::to_time_t(now);
+    // 打印时间
+    std::cout << std::put_time(std::localtime(&now_c), "%Y-%m-%d %H:%M:%S") << std::endl;
+
     // 创建Redis连接
     // Redis 服务器的主机和端口
     const char* redis_host = "127.0.0.1"; // 根据实际情况修改主机地址
