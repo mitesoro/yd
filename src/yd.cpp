@@ -389,6 +389,7 @@ std::tuple<bool, int, int>  myYDListener::putOrder(const Parameters& params)
         else if (key == "fok")   // FOK
             inputOrder.OrderType = YD_ODT_FOK;
     }
+    inputOrder.OrderGroupID = 5;
 	YDExtendedApi *ydExApi = static_cast<YDExtendedApi *>(m_ydApi);
 	if (ydExApi != nullptr)
 	{
@@ -1022,6 +1023,7 @@ void myYDListener::cancelOrder(int orderSysID, int orderFlag)
 	cancel_order.ConnectionSelectionType = YD_CS_Any;
 	cancel_order.YDOrderFlag = orderFlag;
 	cancel_order.OrderSysID = orderSysID;
+    cancel_order.OrderGroupID = 5;
 	if (m_ydApi->cancelOrder(&cancel_order, m_pExchange))
 	{
 		cout << "\t【撤单发送成功】" << endl;

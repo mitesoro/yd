@@ -188,16 +188,12 @@ void sub(myYDListener* listener, redisContext* c)
         auto now = std::chrono::system_clock::now();
         time_t tt = std::chrono::system_clock::to_time_t(now);
         tm local_tm = *localtime(&tt);
-        std::cout << "Background task is running..." << std::endl;
         redisReply* reply = (redisReply*)redisCommand(c, "HGETALL symbol");
         if (reply == NULL) {
             printf("Error: %s\n", c->errstr);
         }
-        printf("reply->type: %d\n", reply->type);
         if (reply->type == REDIS_REPLY_ARRAY) {
-            printf("reply->elements: %zu\n", reply->elements);
             for (int i = 0; i < reply->elements; i += 2) {
-                printf("%s: %s\n", reply->element[i]->str, reply->element[i + 1]->str);
                 std::string instrumentID = reply->element[i]->str;
                 if (subscribed.find(instrumentID) == subscribed.end()) {
                     listener->sub(instrumentID);
@@ -230,7 +226,7 @@ int main(int argc, char **argv) {
     // 转换为 time_t 类型
     auto now_c = std::chrono::system_clock::to_time_t(now);
     // 打印时间
-    std::cout << std::put_time(std::localtime(&now_c), "%Y-%m-%d %H:%M:%S") << std::endl;
+    std::cout << "----- 服务启动 ----- " << std::put_time(std::localtime(&now_c), "%Y-%m-%d %H:%M:%S") << std::endl;
 
     // 创建Redis连接
     // Redis 服务器的主机和端口
