@@ -208,7 +208,7 @@ void sub(myYDListener* listener, redisContext* c)
             listener->login();
             subscribed.clear();
         }
-        if (local_tm.tm_hour == 20 && taskState == 1) {
+        if (local_tm.tm_hour == 20 && local_tm.tm_min == 55 && taskState == 1) {
             taskState = 2;
             listener->login();
             subscribed.clear();
