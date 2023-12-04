@@ -1,5 +1,5 @@
 exchangeid SHFE
-userid 21402783
+userid 23900271
 pwd 12345678
 appid client_zhongdao_1.0
 authcode UYUPC4SXQ9I5E5G8
