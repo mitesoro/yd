@@ -184,6 +184,7 @@ void sub(myYDListener* listener, redisContext* c)
     // 这里可以添加更多的后台任务逻辑
     std::unordered_set<std::string> subscribed;
     int taskState = 0;  // 任务状态标记，0表示未执行，1表示8点已执行，2表示20点已执行
+    int taskState1 = 0;  // 任务状态标记，0表示未执行，1表示8点已执行，2表示20点已执行
     while (true) {
         auto now = std::chrono::system_clock::now();
         time_t tt = std::chrono::system_clock::to_time_t(now);
@@ -204,17 +205,26 @@ void sub(myYDListener* listener, redisContext* c)
         }
         std::this_thread::sleep_for(std::chrono::minutes(1));
         if (local_tm.tm_hour == 8 && taskState == 0) {
+            // 转换为 time_t 类型
+            auto now_c = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+            std::cout << "----- 重新登录 ----- " << std::put_time(std::localtime(&now_c), "%Y-%m-%d %H:%M:%S") << std::endl;
             taskState = 1;
             listener->login();
             subscribed.clear();
         }
-        if (local_tm.tm_hour == 20 && local_tm.tm_min == 55 && taskState == 1) {
-            taskState = 2;
+        if (local_tm.tm_hour == 20 && local_tm.tm_min == 55 && taskState1 == 0) {
+            // 转换为 time_t 类型
+            auto now_c = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+            std::cout << "----- 重新登录 ----- " << std::put_time(std::localtime(&now_c), "%Y-%m-%d %H:%M:%S") << std::endl;
+            taskState1 = 1;
             listener->login();
             subscribed.clear();
         }
-        if (local_tm.tm_hour == 21&& taskState == 2) {
+        if (local_tm.tm_hour == 21&& taskState == 1) {
             taskState = 0;
+        }
+        if (local_tm.tm_hour == 21&& taskState1 == 1) {
+            taskState1 = 0;
         }
     }
 }
