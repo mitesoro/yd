@@ -401,6 +401,7 @@ std::tuple<bool, int, int>  myYDListener::putOrder(const Parameters& params)
 		}
 		else{
             cout << "\t报单失败，错误码：" << inputOrder.ErrorNo << endl;
+            cout << "\tOrderRef: " << inputOrder.OrderRef << endl;
             return std::make_tuple(false, inputOrder.OrderRef, inputOrder.ErrorNo);
         }
 	}
