@@ -391,6 +391,8 @@ std::tuple<bool, int, int>  myYDListener::putOrder(const Parameters& params)
     }
     inputOrder.OrderGroupID = 5;
 	YDExtendedApi *ydExApi = static_cast<YDExtendedApi *>(m_ydApi);
+    inputOrder.OrderRef = ydExApi->getNextOrderRef(inputOrder.OrderGroupID, true);
+    cout << "\tgetNextOrderRef OrderRef: " << inputOrder.OrderRef << endl;
 	if (ydExApi != nullptr)
 	{
 		if (ydExApi->checkAndInsertOrder(&inputOrder, pInstrument))
