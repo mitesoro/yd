@@ -393,34 +393,46 @@ std::tuple<bool, int, int>  myYDListener::putOrder(const Parameters& params)
 	YDExtendedApi *ydExApi = static_cast<YDExtendedApi *>(m_ydApi);
     inputOrder.OrderRef = ++m_maxOrderRef;
     cout << "\tgetNextOrderRef OrderRef: " << inputOrder.OrderRef << endl;
-	if (ydExApi != nullptr)
-	{
-		if (ydExApi->checkAndInsertOrder(&inputOrder, pInstrument))
-		{
-			cout << "\t【报单检查正确，发送成功】" << endl;
-			cout << "\tcheckAndInsertOrder OrderRef: " << inputOrder.OrderRef << endl;
-            return std::make_tuple(true, inputOrder.OrderRef, 0);
-		}
-		else{
-            cout << "\t报单失败，错误码：" << inputOrder.ErrorNo << endl;
-            cout << "\tcheckAndInsertOrder OrderRef: " << inputOrder.OrderRef << endl;
-            return std::make_tuple(false, inputOrder.OrderRef, inputOrder.ErrorNo);
-        }
-	}
-	else
-	{
-		if (m_ydApi->insertOrder(&inputOrder, pInstrument))
-		{
-			cout << "\t【报单发送成功】" << endl;
-			cout << "\tinsertOrder OrderRef: " << inputOrder.OrderRef << endl;
-            return std::make_tuple(true, inputOrder.OrderRef, 0);
-		}
-		else{
-            cout << "\t报单发送失败，错误码：" << inputOrder.ErrorNo << endl;
-            cout << "\tinsertOrder OrderRef: " << inputOrder.OrderRef << endl;
-            return std::make_tuple(false, inputOrder.OrderRef, inputOrder.ErrorNo);
-        }
-	}
+//	if (ydExApi != nullptr)
+//	{
+//		if (ydExApi->checkAndInsertOrder(&inputOrder, pInstrument))
+//		{
+//			cout << "\t【报单检查正确，发送成功】" << endl;
+//			cout << "\tcheckAndInsertOrder OrderRef: " << inputOrder.OrderRef << endl;
+//            return std::make_tuple(true, inputOrder.OrderRef, 0);
+//		}
+//		else{
+//            cout << "\t报单失败，错误码：" << inputOrder.ErrorNo << endl;
+//            cout << "\tcheckAndInsertOrder OrderRef: " << inputOrder.OrderRef << endl;
+//            return std::make_tuple(false, inputOrder.OrderRef, inputOrder.ErrorNo);
+//        }
+//	}
+//	else
+//	{
+//		if (m_ydApi->insertOrder(&inputOrder, pInstrument))
+//		{
+//			cout << "\t【报单发送成功】" << endl;
+//			cout << "\tinsertOrder OrderRef: " << inputOrder.OrderRef << endl;
+//            return std::make_tuple(true, inputOrder.OrderRef, 0);
+//		}
+//		else{
+//            cout << "\t报单发送失败，错误码：" << inputOrder.ErrorNo << endl;
+//            cout << "\tinsertOrder OrderRef: " << inputOrder.OrderRef << endl;
+//            return std::make_tuple(false, inputOrder.OrderRef, inputOrder.ErrorNo);
+//        }
+//	}
+
+    if (m_ydApi->insertOrder(&inputOrder, pInstrument))
+    {
+        cout << "\t【报单发送成功】" << endl;
+        cout << "\tinsertOrder OrderRef: " << inputOrder.OrderRef << endl;
+        return std::make_tuple(true, inputOrder.OrderRef, 0);
+    }
+    else{
+        cout << "\t报单发送失败，错误码：" << inputOrder.ErrorNo << endl;
+        cout << "\tinsertOrder OrderRef: " << inputOrder.OrderRef << endl;
+        return std::make_tuple(false, inputOrder.OrderRef, inputOrder.ErrorNo);
+    }
 }
 
 void myYDListener::notifyOrder(const YDOrder *pOrder, const YDInstrument *pInstrument, const YDAccount *pAccount)
