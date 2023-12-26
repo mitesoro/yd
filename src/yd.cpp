@@ -389,7 +389,7 @@ std::tuple<bool, int, int>  myYDListener::putOrder(const Parameters& params)
         else if (key == "fok")   // FOK
             inputOrder.OrderType = YD_ODT_FOK;
     }
-    inputOrder.OrderGroupID = 5;
+    inputOrder.OrderGroupID = 0;
 	YDExtendedApi *ydExApi = static_cast<YDExtendedApi *>(m_ydApi);
     inputOrder.OrderRef = ++m_maxOrderRef;
     cout << "\tgetNextOrderRef OrderRef: " << inputOrder.OrderRef << endl;

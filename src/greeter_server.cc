@@ -238,7 +238,7 @@ int main(int argc, char **argv) {
     // 转换为 time_t 类型
     auto now_c = std::chrono::system_clock::to_time_t(now);
     // 打印时间
-    std::cout << "----- 服务启动1 ----- " << std::put_time(std::localtime(&now_c), "%Y-%m-%d %H:%M:%S") << std::endl;
+    std::cout << "----- 服务启动2 ----- " << std::put_time(std::localtime(&now_c), "%Y-%m-%d %H:%M:%S") << std::endl;
 
     // 创建Redis连接
     // Redis 服务器的主机和端口
