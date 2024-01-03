@@ -68,6 +68,7 @@ protected:
 	void qry_position_dce(YDExtendedApi *);
 
 public:
+    static std::string getCurrentTimeAsString();
 	// 构造函数
 	myYDListener(YDApi *ydApi, redisContext* context, const char *userID, const char *pwd, const char *appID, const char *authCode, string exchangeID);
 	// 析构函数
@@ -120,6 +121,8 @@ public:
 //	void notifyFailedCancelOrder(const YDFailedCancelOrder *pFailedCancelOrder, const YDExchange *pExchange, const YDAccount *pAccount) override;
     void
     notifyFailedOrder(const YDInputOrder *pFailedOrder, const YDInstrument *pInstrument, const YDAccount *pAccount);
+
+    void notifyEvent(int apiEvent) override;
 };
 
 

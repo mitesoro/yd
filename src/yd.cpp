@@ -15,6 +15,7 @@
 #include<yd.h>
 #include <hiredis/hiredis.h>
 #include <json.hpp>
+#include <ctime>
 
 using namespace std;
 
@@ -200,6 +201,28 @@ void myYDListener::notifyLogin(int errorNo, int maxOrderRef, bool isMonitor)
 		cout << "\tnotifyLogin::登录成功" << endl;
 		m_maxOrderRef = maxOrderRef;
 	}
+}
+
+void myYDListener::notifyEvent(int apiEvent)
+{
+    // 调用 getCurrentTimeAsString 函数获取当前时间的字符串表示
+    std::string currentTimeString = getCurrentTimeAsString();
+    cout << "\tnotifyEvent:: 事件回调，事件类型：" << apiEvent << currentTimeString << endl;
+}
+
+std::string myYDListener::getCurrentTimeAsString() {
+    // 获取当前时间
+    std::time_t currentTime = std::time(nullptr);
+
+    // 将当前时间转换为本地时间
+    std::tm* localTime = std::localtime(&currentTime);
+
+    // 使用 strftime 函数将本地时间格式化为字符串
+    char timeString[100];
+    std::strftime(timeString, sizeof(timeString), "%Y-%m-%d %H:%M:%S", localTime);
+
+    // 返回当前时间的字符串表示
+    return {timeString};
 }
 
 void myYDListener::notifyFinishInit()
