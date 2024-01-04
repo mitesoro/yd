@@ -207,7 +207,7 @@ void myYDListener::notifyEvent(int apiEvent)
 {
     // 调用 getCurrentTimeAsString 函数获取当前时间的字符串表示
     std::string currentTimeString = getCurrentTimeAsString();
-    cout << "\tnotifyEvent:: 事件回调，事件类型：" << apiEvent << currentTimeString << endl;
+    cout << "\t"<< currentTimeString <<" notifyEvent:: 事件回调，事件类型：" << apiEvent  << endl;
 }
 
 std::string myYDListener::getCurrentTimeAsString() {

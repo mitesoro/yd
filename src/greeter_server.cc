@@ -183,8 +183,8 @@ void sub(myYDListener* listener, redisContext* c)
     std::cout << "Background task is running..." << std::endl;
     // 这里可以添加更多的后台任务逻辑
     std::unordered_set<std::string> subscribed;
-    int taskState = 0;  // 任务状态标记，0表示未执行，1表示8点已执行，2表示20点已执行
-    int taskState1 = 0;  // 任务状态标记，0表示未执行，1表示8点已执行，2表示20点已执行
+//    int taskState = 0;  // 任务状态标记，0表示未执行，1表示8点已执行，2表示20点已执行
+//    int taskState1 = 0;  // 任务状态标记，0表示未执行，1表示8点已执行，2表示20点已执行
     while (true) {
         auto now = std::chrono::system_clock::now();
         time_t tt = std::chrono::system_clock::to_time_t(now);
@@ -203,30 +203,30 @@ void sub(myYDListener* listener, redisContext* c)
             }
             freeReplyObject(reply);
         }
-        if (local_tm.tm_hour == 8 && taskState == 0) {
-            // 转换为 time_t 类型
-            auto now_c = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-            std::cout << "----- 重新登录 ----- " << std::put_time(std::localtime(&now_c), "%Y-%m-%d %H:%M:%S") << std::endl;
-            taskState = 1;
-            listener->login();
-            std::this_thread::sleep_for(std::chrono::seconds(3));
-            subscribed.clear();
-        }
-        if (local_tm.tm_hour == 20 && local_tm.tm_min == 55 && taskState1 == 0) {
-            // 转换为 time_t 类型
-            auto now_c = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-            std::cout << "----- 重新登录 ----- " << std::put_time(std::localtime(&now_c), "%Y-%m-%d %H:%M:%S") << std::endl;
-            taskState1 = 1;
-            listener->login();
-            std::this_thread::sleep_for(std::chrono::seconds(3));
-            subscribed.clear();
-        }
-        if (local_tm.tm_hour == 21&& taskState == 1) {
-            taskState = 0;
-        }
-        if (local_tm.tm_hour == 21&& taskState1 == 1) {
-            taskState1 = 0;
-        }
+//        if (local_tm.tm_hour == 8 && taskState == 0) {
+//            // 转换为 time_t 类型
+//            auto now_c = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+//            std::cout << "----- 重新登录 ----- " << std::put_time(std::localtime(&now_c), "%Y-%m-%d %H:%M:%S") << std::endl;
+//            taskState = 1;
+//            listener->login();
+//            std::this_thread::sleep_for(std::chrono::seconds(3));
+//            subscribed.clear();
+//        }
+//        if (local_tm.tm_hour == 20 && local_tm.tm_min == 55 && taskState1 == 0) {
+//            // 转换为 time_t 类型
+//            auto now_c = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+//            std::cout << "----- 重新登录 ----- " << std::put_time(std::localtime(&now_c), "%Y-%m-%d %H:%M:%S") << std::endl;
+//            taskState1 = 1;
+//            listener->login();
+//            std::this_thread::sleep_for(std::chrono::seconds(3));
+//            subscribed.clear();
+//        }
+//        if (local_tm.tm_hour == 21&& taskState == 1) {
+//            taskState = 0;
+//        }
+//        if (local_tm.tm_hour == 21&& taskState1 == 1) {
+//            taskState1 = 0;
+//        }
         std::this_thread::sleep_for(std::chrono::minutes(1));
     }
 }
@@ -238,7 +238,7 @@ int main(int argc, char **argv) {
     // 转换为 time_t 类型
     auto now_c = std::chrono::system_clock::to_time_t(now);
     // 打印时间
-    std::cout << "----- 服务启动2 ----- " << std::put_time(std::localtime(&now_c), "%Y-%m-%d %H:%M:%S") << std::endl;
+    std::cout << "----- 服务启动4 ----- " << std::put_time(std::localtime(&now_c), "%Y-%m-%d %H:%M:%S") << std::endl;
 
     // 创建Redis连接
     // Redis 服务器的主机和端口
